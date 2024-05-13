@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 
 import { Controller, Get, Post, Patch, Delete, Param, Body, } from '@nestjs/common';
-import { EventService } from '../modules/events/events.service';
+import { EventService } from '../modules/events/events.services';
 import { CreateEventDto } from '../modules/events/dto/create-event.dto';
 import { UpdateEventDto } from '../modules/events/dto/update-event.dto';
 

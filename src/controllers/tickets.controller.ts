@@ -2,9 +2,9 @@
 //ticket.controller.ts
 
 import { Controller, Get, Post, Patch, Delete, Param, Body } from '@nestjs/common';
-import { TicketService } from '../modules/ticket/ticket.service';
-import { CreateTicketDto } from '../modules/ticket/dto/create-ticket.dto';
-import { UpdateTicketDto } from '../modules/ticket/dto/update-ticket.dto';
+import { TicketService } from '../modules/tickets/tickets.services';
+import { CreateTicketDto } from '../modules/tickets/dto/create-ticket.dto';
+import { UpdateTicketDto } from '../modules/tickets/dto/update-ticket.dto';
 
 @Controller('ticket')
 export class TicketController {
