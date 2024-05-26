@@ -1,5 +1,5 @@
-//events.controller.ts
 /* eslint-disable prettier/prettier */
+//events.controller.ts
 
 import { Controller, Get, Post, Patch, Delete, Param, Body, } from '@nestjs/common';
 import { EventService } from '../modules/events/events.services';
