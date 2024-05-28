@@ -8,34 +8,43 @@ export type EventDocument = Event & Document;
 @Schema()
 export class Event {
     @Prop({ required: true })
-    imagen_evento: string;
+    name: string;
 
     @Prop({ required: true })
-    ubicacion: string;
+    artist: string;
 
     @Prop({ required: true })
-    establecimiento: string;
+    image: string;
 
     @Prop({ required: true })
-    direccion: string;
-
-    @Prop({ required: true, min: 1, max: 12 })
-    horario: number;
-
-    @Prop({ required: true, enum: ['am', 'pm'] })
-    franja: string;
+    gps_location: string;
 
     @Prop({ required: true })
-    fecha: string;
+    location_name: string;
+
+    @Prop({ required: true })
+    location_address: string;
+
+    @Prop({ required: true })
+    location_city: string;
 
     @Prop([String])
     sector: string[];
 
-    @Prop({ required: true, min: 0 })
-    stock_tickets: number;
+    @Prop([Number])
+    capacity: number[];
+
+    @Prop([{
+        date_time: { type: Date, required: true },
+        stock_ticket: [Number]
+    }])
+    event_date: {
+        date_time: Date;
+        stock_ticket: number[];
+    }[];
 
     @Prop({ required: true })
-    descripcion: string;
+    event_state: boolean;
 
     // Otras propiedades y métodos según sea necesario
 }

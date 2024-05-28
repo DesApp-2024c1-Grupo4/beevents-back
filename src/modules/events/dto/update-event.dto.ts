@@ -1,13 +1,18 @@
 /* eslint-disable prettier/prettier */
+// update-event.dto.ts
 export class UpdateEventDto {
-    readonly imagen_evento?: string;
-    readonly ubicacion?: string;
-    readonly establecimiento?: string;
-    readonly direccion?: string;
-    readonly horario?: number;
-    readonly franja?: 'am' | 'pm';
-    readonly fecha?: string;
+    readonly name?: string;
+    readonly artist?: string;
+    readonly image?: string;
+    readonly gps_location?: string;
+    readonly location_name?: string;
+    readonly location_address?: string;
+    readonly location_city?: string;
     readonly sector?: string[];
-    readonly stock_tickets?: number;
-    readonly descripcion?: string;
+    readonly capacity?: number[];
+    readonly event_date?: {
+        date_time: string;
+        stock_ticket: number[];
+    }[];
+    readonly event_state?: boolean;
 }
