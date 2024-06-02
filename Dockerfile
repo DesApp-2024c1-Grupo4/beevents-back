@@ -8,16 +8,16 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instala las dependencias
-RUN npm install
+RUN yarn install
 
 # Copia el resto de la aplicación
 COPY . .
 
 # Construye la aplicación
-RUN npm run build
+RUN yarn run build
 
 # Expone el puerto que usará la aplicación
-EXPOSE 3000
+EXPOSE 4444
 
 # Comando para correr la aplicación
 CMD ["node", "dist/main"]
