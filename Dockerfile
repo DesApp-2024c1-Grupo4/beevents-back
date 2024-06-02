@@ -1,8 +1,8 @@
 # Usa la imagen de Node.js oficial como imagen base
 FROM node:20
 
-# Establece el directorio de trabajo
-WORKDIR /app
+# Establece el directorio de trabajo como /app por ejemplo
+WORKDIR /dist
 
 # Copia el package.json y el package-lock.json
 COPY package*.json ./
