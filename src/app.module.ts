@@ -8,8 +8,7 @@ import { AppController } from './controllers/app.controller';
 @Module({
   imports: [
     EventModule,
-    TicketModule,
-    AppController
+    TicketModule
   ],
   controllers: [AppController]
 })
