@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 //events.controller.ts
 
-import { Controller, Get, Post, Patch, Delete, Param, Body, } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, Put, } from '@nestjs/common';
 import { EventService } from '../modules/events/events.services';
 import { CreateEventDto } from '../modules/events/dto/create-event.dto';
 import { UpdateEventDto } from '../modules/events/dto/update-event.dto';
@@ -36,6 +36,13 @@ export class EventController {
     // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
     // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
     async update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
+        return this.eventService.update(id, updateEventDto, user_role);
+    }
+
+    @Put(':id')
+    // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
+    // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
+    async put(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
         return this.eventService.update(id, updateEventDto, user_role);
     }
 

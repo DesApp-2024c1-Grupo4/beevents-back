@@ -17,34 +17,26 @@ export class Event {
     image: string;
 
     @Prop({ required: true })
-    gps_location: string;
+    location_id: string;
 
     @Prop({ required: true })
-    location_name: string;
+    user_id: string;
 
-    @Prop({ required: true })
-    location_address: string;
-
-    @Prop({ required: true })
-    location_city: string;
-
-    @Prop([String])
-    sector: string[];
-
-    @Prop([Number])
-    capacity: number[];
+    @Prop([Date])
+    date_times: Date[];
 
     @Prop([{
-        date_time: { type: Date, required: true },
-        stock_ticket: [Number]
+        name: { type: String, required: true },
+        numbered: { type: Boolean, required: true},
+        rows: { type: Number, required: true},
+        seats: { type: Number, required: true}
     }])
-    event_date: {
-        date_time: Date;
-        stock_ticket: number[];
+    sectors: {
+        name: string;
+        numbered: boolean;
+        rows: number;
+        seats: number
     }[];
-
-    @Prop({ required: true })
-    event_state: boolean;
 
     // Otras propiedades y métodos según sea necesario
 }
