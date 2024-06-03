@@ -12,7 +12,6 @@ export class UpdateEventDto {
         type: string;
         rows: number;
         seats: number;
-        price: number;
     }[];
     readonly event_state?: boolean;
 }

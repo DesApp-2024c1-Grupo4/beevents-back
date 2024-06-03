@@ -10,17 +10,14 @@ export class Location {
     @Prop({ required: true })
     name: string;
 
-    @Prop({ required: true })
-    latitude: string;
-
-    @Prop({ required: true })
-    longitude: string;
-
-    @Prop({ required: true })
-    address: string;
-
-    @Prop({ required: true })
-    city: string;
+    @Prop({ 
+        street: { type: String, required: true },
+        number: { type: Number, required: false}
+    })
+    address: {
+        street: string;
+        number: number
+    }[];
 
     // Otras propiedades y métodos según sea necesario
 }
