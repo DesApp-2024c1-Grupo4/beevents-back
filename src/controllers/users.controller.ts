@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 //users.controller.ts
 
-import { Controller, Get, Post, Patch, Delete, Param, Body, } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Put, Delete, Param, Body, } from '@nestjs/common';
 import { UserService } from '../modules/users/users.services';
 import { CreateUserDto } from '../modules/users/dto/create-user.dto';
 import { UpdateUserDto } from '../modules/users/dto/update-user.dto';
@@ -36,6 +36,13 @@ export class UserController {
     // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
     // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
     async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+        return this.userService.update(id, updateUserDto, user_role);
+    }
+
+    @Put(':id')
+    // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
+    // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
+    async fullUpdate(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
         return this.userService.update(id, updateUserDto, user_role);
     }
 
