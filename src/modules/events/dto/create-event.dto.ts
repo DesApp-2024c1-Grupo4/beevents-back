@@ -9,9 +9,8 @@ export class CreateEventDto {
     readonly date_times: Date[];
     readonly sectors: {
         name: string;
-        type: string;
+        numbered: boolean;
         rows: number;
         seats: number;
     }[];
-    readonly event_state: boolean;
 }

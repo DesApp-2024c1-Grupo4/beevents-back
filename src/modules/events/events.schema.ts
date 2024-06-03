@@ -27,19 +27,16 @@ export class Event {
 
     @Prop([{
         name: { type: String, required: true },
-        type: { type: String, required: true},
+        numbered: { type: Boolean, required: true},
         rows: { type: Number, required: true},
         seats: { type: Number, required: true}
     }])
     sectors: {
         name: string;
-        type: string;
+        numbered: boolean;
         rows: number;
         seats: number
     }[];
-
-    @Prop({ required: true })
-    event_state: boolean;
 
     // Otras propiedades y métodos según sea necesario
 }
