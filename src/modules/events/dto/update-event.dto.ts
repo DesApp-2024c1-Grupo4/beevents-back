@@ -4,15 +4,13 @@ export class UpdateEventDto {
     readonly name?: string;
     readonly artist?: string;
     readonly image?: string;
-    readonly gps_location?: string;
-    readonly location_name?: string;
-    readonly location_address?: string;
-    readonly location_city?: string;
-    readonly sector?: string[];
-    readonly capacity?: number[];
-    readonly event_date?: {
-        date_time: string;
-        stock_ticket: number[];
+    readonly location_id?: string;
+    readonly user_id?: string;
+    readonly date_times?: Date[];
+    readonly sectors?: {
+        name: string;
+        numbered: boolean;
+        rows: number;
+        seats: number;
     }[];
-    readonly event_state?: boolean;
 }
