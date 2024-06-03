@@ -29,13 +29,15 @@ export class Event {
         name: { type: String, required: true },
         type: { type: String, required: true},
         rows: { type: Number, required: true},
-        seats: { type: Number, required: true}
+        seats: { type: Number, required: true},
+        price: { type: Number, required: true},
     }])
     sectors: {
         name: string;
         type: string;
         rows: number;
         seats: number;
+        price: number;
     }[];
 
     @Prop({ required: true })
