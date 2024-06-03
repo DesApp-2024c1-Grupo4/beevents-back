@@ -2,7 +2,7 @@
 // update-locations.dto.ts
 export class UpdateLocationDto {
     readonly name?: string;
-    readonly street?: {
+    readonly address?: {
         street: string;
         number: number
     };

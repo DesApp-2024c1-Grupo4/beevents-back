@@ -2,7 +2,7 @@
 // create-location.dto.ts
 export class CreateLocationDto {
     readonly name: string;
-    readonly street: {
+    readonly address: {
         street: string;
         number: number
     };
