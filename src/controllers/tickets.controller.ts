@@ -20,6 +20,24 @@ export class TicketController {
         return this.ticketService.findById(id);
     }
 
+    // hace find de los tickets por id de evento, solo aquellos que numered sean true
+    @Get('numbered/:id')
+    async filterNumbered(@Param('id') id: string) {
+        return this.ticketService.filterNumbered(id);
+    }
+
+    // hace find de los tickets por id de evento, solo aquellos que numered sean true
+    @Get('notNumbered/:id')
+    async filterNotNumbered(@Param('id') id: string) {
+        return this.ticketService.filterNotNumbered(id);
+    }
+
+    // retorna la cantidad de tickets para un event, date y place
+    @Get('quantityNotNumbered/:eventId/:date/:place')
+    async quantityNotNumbered(@Param('eventId') eventId: string, @Param('date') date: string, @Param('place') place: string) {
+        return this.ticketService.quantityNotNumbered(eventId, date, place);
+    }
+
     @Post()
     async create(@Body() createTicketDto: CreateTicketDto) {
         return this.ticketService.create(createTicketDto);

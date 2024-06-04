@@ -24,6 +24,27 @@ export class TicketService {
     return ticket;
   }
 
+  async filterNumbered(eventId: string): Promise<Ticket[]> {
+    return this.ticketModel.find({
+      event_id: eventId,
+      place: { $elemMatch: { numbered: true } }
+    }).exec();
+  }
+
+  async filterNotNumbered(eventId: string): Promise<Ticket[]> {
+    return this.ticketModel.find({
+      event_id: eventId,
+      place: { $elemMatch: { numbered: false } }
+    }).exec();
+  }
+
+  async quantityNotNumbered(eventId: string, date: string, place: string): Promise<number> {
+    return this.ticketModel.countDocuments({
+      event_id: eventId,
+      place: { $elemMatch: { date_time: new Date(date), sector: place, numbered: false } }
+    }).exec();
+  }
+
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
     const createdTicket = new this.ticketModel(createTicketDto);
     return createdTicket.save();
