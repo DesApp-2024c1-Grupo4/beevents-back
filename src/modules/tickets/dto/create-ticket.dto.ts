@@ -1,13 +1,20 @@
 /* eslint-disable prettier/prettier */
 export class CreateTicketDto {
-    readonly imagen_evento: string;
-    readonly ubicacion: string;
-    readonly establecimiento: string;
-    readonly direccion: string;
-    readonly horario: number;
-    readonly franja: 'am' | 'pm';
-    readonly fecha: string;
-    readonly sector: string[];
-    readonly stock_tickets: number;
-    readonly descripcion: string;
+    readonly event_id: string;
+    readonly place: {
+        date_time: Date;
+        sector: string;
+        numbered: boolean;
+        row: number;
+        seat: number;
+    };
+    readonly customer: {
+        name: string;
+        last_name: string;
+        document: number;
+        document_type: string;
+    };
+    readonly user_id: string;
+    readonly status: string;
 }
+
