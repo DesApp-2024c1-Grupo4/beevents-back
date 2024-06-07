@@ -6,18 +6,52 @@ import { Document } from 'mongoose';
 export type LocationDocument = Location & Document;
 
 @Schema()
+export class Sector {
+    @Prop({ type: String, required: true })
+    name: string;
+
+    @Prop({ type: Boolean, required: true })
+    numbered: boolean;
+
+    @Prop({ type: Number, required: true })
+    rows: number;
+
+    @Prop({ type: Number, required: true })
+    seats: number;
+}
+
+const SectorSchema = SchemaFactory.createForClass(Sector);
+
+@Schema()
+export class Configuration {
+    @Prop({ type: String, required: true })
+    name: string;
+
+    @Prop({ type: [SectorSchema], required: true })
+    sectors: Sector[];
+}
+
+const ConfigurationSchema = SchemaFactory.createForClass(Configuration);
+
+@Schema()
 export class Location {
     @Prop({ required: true })
     name: string;
 
     @Prop({
-        street: { type: String, required: true },
-        number: { type: Number, required: false }
+        type: {
+            street: { type: String, required: true },
+            number: { type: Number, required: false }
+        },
+        required: true
     })
     address: {
         street: string;
-        number: number
-    }[];
+        number: number;
+    };
+
+    @Prop({ type: [ConfigurationSchema], required: true })
+    configurations: Configuration[];
 
     // Otras propiedades y métodos según sea necesario
 }

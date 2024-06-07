@@ -4,6 +4,15 @@ export class CreateLocationDto {
     readonly name: string;
     readonly address: {
         street: string;
-        number: number
+        number: number;
     };
+    readonly configurations: {
+        name: string;
+        sectors: {
+            name: string;
+            numbered: boolean;
+            rows: number;
+            seats: number;
+        }[];
+    }[];
 }
