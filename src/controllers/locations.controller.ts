@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 //locations.controller.ts
 
-import { Controller, Get, Post, Patch, Delete, Param, Body, } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, Put, } from '@nestjs/common';
 import { LocationService } from '../modules/locations/locations.services';
 import { CreateLocationDto } from '../modules/locations/dto/create-location.dto';
 import { UpdateLocationDto } from '../modules/locations/dto/update-location.dto';
@@ -36,6 +36,13 @@ export class LocationController {
     // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
     // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
     async update(@Param('id') id: string, @Body() updateLocationDto: UpdateLocationDto) {
+        return this.locationService.update(id, updateLocationDto, user_role);
+    }
+
+    @Put(':id')
+    // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
+    // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
+    async fullUpdate(@Param('id') id: string, @Body() updateLocationDto: UpdateLocationDto) {
         return this.locationService.update(id, updateLocationDto, user_role);
     }
 

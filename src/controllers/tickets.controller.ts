@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 //ticket.controller.ts
 
-import { Controller, Get, Post, Patch, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, Put, } from '@nestjs/common';
 import { TicketService } from '../modules/tickets/tickets.services';
 import { CreateTicketDto } from '../modules/tickets/dto/create-ticket.dto';
 import { UpdateTicketDto } from '../modules/tickets/dto/update-ticket.dto';
@@ -45,6 +45,11 @@ export class TicketController {
 
     @Patch(':id')
     async update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
+        return this.ticketService.update(id, updateTicketDto);
+    }
+
+    @Put(':id')
+    async fullUpdate(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
         return this.ticketService.update(id, updateTicketDto);
     }
 
