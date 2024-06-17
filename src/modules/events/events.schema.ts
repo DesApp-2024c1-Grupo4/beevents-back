@@ -29,13 +29,15 @@ export class Event {
         name: { type: String, required: true },
         numbered: { type: Boolean, required: true},
         rows: { type: Number, required: true},
-        seats: { type: Number, required: true}
+        seats: { type: Number, required: true},
+        available: { type: Number, required: true, default: function() { return this.rows * this.seats; }}
     }])
     sectors: {
         name: string;
         numbered: boolean;
         rows: number;
-        seats: number
+        seats: number;
+        available: boolean;
     }[];
 
     // Otras propiedades y métodos según sea necesario

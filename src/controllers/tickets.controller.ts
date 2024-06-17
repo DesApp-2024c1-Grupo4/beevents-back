@@ -21,13 +21,13 @@ export class TicketController {
     }
 
     // hace filter de los tickets por id de evento, solo aquellos que numered sean true
-    @Get('numbered/:id')
+    @Get('numberedSold/:id')
     async filterNumbered(@Param('id') id: string) {
         return this.ticketService.filterNumbered(id);
     }
 
     // hace filter de los tickets por id de evento, solo aquellos que numered sean true
-    @Get('notNumbered/:id')
+    @Get('notNumberedSold/:id')
     async filterNotNumbered(@Param('id') id: string) {
         return this.ticketService.filterNotNumbered(id);
     }
