@@ -31,6 +31,15 @@ export class TicketService {
     }).exec();
   }
 
+  async getLastFilteredNumbered(eventId: string): Promise<Ticket | null> {
+    const filteredTickets = await this.filterNumbered(eventId);
+    if (filteredTickets.length > 0) {
+      return filteredTickets[filteredTickets.length - 1];
+    } else {
+      return null;
+    }
+  }
+
   async filterNotNumbered(eventId: string): Promise<Ticket[]> {
     return this.ticketModel.find({
       event_id: eventId,
@@ -44,6 +53,7 @@ export class TicketService {
       place: { $elemMatch: { date_time: new Date(date), sector: place, numbered: false } }
     }).exec();
   }
+
 
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
     const createdTicket = new this.ticketModel(createTicketDto);

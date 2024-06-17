@@ -24,36 +24,6 @@ export class Event {
     @Prop({ required: true })
     user_id: string;
 
-    // @Prop([Date])
-    // date_times: Date[];
-    // @Prop([{
-    //     name: { type: String, required: true },
-    //     numbered: { type: Boolean, required: true},
-    //     rows: { type: Number, required: true},
-    //     seats: { type: Number, required: true},
-    //     available: { type: Number, required: true, default: function() { return this.rows * this.seats; }}
-    // }])
-    // sectors: {
-    //     name: string;
-    //     numbered: boolean;
-    //     rows: number;
-    //     seats: number;
-    //     available: boolean;
-    // }[];
-
-    @Prop([{
-        date_times: { type: Date, required: true },
-        available: {
-            type: Number, required: true, default: function () {
-                return this.sectors.forEach(sector => { sector.rows * sector.seats })
-            }
-        }
-    }])
-    date: {
-        date_times: Date;
-        available: [Number];
-    }[];
-
     @Prop([{
         name: { type: String, required: true },
         numbered: { type: Boolean, required: true },
@@ -67,6 +37,14 @@ export class Event {
         seats: number;
     }[];
 
+    @Prop([{
+        date_times: { type: Date, required: true },
+        available: { type: Number, required: true },
+    }])
+    date: {
+        date_times: Date;
+        available: Number[];
+    }[];
 
     // Otras propiedades y métodos según sea necesario
 }
