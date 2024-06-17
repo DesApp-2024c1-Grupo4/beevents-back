@@ -2,8 +2,10 @@
 // event.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Sector } from '../locations/locations.schema';
 
 export type EventDocument = Event & Document;
+
 
 @Schema()
 export class Event {
@@ -22,23 +24,49 @@ export class Event {
     @Prop({ required: true })
     user_id: string;
 
-    @Prop([Date])
-    date_times: Date[];
+    // @Prop([Date])
+    // date_times: Date[];
+    // @Prop([{
+    //     name: { type: String, required: true },
+    //     numbered: { type: Boolean, required: true},
+    //     rows: { type: Number, required: true},
+    //     seats: { type: Number, required: true},
+    //     available: { type: Number, required: true, default: function() { return this.rows * this.seats; }}
+    // }])
+    // sectors: {
+    //     name: string;
+    //     numbered: boolean;
+    //     rows: number;
+    //     seats: number;
+    //     available: boolean;
+    // }[];
+
+    @Prop([{
+        date_times: { type: Date, required: true },
+        available: {
+            type: Number, required: true, default: function () {
+                return this.sectors.forEach(sector => { sector.rows * sector.seats })
+            }
+        }
+    }])
+    date: {
+        date_times: Date;
+        available: [Number];
+    }[];
 
     @Prop([{
         name: { type: String, required: true },
-        numbered: { type: Boolean, required: true},
-        rows: { type: Number, required: true},
-        seats: { type: Number, required: true},
-        available: { type: Number, required: true, default: function() { return this.rows * this.seats; }}
+        numbered: { type: Boolean, required: true },
+        rows: { type: Number, required: true },
+        seats: { type: Number, required: true },
     }])
     sectors: {
         name: string;
         numbered: boolean;
         rows: number;
         seats: number;
-        available: boolean;
     }[];
+
 
     // Otras propiedades y métodos según sea necesario
 }
