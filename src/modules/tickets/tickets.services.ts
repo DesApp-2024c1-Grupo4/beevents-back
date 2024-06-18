@@ -54,6 +54,12 @@ export class TicketService {
     }).exec();
   }
 
+  async quantitySold(eventId: string, date: string, place: string): Promise<number> {
+    return this.ticketModel.countDocuments({
+      event_id: eventId,
+      place: { $elemMatch: { date_time: new Date(date), sector: place } }
+    }).exec();
+  }
 
   async create(createTicketDto: CreateTicketDto): Promise<Ticket> {
     const createdTicket = new this.ticketModel(createTicketDto);
