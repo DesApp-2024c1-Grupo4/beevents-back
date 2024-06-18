@@ -31,6 +31,19 @@ export class TicketService {
     }).exec();
   }
 
+  //el lastSold/:eventId/:date/:place
+  async getLastSold(eventId: string, date: string, place: string): Promise<Ticket | null> {
+    const filteredTickets = await this.ticketModel.find({
+      event_id: eventId,
+      place: { $elemMatch: { date_time: new Date(date), sector: place } }
+    }).exec();
+    if (filteredTickets.length > 0) {
+      return filteredTickets[filteredTickets.length - 1];
+    } else {
+      return null;
+    }
+  }
+
   async getLastFilteredNumbered(eventId: string): Promise<Ticket | null> {
     const filteredTickets = await this.filterNumbered(eventId);
     if (filteredTickets.length > 0) {

@@ -38,6 +38,10 @@ export class TicketController {
     }
 
     //hacer el lastSold/:eventId/:date/:place
+    @Get('lastSold/:eventId/:date/:place')
+    async getLastSold(@Param('eventId') eventId: string, @Param('date') date: string, @Param('place') place: string) {
+        return this.ticketService.getLastSold(eventId, date, place);
+    }
 
     // retorna la cantidad de tickets para un event, date y place sin importar si son numerados o no
     @Get('quantitySold/:eventId/:date/:place')
