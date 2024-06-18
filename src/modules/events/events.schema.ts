@@ -2,10 +2,8 @@
 // event.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Sector } from '../locations/locations.schema';
 
 export type EventDocument = Event & Document;
-
 
 @Schema()
 export class Event {
@@ -39,14 +37,26 @@ export class Event {
 
     @Prop([{
         date_times: { type: Date, required: true },
-        available: { type: Number, required: true },
+        available: [{ type: Number, required: true }],
     }])
     date: {
         date_times: Date;
-        available: Number[];
+        available: number[];
     }[];
 
     // Otras propiedades y métodos según sea necesario
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);
+
+// Pre hook to set default values for `available`
+EventSchema.pre<EventDocument>('save', function(next) {
+    if (this.isNew) {
+        this.date.forEach(dateItem => {
+            if (!dateItem.available || dateItem.available.length === 0) {
+                dateItem.available = this.sectors.map(sector => sector.rows * sector.seats);
+            }
+        });
+    }
+    next();
+});
