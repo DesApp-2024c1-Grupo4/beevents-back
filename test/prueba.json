@@ -1,0 +1,1166 @@
+{
+    "_id": {
+        "$oid": "667ecd5b13c450d21765d7f9"
+    },
+    "name": "Prueba2 Evento Modelo Tickets 20240628 v2",
+    "artist": "El cuarteto G4",
+    "image": "https://www.rockaxis.com/img/newsList/3008122.png",
+    "description": "Este evento es para probar si el modelado del documento del evento, incluyendo los array de dates, sectors, y rows con lista de listas si funciona",
+    "location_id": "665f75a54a72077ce226e322",
+    "user_id": "user1",
+    "dates": [
+        {
+            "date_time": {
+                "$date": {
+                    "$numberLong": "1719097200000"
+                }
+            },
+            "sectors": [
+                {
+                    "name": "Campo",
+                    "numbered": false,
+                    "rowsNumber": {
+                        "$numberInt": "1"
+                    },
+                    "seatsNumber": {
+                        "$numberInt": "40"
+                    },
+                    "rows": [],
+                    "_id": {
+                        "$oid": "667ecd5b13c450d21765d7fb"
+                    },
+                    "available": {
+                        "$numberInt": "40"
+                    }
+                },
+                {
+                    "name": "Platea Alta",
+                    "numbered": true,
+                    "rowsNumber": {
+                        "$numberInt": "3"
+                    },
+                    "seatsNumber": {
+                        "$numberInt": "10"
+                    },
+                    "rows": [
+                        [
+                            {
+                                "displayId": "A-1",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139685"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d800"
+                                }
+                            },
+                            {
+                                "displayId": "A-2",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139685"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d801"
+                                }
+                            },
+                            {
+                                "displayId": "A-3",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139685"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d802"
+                                }
+                            },
+                            {
+                                "displayId": "A-4",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139685"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d803"
+                                }
+                            },
+                            {
+                                "displayId": "A-5",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139685"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d804"
+                                }
+                            },
+                            {
+                                "displayId": "A-6",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139685"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d805"
+                                }
+                            },
+                            {
+                                "displayId": "A-7",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139685"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d806"
+                                }
+                            },
+                            {
+                                "displayId": "A-8",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139685"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d807"
+                                }
+                            },
+                            {
+                                "displayId": "A-9",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139685"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d808"
+                                }
+                            },
+                            {
+                                "displayId": "A-10",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139685"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d809"
+                                }
+                            }
+                        ],
+                        [
+                            {
+                                "displayId": "B-1",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139688"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d80a"
+                                }
+                            },
+                            {
+                                "displayId": "B-2",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139688"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d80b"
+                                }
+                            },
+                            {
+                                "displayId": "B-3",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139688"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d80c"
+                                }
+                            },
+                            {
+                                "displayId": "B-4",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139688"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d80d"
+                                }
+                            },
+                            {
+                                "displayId": "B-5",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139688"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d80e"
+                                }
+                            },
+                            {
+                                "displayId": "B-6",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139688"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d80f"
+                                }
+                            },
+                            {
+                                "displayId": "B-7",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139688"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d810"
+                                }
+                            },
+                            {
+                                "displayId": "B-8",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139688"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d811"
+                                }
+                            },
+                            {
+                                "displayId": "B-9",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139688"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d812"
+                                }
+                            },
+                            {
+                                "displayId": "B-10",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139688"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d813"
+                                }
+                            }
+                        ],
+                        [
+                            {
+                                "displayId": "C-1",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139689"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d814"
+                                }
+                            },
+                            {
+                                "displayId": "C-2",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139689"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d815"
+                                }
+                            },
+                            {
+                                "displayId": "C-3",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139689"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d816"
+                                }
+                            },
+                            {
+                                "displayId": "C-4",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139689"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d817"
+                                }
+                            },
+                            {
+                                "displayId": "C-5",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139689"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d818"
+                                }
+                            },
+                            {
+                                "displayId": "C-6",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139689"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d819"
+                                }
+                            },
+                            {
+                                "displayId": "C-7",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139689"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d81a"
+                                }
+                            },
+                            {
+                                "displayId": "C-8",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139689"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d81b"
+                                }
+                            },
+                            {
+                                "displayId": "C-9",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139689"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d81c"
+                                }
+                            },
+                            {
+                                "displayId": "C-10",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139689"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d81d"
+                                }
+                            }
+                        ]
+                    ],
+                    "_id": {
+                        "$oid": "667ecd5b13c450d21765d7fc"
+                    },
+                    "available": {
+                        "$numberInt": "30"
+                    }
+                }
+            ],
+            "_id": {
+                "$oid": "667ecd5b13c450d21765d7fa"
+            }
+        },
+        {
+            "date_time": {
+                "$date": {
+                    "$numberLong": "1719097200000"
+                }
+            },
+            "sectors": [
+                {
+                    "name": "Campo",
+                    "numbered": false,
+                    "rowsNumber": {
+                        "$numberInt": "1"
+                    },
+                    "seatsNumber": {
+                        "$numberInt": "50"
+                    },
+                    "rows": [],
+                    "_id": {
+                        "$oid": "667ecd5b13c450d21765d7fe"
+                    },
+                    "available": {
+                        "$numberInt": "50"
+                    }
+                },
+                {
+                    "name": "Platea Alta",
+                    "numbered": true,
+                    "rowsNumber": {
+                        "$numberInt": "5"
+                    },
+                    "seatsNumber": {
+                        "$numberInt": "10"
+                    },
+                    "rows": [
+                        [
+                            {
+                                "displayId": "A-1",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139691"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d81e"
+                                }
+                            },
+                            {
+                                "displayId": "A-2",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139691"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d81f"
+                                }
+                            },
+                            {
+                                "displayId": "A-3",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139691"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d820"
+                                }
+                            },
+                            {
+                                "displayId": "A-4",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139691"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d821"
+                                }
+                            },
+                            {
+                                "displayId": "A-5",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139691"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d822"
+                                }
+                            },
+                            {
+                                "displayId": "A-6",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139691"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d823"
+                                }
+                            },
+                            {
+                                "displayId": "A-7",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139691"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d824"
+                                }
+                            },
+                            {
+                                "displayId": "A-8",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139691"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d825"
+                                }
+                            },
+                            {
+                                "displayId": "A-9",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139691"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d826"
+                                }
+                            },
+                            {
+                                "displayId": "A-10",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139691"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d827"
+                                }
+                            }
+                        ],
+                        [
+                            {
+                                "displayId": "B-1",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139692"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d828"
+                                }
+                            },
+                            {
+                                "displayId": "B-2",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139692"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d829"
+                                }
+                            },
+                            {
+                                "displayId": "B-3",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139692"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d82a"
+                                }
+                            },
+                            {
+                                "displayId": "B-4",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139692"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d82b"
+                                }
+                            },
+                            {
+                                "displayId": "B-5",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139692"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d82c"
+                                }
+                            },
+                            {
+                                "displayId": "B-6",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139692"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d82d"
+                                }
+                            },
+                            {
+                                "displayId": "B-7",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139692"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d82e"
+                                }
+                            },
+                            {
+                                "displayId": "B-8",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139692"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d82f"
+                                }
+                            },
+                            {
+                                "displayId": "B-9",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139692"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d830"
+                                }
+                            },
+                            {
+                                "displayId": "B-10",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139692"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d831"
+                                }
+                            }
+                        ],
+                        [
+                            {
+                                "displayId": "C-1",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139693"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d832"
+                                }
+                            },
+                            {
+                                "displayId": "C-2",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139693"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d833"
+                                }
+                            },
+                            {
+                                "displayId": "C-3",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139693"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d834"
+                                }
+                            },
+                            {
+                                "displayId": "C-4",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139693"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d835"
+                                }
+                            },
+                            {
+                                "displayId": "C-5",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139693"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d836"
+                                }
+                            },
+                            {
+                                "displayId": "C-6",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139693"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d837"
+                                }
+                            },
+                            {
+                                "displayId": "C-7",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139693"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d838"
+                                }
+                            },
+                            {
+                                "displayId": "C-8",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139693"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d839"
+                                }
+                            },
+                            {
+                                "displayId": "C-9",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139693"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d83a"
+                                }
+                            },
+                            {
+                                "displayId": "C-10",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139693"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d83b"
+                                }
+                            }
+                        ],
+                        [
+                            {
+                                "displayId": "D-1",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139694"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d83c"
+                                }
+                            },
+                            {
+                                "displayId": "D-2",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139694"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d83d"
+                                }
+                            },
+                            {
+                                "displayId": "D-3",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139694"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d83e"
+                                }
+                            },
+                            {
+                                "displayId": "D-4",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139694"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d83f"
+                                }
+                            },
+                            {
+                                "displayId": "D-5",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139694"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d840"
+                                }
+                            },
+                            {
+                                "displayId": "D-6",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139694"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d841"
+                                }
+                            },
+                            {
+                                "displayId": "D-7",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139694"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d842"
+                                }
+                            },
+                            {
+                                "displayId": "D-8",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139694"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d843"
+                                }
+                            },
+                            {
+                                "displayId": "D-9",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139694"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d844"
+                                }
+                            },
+                            {
+                                "displayId": "D-10",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139694"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d845"
+                                }
+                            }
+                        ],
+                        [
+                            {
+                                "displayId": "E-1",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139695"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d846"
+                                }
+                            },
+                            {
+                                "displayId": "E-2",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139695"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d847"
+                                }
+                            },
+                            {
+                                "displayId": "E-3",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139695"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d848"
+                                }
+                            },
+                            {
+                                "displayId": "E-4",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139695"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d849"
+                                }
+                            },
+                            {
+                                "displayId": "E-5",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139695"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d84a"
+                                }
+                            },
+                            {
+                                "displayId": "E-6",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139695"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d84b"
+                                }
+                            },
+                            {
+                                "displayId": "E-7",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139695"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d84c"
+                                }
+                            },
+                            {
+                                "displayId": "E-8",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139695"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d84d"
+                                }
+                            },
+                            {
+                                "displayId": "E-9",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139695"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d84e"
+                                }
+                            },
+                            {
+                                "displayId": "E-10",
+                                "available": true,
+                                "timestamp": {
+                                    "$date": {
+                                        "$numberLong": "1719586139695"
+                                    }
+                                },
+                                "reservedBy": "",
+                                "_id": {
+                                    "$oid": "667ecd5b13c450d21765d84f"
+                                }
+                            }
+                        ]
+                    ],
+                    "_id": {
+                        "$oid": "667ecd5b13c450d21765d7ff"
+                    },
+                    "available": {
+                        "$numberInt": "50"
+                    }
+                }
+            ],
+            "_id": {
+                "$oid": "667ecd5b13c450d21765d7fd"
+            }
+        }
+    ],
+    "__v": {
+        "$numberInt": "0"
+    }
+}

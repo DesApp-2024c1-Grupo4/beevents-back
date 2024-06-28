@@ -6,6 +6,23 @@ import { Document } from 'mongoose';
 export type EventDocument = Event & Document;
 
 @Schema()
+export class Row {
+    @Prop({ type: String, required: false })
+    displayId: string;
+
+    @Prop({ type: Boolean, required: true })
+    available: boolean;
+
+    @Prop({ type: Date, required: true })
+    timestamp: Date;
+
+    @Prop({ type: String, required: true })
+    reservedBy: string;
+}
+
+const RowSchema = SchemaFactory.createForClass(Row);
+
+@Schema()
 export class Sector extends Document {
     @Prop({ type: String, required: true })
     name: string;
@@ -22,25 +39,15 @@ export class Sector extends Document {
     @Prop({ type: Number, required: false })
     available: number;
 
-    @Prop([{
-        displayId: { type: String, required: false },
-        available: { type: Boolean, required: true },
-        timestamp: { type: Date, required: true },
-        reservedBy: { type: String, required: true }
-    }])
-    rows: {
-        displayId: string;
-        available: boolean;
-        timestamp: Date;
-        reservedBy: string;
-    }[];
+    @Prop({ type: [[RowSchema]], required: false, default: [] })
+    rows: Row[][];
 }
 
 const SectorSchema = SchemaFactory.createForClass(Sector);
 
 @Schema()
 export class Dates {
-    @Prop({ type: String, required: true })
+    @Prop({ type: Date, required: true })
     date_time: Date;
 
     @Prop({ type: [SectorSchema], required: true })
@@ -97,16 +104,19 @@ EventSchema.pre<EventDocument>('save', function(next) {
 
                 // Si `numbered` es true, crear los asientos
                 if (sector.numbered) {
+                    sector.rows = []; // Inicializar como lista de listas
                     for (let i = 0; i < sector.rowsNumber; i++) {
                         const rowLabel = numberToAlphabet(i);
+                        const rowSeats = [];
                         for (let j = 0; j < sector.seatsNumber; j++) {
-                            sector.rows.push({
+                            rowSeats.push({
                                 displayId: `${rowLabel}-${j + 1}`,
                                 available: true,
                                 timestamp: new Date(),
                                 reservedBy: ''
                             });
                         }
+                        sector.rows.push(rowSeats);
                     }
                 }
             });
