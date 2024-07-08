@@ -5,6 +5,7 @@ import { Controller, Get, Post, Patch, Delete, Param, Body, Put, } from '@nestjs
 import { EventService } from '../modules/events/events.services';
 import { CreateEventDto } from '../modules/events/dto/create-event.dto';
 import { UpdateEventDto } from '../modules/events/dto/update-event.dto';
+import { UpdateSeatDto } from '../modules/events/dto/update-seat.dto';
 
 // FALTA definir como tomar el user_role segun el usuario
 const user_role = 'admin'
@@ -51,5 +52,10 @@ export class EventController {
     // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
     async delete(@Param('id') id: string) {
         return this.eventService.delete(id, user_role);
+    }
+
+    @Patch(':eventId/seat')
+    async updateSeat(@Param('eventId') eventId: string, @Body() updateSeatDto: UpdateSeatDto) {
+        return this.eventService.updateSeat(eventId, updateSeatDto);
     }
 }

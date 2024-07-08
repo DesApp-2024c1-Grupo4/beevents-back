@@ -1,0 +1,44 @@
+{
+    "name": "Prueba5 Evento Modelo Tickets 20240708 v5",
+    "artist": "El cuarteto G4",
+    "image": "https://www.rockaxis.com/img/newsList/3008122.png",
+    "description": "Este evento es para probar si el modelado del documento del evento, incluyendo los array de dates, sectors, y rows con lista de listas si funciona, ver filas más de 30",
+    "location_id": "665f75a54a72077ce226e322",
+    "user_id": "user1",
+    "dates": [
+      {
+        "date_time": "2024-07-22T23:00:00.000Z",
+        "sectors": [
+          {
+            "name": "Campo",
+            "numbered": false,
+            "rowsNumber": 1,
+            "seatsNumber": 400
+          },
+          {
+            "name": "Platea Alta",
+            "numbered": true,
+            "rowsNumber": 5,
+            "seatsNumber": 10
+          }
+        ]
+      },
+      {
+        "date_time": "2024-06-22T23:00:00.000Z",
+        "sectors": [
+          {
+            "name": "Campo",
+            "numbered": false,
+            "rowsNumber": 1,
+            "seatsNumber": 500
+          },
+          {
+            "name": "Platea Alta",
+            "numbered": true,
+            "rowsNumber": 12,
+            "seatsNumber": 10
+          }
+        ]
+      }
+    ]
+}

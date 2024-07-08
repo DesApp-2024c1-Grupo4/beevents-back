@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 // create-event.dto.ts
 
-export class CreateRowDto {
+export class CreateSeatDto {
     readonly displayId: string;
     readonly available: boolean;
     readonly timestamp: Date;
@@ -14,7 +14,7 @@ export class CreateSectorDto {
     readonly rowsNumber: number;
     readonly seatsNumber: number;
     readonly available?: number;
-    readonly rows: CreateRowDto[][];
+    readonly rows: CreateSeatDto[][];
 }
 
 export class CreateDateDto {

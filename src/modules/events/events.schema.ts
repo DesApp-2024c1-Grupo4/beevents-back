@@ -6,21 +6,21 @@ import { Document } from 'mongoose';
 export type EventDocument = Event & Document;
 
 @Schema()
-export class Row {
-    @Prop({ type: String, required: false })
+export class Seat {
+    @Prop({ type: String, required: true, default: '' })
     displayId: string;
 
     @Prop({ type: Boolean, required: true })
     available: boolean;
 
-    @Prop({ type: Date, required: true })
+    @Prop({ type: Date, required: true, default: Date.now })
     timestamp: Date;
 
-    @Prop({ type: String, required: true })
+    @Prop({ type: String, required: true, default: '' })
     reservedBy: string;
 }
 
-const RowSchema = SchemaFactory.createForClass(Row);
+const SeatSchema = SchemaFactory.createForClass(Seat);
 
 @Schema()
 export class Sector extends Document {
@@ -39,8 +39,8 @@ export class Sector extends Document {
     @Prop({ type: Number, required: false })
     available: number;
 
-    @Prop({ type: [[RowSchema]], required: false, default: [] })
-    rows: Row[][];
+    @Prop({ type: [[SeatSchema]], required: function() { return this.numbered; }, default: [] })
+    rows: Seat[][];
 }
 
 const SectorSchema = SchemaFactory.createForClass(Sector);
@@ -113,7 +113,7 @@ EventSchema.pre<EventDocument>('save', function(next) {
                                 displayId: `${rowLabel}-${j + 1}`,
                                 available: true,
                                 timestamp: new Date(),
-                                reservedBy: ''
+                                reservedBy: "vacio" // Asegúrate de que este campo esté presente
                             });
                         }
                         sector.rows.push(rowSeats);
