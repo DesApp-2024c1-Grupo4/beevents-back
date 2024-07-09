@@ -7,7 +7,7 @@ export type EventDocument = Event & Document;
 
 @Schema()
 export class Seat {
-    @Prop({ type: String, required: true, default: '' })
+    @Prop({ type: String, required: false, default: '' })
     displayId: string;
 
     @Prop({ type: Boolean, required: true })

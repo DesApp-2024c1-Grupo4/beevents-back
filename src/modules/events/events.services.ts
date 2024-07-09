@@ -7,6 +7,7 @@ import { Event, EventDocument } from './events.schema';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { UpdateSeatDto } from './dto/update-seat.dto';
+import { CreateSeatDto } from './dto/create-seat.dto';
 
 @Injectable()
 export class EventService {
@@ -106,6 +107,49 @@ export class EventService {
         await event.save();
 
         return { message: 'Reserva realizada correctamente' };
+    }
+
+    async createSeat(eventId: string, createSeatDto: CreateSeatDto): Promise<any> {
+        const event = await this.eventModel.findById(eventId).exec();
+        if (!event) {
+            throw new NotFoundException('Evento no encontrado');
+        }
+
+        const { sectorId, reservedBy, date_time } = createSeatDto;
+        const currentDate = new Date();
+
+        const date = event.dates.find(dateItem => dateItem.date_time.toISOString() === date_time);
+        if (!date) {
+            throw new NotFoundException('Fecha no encontrada');
+        }
+
+        const sector = date.sectors.find(sectorItem => sectorItem._id.toString() === sectorId && !sectorItem.numbered);
+        if (!sector) {
+            throw new BadRequestException('No se puede realizar esta reserva porque es un sector numerado o el sector no existe');
+        }
+
+        const seat = {
+            displayId: '',
+            available: false,
+            timestamp: currentDate,
+            reservedBy: reservedBy,
+        };
+
+        if (!sector.rows) {
+            sector.rows = [];
+        }
+
+        if (sector.rows.length === 0) {
+            sector.rows.push([seat]);
+        } else {
+            sector.rows[0].push(seat);
+        }
+
+        sector.available -= 1;
+
+        await event.save();
+
+        return { message: 'Place creado correctamente' };
     }
 }
 

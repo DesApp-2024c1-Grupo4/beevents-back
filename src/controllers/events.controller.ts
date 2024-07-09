@@ -6,6 +6,7 @@ import { EventService } from '../modules/events/events.services';
 import { CreateEventDto } from '../modules/events/dto/create-event.dto';
 import { UpdateEventDto } from '../modules/events/dto/update-event.dto';
 import { UpdateSeatDto } from '../modules/events/dto/update-seat.dto';
+import { CreateSeatDto } from '../modules/events/dto/create-seat.dto';
 
 // FALTA definir como tomar el user_role segun el usuario
 const user_role = 'admin'
@@ -57,5 +58,10 @@ export class EventController {
     @Patch(':eventId/seat')
     async updateSeat(@Param('eventId') eventId: string, @Body() updateSeatDto: UpdateSeatDto) {
         return this.eventService.updateSeat(eventId, updateSeatDto);
+    }
+
+    @Patch(':eventId/place')
+    async createSeat(@Param('eventId') eventId: string, @Body() createSeatDto: CreateSeatDto) {
+        return this.eventService.createSeat(eventId, createSeatDto);
     }
 }
