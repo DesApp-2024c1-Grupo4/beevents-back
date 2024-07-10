@@ -113,7 +113,7 @@ EventSchema.pre<EventDocument>('save', function(next) {
                                 displayId: `${rowLabel}-${j + 1}`,
                                 available: true,
                                 timestamp: new Date(),
-                                reservedBy: "vacio" // Asegúrate de que este campo esté presente
+                                reservedBy: "vacio"
                             });
                         }
                         sector.rows.push(rowSeats);
