@@ -173,11 +173,11 @@ export class EventService {
                                 if (seat.reservedBy === reservedBy) {
                                     reservations.push({
                                         numbered: true,
-                                        EventName: event.name,
-                                        Artist: event.artist,
+                                        eventName: event.name,
+                                        artist: event.artist,
                                         image: event.image,
-                                        LocationName: location.name,
-                                        SectorName: sector.name,
+                                        locationName: location.name,
+                                        sectorName: sector.name,
                                         date_time: date.date_time,
                                         displayId: seat.displayId,
                                         timestamp: seat.timestamp,
@@ -191,11 +191,11 @@ export class EventService {
                         if (seatsReserved.length > 0) {
                             reservations.push({
                                 numbered: false,
-                                EventName: event.name,
-                                Artist: event.artist,
+                                eventName: event.name,
+                                artist: event.artist,
                                 image: event.image,
-                                LocationName: location.name, 
-                                SectorName: sector.name,
+                                locationName: location.name, 
+                                sectorName: sector.name,
                                 date_time: date.date_time,
                                 cantidad: seatsReserved.length,
                                 reservedBy: reservedBy
