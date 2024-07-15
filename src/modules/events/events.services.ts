@@ -159,7 +159,7 @@ export class EventService {
         const reservations: any[] = [];
 
         for (const event of events) {
-            // Busca la información de la ubicación correspondiente
+            // Busca la información de la location correspondiente
             const location = await this.locationModel.findById(event.location_id).exec();
             if (!location) {
                 throw new NotFoundException('Ubicación no encontrada');
@@ -175,7 +175,7 @@ export class EventService {
                                         numbered: true,
                                         EventName: event.name,
                                         Artist: event.artist,
-                                        LocationName: location.name, // Agrega el nombre de la ubicación
+                                        LocationName: location.name,
                                         SectorName: sector.name,
                                         date_time: date.date_time,
                                         displayId: seat.displayId,
@@ -192,7 +192,7 @@ export class EventService {
                                 numbered: false,
                                 EventName: event.name,
                                 Artist: event.artist,
-                                LocationName: location.name, // Agrega el nombre de la ubicación
+                                LocationName: location.name, 
                                 SectorName: sector.name,
                                 date_time: date.date_time,
                                 cantidad: seatsReserved.length,
