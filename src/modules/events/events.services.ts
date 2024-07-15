@@ -8,11 +8,13 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { UpdateSeatDto } from './dto/update-seat.dto';
 import { CreateSeatDto } from './dto/create-seat.dto';
+import { Location, LocationDocument } from '../locations/locations.schema'; // Importamos el modelo de Location para obtener el name
 
 @Injectable()
 export class EventService {
     constructor(
         @InjectModel(Event.name) private readonly eventModel: Model<EventDocument>,
+        @InjectModel(Location.name) private readonly locationModel: Model<LocationDocument>, // Inyecta el modelo de Location
     ) { }
 
     async create(eventDto: CreateEventDto, userRole: string): Promise<Event> {
@@ -156,7 +158,13 @@ export class EventService {
         const events = await this.eventModel.find().exec();
         const reservations: any[] = [];
 
-        events.forEach(event => {
+        for (const event of events) {
+            // Busca la información de la ubicación correspondiente
+            const location = await this.locationModel.findById(event.location_id).exec();
+            if (!location) {
+                throw new NotFoundException('Ubicación no encontrada');
+            }
+
             event.dates.forEach(date => {
                 date.sectors.forEach(sector => {
                     if (sector.numbered) {
@@ -166,6 +174,8 @@ export class EventService {
                                     reservations.push({
                                         numbered: true,
                                         EventName: event.name,
+                                        Artist: event.artist,
+                                        LocationName: location.name, // Agrega el nombre de la ubicación
                                         SectorName: sector.name,
                                         date_time: date.date_time,
                                         displayId: seat.displayId,
@@ -181,6 +191,8 @@ export class EventService {
                             reservations.push({
                                 numbered: false,
                                 EventName: event.name,
+                                Artist: event.artist,
+                                LocationName: location.name, // Agrega el nombre de la ubicación
                                 SectorName: sector.name,
                                 date_time: date.date_time,
                                 cantidad: seatsReserved.length,
@@ -190,7 +202,7 @@ export class EventService {
                     }
                 });
             });
-        });
+        }
 
         return reservations;
     }

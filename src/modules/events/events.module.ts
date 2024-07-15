@@ -6,6 +6,7 @@ import { connectToMongoDB } from '../../database.connection';
 import { EventController } from '../../controllers/events.controller';
 import { EventService } from './events.services';
 import { Event, EventSchema } from './events.schema';
+import { Location, LocationSchema } from '../locations/locations.schema';
 
 @Module({
     imports: [
@@ -18,7 +19,10 @@ import { Event, EventSchema } from './events.schema';
                 };
             },
         }),
-        MongooseModule.forFeature([{ name: Event.name, schema: EventSchema }]),
+        MongooseModule.forFeature([
+            { name: Event.name, schema: EventSchema },
+            { name: Location.name, schema: LocationSchema },
+        ]),
     ],
     controllers: [EventController],
     providers: [EventService],
