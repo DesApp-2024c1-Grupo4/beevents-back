@@ -151,5 +151,48 @@ export class EventService {
 
         return { message: 'Place creado correctamente' };
     }
+
+    async getReservationsByReservedBy(reservedBy: string): Promise<any[]> {
+        const events = await this.eventModel.find().exec();
+        const reservations: any[] = [];
+
+        events.forEach(event => {
+            event.dates.forEach(date => {
+                date.sectors.forEach(sector => {
+                    if (sector.numbered) {
+                        sector.rows.forEach(row => {
+                            row.forEach(seat => {
+                                if (seat.reservedBy === reservedBy) {
+                                    reservations.push({
+                                        numbered: true,
+                                        EventName: event.name,
+                                        SectorName: sector.name,
+                                        date_time: date.date_time,
+                                        displayId: seat.displayId,
+                                        timestamp: seat.timestamp,
+                                        reservedBy: seat.reservedBy,
+                                    });
+                                }
+                            });
+                        });
+                    } else {
+                        const seatsReserved = sector.rows.flat().filter(seat => seat.reservedBy === reservedBy);
+                        if (seatsReserved.length > 0) {
+                            reservations.push({
+                                numbered: false,
+                                EventName: event.name,
+                                SectorName: sector.name,
+                                date_time: date.date_time,
+                                cantidad: seatsReserved.length,
+                                reservedBy: reservedBy
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+        return reservations;
+    }
 }
 

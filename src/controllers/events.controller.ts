@@ -64,4 +64,9 @@ export class EventController {
     async createSeat(@Param('eventId') eventId: string, @Body() createSeatDto: CreateSeatDto) {
         return this.eventService.createSeat(eventId, createSeatDto);
     }
+
+    @Get('reservedBy/:id')
+    async getReservationsByReservedBy(@Param('id') id: string) {
+        return this.eventService.getReservationsByReservedBy(id);
+    }
 }

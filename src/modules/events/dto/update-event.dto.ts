@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 // update-event.dto.ts
 
-export class UpdateRowDto {
+export class UpdateSeatDto {
     readonly displayId?: string;
     readonly available?: boolean;
     readonly timestamp?: Date;
@@ -14,7 +14,7 @@ export class UpdateSectorDto {
     readonly rowsNumber?: number;
     readonly seatsNumber?: number;
     readonly available?: number;
-    readonly rows?: UpdateRowDto[][];
+    readonly rows?: UpdateSeatDto[][];
 }
 
 export class UpdateDateDto {
