@@ -9,6 +9,7 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import { UpdateSeatDto } from './dto/update-seat.dto';
 import { CreateSeatDto } from './dto/create-seat.dto';
 import { Location, LocationDocument } from '../locations/locations.schema'; // Importamos el modelo de Location para obtener el name
+import * as crypto from 'crypto';
 
 @Injectable()
 export class EventService {
@@ -135,6 +136,7 @@ export class EventService {
             available: false,
             timestamp: currentDate,
             reservedBy: reservedBy,
+            idTicket: generateIdTicket()  // Generar idTicket para el nuevo asiento
         };
 
         if (!sector.rows) {
@@ -151,7 +153,7 @@ export class EventService {
 
         await event.save();
 
-        return { message: 'Place creado correctamente' };
+        return { message: 'Asiento creado correctamente' };
     }
 
     async getReservationsByReservedBy(reservedBy: string): Promise<any[]> {
@@ -182,6 +184,7 @@ export class EventService {
                                         displayId: seat.displayId,
                                         timestamp: seat.timestamp,
                                         reservedBy: seat.reservedBy,
+                                        idTicket: seat.idTicket  // Incluir idTicket para asientos numerados
                                     });
                                 }
                             });
@@ -194,11 +197,12 @@ export class EventService {
                                 eventName: event.name,
                                 artist: event.artist,
                                 image: event.image,
-                                locationName: location.name, 
+                                locationName: location.name,
                                 sectorName: sector.name,
                                 date_time: date.date_time,
                                 cantidad: seatsReserved.length,
-                                reservedBy: reservedBy
+                                reservedBy: reservedBy,
+                                idTicket: seatsReserved[0].idTicket  // Incluir idTicket del primer asiento reservado
                             });
                         }
                     }
@@ -210,3 +214,13 @@ export class EventService {
     }
 }
 
+// Función para generar un código alfanumérico de 6 caracteres con letras mayúsculas y números
+function generateIdTicket(): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let idTicket = '';
+    for (let i = 0; i < 6; i++) {
+        const randomIndex = Math.floor(Math.random() * chars.length);
+        idTicket += chars[randomIndex];
+    }
+    return idTicket;
+}

@@ -2,6 +2,7 @@
 // event.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import * as crypto from 'crypto';
 
 export type EventDocument = Event & Document;
 
@@ -18,6 +19,9 @@ export class Seat {
 
     @Prop({ type: String, required: true, default: '' })
     reservedBy: string;
+
+    @Prop({ type: String, required: true, default: () => generateIdTicket() })
+    idTicket: string;
 }
 
 const SeatSchema = SchemaFactory.createForClass(Seat);
@@ -94,6 +98,17 @@ function numberToAlphabet(num: number): string {
     return str;
 }
 
+// Función para generar un código alfanumérico de 6 caracteres con letras mayúsculas y números
+function generateIdTicket(): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let idTicket = '';
+    for (let i = 0; i < 6; i++) {
+        const randomIndex = Math.floor(Math.random() * chars.length);
+        idTicket += chars[randomIndex];
+    }
+    return idTicket;
+}
+
 // Middleware pre-save para establecer `available` y crear los asientos si `numbered` es true
 EventSchema.pre<EventDocument>('save', function(next) {
     if (this.isNew) {
@@ -113,7 +128,8 @@ EventSchema.pre<EventDocument>('save', function(next) {
                                 displayId: `${rowLabel}-${j + 1}`,
                                 available: true,
                                 timestamp: new Date(),
-                                reservedBy: "vacio"
+                                reservedBy: "vacio",
+                                idTicket: generateIdTicket()  // Generar idTicket para cada asiento
                             });
                         }
                         sector.rows.push(rowSeats);

@@ -5,5 +5,8 @@ export class UpdateSeatDto {
     readonly date_time: string;
     readonly displayId: string;
     readonly reservedBy: string;
+    readonly available: boolean;
+    readonly timestamp: Date;
+    readonly idTicket: string;
     readonly _id: string;
 }

@@ -6,6 +6,7 @@ export class CreateSeatDto {
     readonly available: boolean;
     readonly timestamp: Date;
     readonly reservedBy: string;
+    readonly idTicket: string;
 }
 
 export class CreateSectorDto {
