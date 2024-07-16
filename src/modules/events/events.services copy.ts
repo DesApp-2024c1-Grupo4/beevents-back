@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Event, EventDocument } from './events.schema';
 import { CreateEventDto } from './dto/create-event.dto';
-import { UpdateEventDto, UpdateSectorDto } from './dto/update-event.dto';
+import { UpdateEventDto } from './dto/update-event.dto';
 import { UpdateSeatDto } from './dto/update-seat.dto';
 import { CreateSeatDto } from './dto/create-seat.dto';
 import { Location, LocationDocument } from '../locations/locations.schema'; // Importamos el modelo de Location para obtener el name
@@ -48,45 +48,11 @@ export class EventService {
         if (userRole !== 'admin') {
             throw new ForbiddenException('Solo los administradores pueden actualizar los eventos');
         }
-        
-        const event = await this.eventModel.findById(id).exec();
-        if (!event) {
-            throw new NotFoundException('Evento no encontrado');
+        const updatedEvent = await this.eventModel.findByIdAndUpdate(id, eventDto, { new: true }).exec();
+        if (!updatedEvent) {
+            throw new NotFoundException('Evento no encontado');
         }
-
-        // Mantener una copia de los sectores actuales
-        const currentSectors = event.dates.flatMap(date => date.sectors);
-
-        // Actualizar el evento
-        Object.assign(event, eventDto);
-        
-        // Verificar si hay sectores numerados nuevos y crear asientos
-        event.dates.forEach(dateItem => {
-            dateItem.sectors.forEach(sector => {
-                const isExistingSector = currentSectors.some(currentSector => currentSector._id.toString() === sector._id.toString());
-                if (!isExistingSector && sector.numbered) {
-                    // Crear los asientos automáticamente
-                    sector.available = sector.rowsNumber * sector.seatsNumber;
-                    sector.rows = [];
-                    for (let i = 0; i < sector.rowsNumber; i++) {
-                        const rowLabel = numberToAlphabet(i);
-                        const rowSeats = [];
-                        for (let j = 0; j < sector.seatsNumber; j++) {
-                            rowSeats.push({
-                                displayId: `${rowLabel}-${j + 1}`,
-                                available: true,
-                                timestamp: new Date(),
-                                reservedBy: "vacio",
-                                idTicket: generateIdTicket()  // Generar idTicket para cada asiento
-                            });
-                        }
-                        sector.rows.push(rowSeats);
-                    }
-                }
-            });
-        });
-
-        return event.save();
+        return updatedEvent;
     }
 
     async delete(id: string, userRole: string): Promise<Event> {
@@ -248,15 +214,6 @@ export class EventService {
     }
 }
 
-// Función para convertir un número a una secuencia alfabética
-function numberToAlphabet(num: number): string {
-    let str = '';
-    while (num >= 0) {
-        str = String.fromCharCode((num % 26) + 65) + str;
-        num = Math.floor(num / 26) - 1;
-    }
-    return str;
-}
 // Función para generar un código alfanumérico de 6 caracteres con letras mayúsculas y números
 function generateIdTicket(): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
