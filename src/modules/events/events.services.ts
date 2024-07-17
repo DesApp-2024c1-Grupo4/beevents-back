@@ -66,7 +66,6 @@ export class EventService {
                 const isExistingSector = currentSectors.some(currentSector => currentSector._id.toString() === sector._id.toString());
                 if (!isExistingSector && sector.numbered) {
                     // Crear los asientos automáticamente
-                    sector.available = sector.rowsNumber * sector.seatsNumber;
                     sector.rows = [];
                     for (let i = 0; i < sector.rowsNumber; i++) {
                         const rowLabel = numberToAlphabet(i);
@@ -83,6 +82,7 @@ export class EventService {
                         sector.rows.push(rowSeats);
                     }
                 }
+                sector.available = sector.rowsNumber * sector.seatsNumber;
             });
         });
 
