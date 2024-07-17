@@ -82,7 +82,9 @@ export class EventService {
                         sector.rows.push(rowSeats);
                     }
                 }
-                sector.available = sector.rowsNumber * sector.seatsNumber;
+                if (!isExistingSector) {
+                    sector.available = sector.rowsNumber * sector.seatsNumber;
+                }
             });
         });
 
