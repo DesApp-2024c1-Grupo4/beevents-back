@@ -13,6 +13,11 @@ export class UserService {
         @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
     ) { }
 
+    // Método para buscar un usuario por email
+    async findByEmail(email: string): Promise<User | undefined> {
+        return this.userModel.findOne({ email }).lean().exec(); // Convierte el resultado a un objeto JavaScript plano
+    }
+
     async create(userDto: CreateUserDto, userRole: string): Promise<User> {
         if (userRole !== 'admin') {
             throw new ForbiddenException('Solo los administradores pueden crear los usuarios');

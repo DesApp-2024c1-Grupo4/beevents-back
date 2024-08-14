@@ -1,16 +1,18 @@
 /* eslint-disable prettier/prettier */
 //events.controller.ts
 
-import { Controller, Get, Post, Patch, Delete, Param, Body, Put, } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, Put, UseGuards} from '@nestjs/common';
 import { EventService } from '../modules/events/events.services';
 import { CreateEventDto } from '../modules/events/dto/create-event.dto';
 import { UpdateEventDto } from '../modules/events/dto/update-event.dto';
 import { UpdateSeatDto } from '../modules/events/dto/update-seat.dto';
 import { CreateSeatDto } from '../modules/events/dto/create-seat.dto';
+import { JwtAuthGuard } from '../modules/auth/jwt-auth.guard';
 
 // FALTA definir como tomar el user_role segun el usuario
 const user_role = 'admin'
 
+@UseGuards(JwtAuthGuard)
 @Controller('event')
 export class EventController {
     constructor(private readonly eventService: EventService) { }

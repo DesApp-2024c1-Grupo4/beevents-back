@@ -5,7 +5,7 @@ import { EventModule } from './modules/events/events.module';
 import { TicketModule } from './modules/tickets/tickets.module';
 import { UserModule } from './modules/users/users.module';
 import { LocationModule } from './modules/locations/locations.module';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
