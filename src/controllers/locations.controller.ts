@@ -1,14 +1,16 @@
 /* eslint-disable prettier/prettier */
 //locations.controller.ts
 
-import { Controller, Get, Post, Patch, Delete, Param, Body, Put, } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, Put, UseGuards } from '@nestjs/common';
 import { LocationService } from '../modules/locations/locations.services';
 import { CreateLocationDto } from '../modules/locations/dto/create-location.dto';
 import { UpdateLocationDto } from '../modules/locations/dto/update-location.dto';
+import { JwtAuthGuard } from '../modules/auth/jwt-auth.guard';
 
 // FALTA definir como tomar el user_role segun el usuario
 const user_role = 'admin'
 
+@UseGuards(JwtAuthGuard)
 @Controller('location')
 export class LocationController {
     constructor(private readonly locationService: LocationService) { }

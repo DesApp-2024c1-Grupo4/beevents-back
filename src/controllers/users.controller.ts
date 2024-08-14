@@ -1,14 +1,16 @@
 /* eslint-disable prettier/prettier */
 //users.controller.ts
 
-import { Controller, Get, Post, Patch, Put, Delete, Param, Body, } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Put, Delete, Param, Body, UseGuards } from '@nestjs/common';
 import { UserService } from '../modules/users/users.services';
 import { CreateUserDto } from '../modules/users/dto/create-user.dto';
 import { UpdateUserDto } from '../modules/users/dto/update-user.dto';
+import { JwtAuthGuard } from '../modules/auth/jwt-auth.guard';
 
 // FALTA definir como tomar el user_role segun el usuario
 const user_role = 'admin'
 
+@UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService) { }
