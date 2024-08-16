@@ -17,40 +17,30 @@ export class UserController {
 
     @Get()
     async findAll() {
-        // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
         return this.userService.findAll(user_role);
     }
 
     @Get(':id')
     async findById(@Param('id') id: string) {
-        // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
         return this.userService.findById(id, user_role);
     }
 
     @Post()
-    // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
-    // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
     async create(@Body() createUserDto: CreateUserDto) {
         return this.userService.create(createUserDto, user_role);
     }
 
     @Patch(':id')
-    // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
-    // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
     async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
         return this.userService.update(id, updateUserDto, user_role);
     }
 
     @Put(':id')
-    // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
-    // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
     async fullUpdate(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
         return this.userService.update(id, updateUserDto, user_role);
     }
 
     @Delete(':id')
-    // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
-    // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
     async delete(@Param('id') id: string) {
         return this.userService.delete(id, user_role);
     }

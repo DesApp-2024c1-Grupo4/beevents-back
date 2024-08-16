@@ -12,7 +12,7 @@ import { JwtAuthGuard } from '../modules/auth/jwt-auth.guard';
 // FALTA definir como tomar el user_role segun el usuario
 const user_role = 'admin'
 
-@UseGuards(JwtAuthGuard)
+
 @Controller('event')
 export class EventController {
     constructor(private readonly eventService: EventService) { }
@@ -22,41 +22,45 @@ export class EventController {
         return this.eventService.findAll(user_role);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get(':id')
     async findById(@Param('id') id: string) {
         return this.eventService.findById(id, user_role);
     }
-
+    
+    @UseGuards(JwtAuthGuard)
     @Post()
     async create(@Body() createEventDto: CreateEventDto) {
         return this.eventService.create(createEventDto, user_role);
     }
-
+    @UseGuards(JwtAuthGuard)
     @Patch(':id')
     async update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
         return this.eventService.update(id, updateEventDto, user_role);
     }
-
+    @UseGuards(JwtAuthGuard)
     @Put(':id')
     async put(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
         return this.eventService.update(id, updateEventDto, user_role);
     }
-
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async delete(@Param('id') id: string) {
         return this.eventService.delete(id, user_role);
     }
-
+    @UseGuards(JwtAuthGuard)
     @Patch(':eventId/seat')
     async updateSeat(@Param('eventId') eventId: string, @Body() updateSeatDto: UpdateSeatDto) {
         return this.eventService.updateSeat(eventId, updateSeatDto);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Patch(':eventId/place')
     async createSeat(@Param('eventId') eventId: string, @Body() createSeatDto: CreateSeatDto) {
         return this.eventService.createSeat(eventId, createSeatDto);
     }
 
+        @UseGuards(JwtAuthGuard)
         @Get('reservedBy/:id')
     async getReservationsByReservedBy(@Param('id') id: string) {
         return this.eventService.getReservationsByReservedBy(id);
