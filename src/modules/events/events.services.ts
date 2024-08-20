@@ -33,6 +33,24 @@ export class EventService {
         return this.eventModel.find().exec();
     }
 
+    async findUpcomingEvents(userRole: string): Promise<Event[]> {
+        if (userRole !== 'user' && userRole !== 'admin') {
+            throw new ForbiddenException('Solo los usuarios pueden ver los eventos');
+        }
+
+        const currentDate = new Date();
+        const events = await this.eventModel.find().exec();
+
+        return events
+            .map(event => {
+                // Filtrar fechas dentro del evento que sean mayores o iguales a la fecha actual
+                event.dates = event.dates.filter(date => date.date_time >= currentDate);
+                return event;
+            })
+            .filter(event => event.dates.length > 0); // Filtrar eventos que tienen fechas válidas
+    }
+
+
     async findById(id: string, userRole: string): Promise<Event> {
         if (userRole !== 'user' && userRole !== 'admin') {
             throw new ForbiddenException('Solo los usuarios pueden ver los eventos');

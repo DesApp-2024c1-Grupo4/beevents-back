@@ -10,7 +10,7 @@ import { JwtAuthGuard } from '../modules/auth/jwt-auth.guard';
 // FALTA definir como tomar el user_role segun el usuario
 const user_role = 'admin'
 
-@UseGuards(JwtAuthGuard)
+
 @Controller('location')
 export class LocationController {
     constructor(private readonly locationService: LocationService) { }
@@ -27,6 +27,7 @@ export class LocationController {
         return this.locationService.findById(id, user_role);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post()
     // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
     // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
@@ -34,6 +35,7 @@ export class LocationController {
         return this.locationService.create(createLocationDto, user_role);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Patch(':id')
     // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
     // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
@@ -41,6 +43,7 @@ export class LocationController {
         return this.locationService.update(id, updateLocationDto, user_role);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Put(':id')
     // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
     // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador
@@ -48,6 +51,7 @@ export class LocationController {
         return this.locationService.update(id, updateLocationDto, user_role);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     // FALTA MANEJAR ROLES CORRECTAMENTE CON GUARDIANES
     // @UseGuards(AdminGuard) // Utiliza un guardia para verificar el rol de administrador

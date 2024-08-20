@@ -18,11 +18,15 @@ export class EventController {
     constructor(private readonly eventService: EventService) { }
 
     @Get()
-    async findAll() {
+    async findUpcomingEvents() {
+        return this.eventService.findUpcomingEvents(user_role);
+    }
+
+    @Get('allEvents')
+    async findAllEvents() {
         return this.eventService.findAll(user_role);
     }
 
-    @UseGuards(JwtAuthGuard)
     @Get(':id')
     async findById(@Param('id') id: string) {
         return this.eventService.findById(id, user_role);
@@ -38,16 +42,19 @@ export class EventController {
     async update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
         return this.eventService.update(id, updateEventDto, user_role);
     }
+
     @UseGuards(JwtAuthGuard)
     @Put(':id')
     async put(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
         return this.eventService.update(id, updateEventDto, user_role);
     }
+
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async delete(@Param('id') id: string) {
         return this.eventService.delete(id, user_role);
     }
+
     @UseGuards(JwtAuthGuard)
     @Patch(':eventId/seat')
     async updateSeat(@Param('eventId') eventId: string, @Body() updateSeatDto: UpdateSeatDto) {
@@ -60,9 +67,10 @@ export class EventController {
         return this.eventService.createSeat(eventId, createSeatDto);
     }
 
-        @UseGuards(JwtAuthGuard)
-        @Get('reservedBy/:id')
+    @UseGuards(JwtAuthGuard)
+    @Get('reservedBy/:id')
     async getReservationsByReservedBy(@Param('id') id: string) {
         return this.eventService.getReservationsByReservedBy(id);
     }
+
 }
