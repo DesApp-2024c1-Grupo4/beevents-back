@@ -29,6 +29,6 @@ export class CreateEventDto {
     readonly image: string;
     readonly description: string;
     readonly location_id: string;
-    readonly user_id: string;
+    user_id: string;
     readonly dates: CreateDateDto[];
 }
