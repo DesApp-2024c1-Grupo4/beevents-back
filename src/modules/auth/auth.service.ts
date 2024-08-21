@@ -25,20 +25,18 @@ export class AuthService {
     const payload = { username: user.email, sub: user._id };
     return {
       access_token: this.jwtService.sign(payload),
+      role: user.role,
     };
   }
 
   async register(userDto: CreateUserDto): Promise<User> {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(userDto.password, salt);
-    const newUser = await this.userService.create(
-      {
+    const newUser = await this.userService.create({
         ...userDto,
-        password: hashedPassword,
-      },
-      'admin' // Asegúrate de pasar el rol correcto, puede ser 'admin' o el que corresponda.
-    );
+        password: hashedPassword
+    });
     return newUser;
-  }
+}
   
 }

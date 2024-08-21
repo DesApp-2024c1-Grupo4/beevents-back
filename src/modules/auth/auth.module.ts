@@ -12,7 +12,7 @@ import { AuthController } from '../../controllers/auth.controller';
     PassportModule,
     JwtModule.register({
       secret: 'SECRET_KEY',  // Cambia esto por tu clave secreta
-      signOptions: { expiresIn: '10m' }, // El token expirará en 60 minutos
+      signOptions: { expiresIn: '60m' }, // El token expirará en 60 minutos
     }),
   ],
   controllers: [AuthController],

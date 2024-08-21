@@ -18,11 +18,12 @@ export class UserService {
         return this.userModel.findOne({ email }).lean().exec(); // Convierte el resultado a un objeto JavaScript plano
     }
 
-    async create(userDto: CreateUserDto, userRole: string): Promise<User> {
-        if (userRole !== 'admin') {
-            throw new ForbiddenException('Solo los administradores pueden crear los usuarios');
-        }
-        const createdUser = new this.userModel(userDto);
+    async create(userDto: CreateUserDto): Promise<User> {
+        const userWithRole = {
+            ...userDto,
+            role: 'user'  // Asignar el rol "user" automáticamente
+        };
+        const createdUser = new this.userModel(userWithRole);
         return createdUser.save();
     }
 
@@ -45,12 +46,9 @@ export class UserService {
     }
 
     async update(id: string, userDto: UpdateUserDto, userRole: string): Promise<User> {
-        if (userRole !== 'admin') {
-            throw new ForbiddenException('Solo los administradores pueden actualizar los usuarios');
-        }
-        const updatedUser = await this.userModel.findByIdAndUpdate(id, userDto, { new: true }).exec();
+        const updatedUser = await this.userModel.findByIdAndUpdate(id, { password: userDto.password }, { new: true }).exec();
         if (!updatedUser) {
-            throw new NotFoundException('Usuario no encontado');
+            throw new NotFoundException('Usuario no encontrado');
         }
         return updatedUser;
     }
