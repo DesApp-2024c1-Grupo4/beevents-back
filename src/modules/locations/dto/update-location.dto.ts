@@ -2,6 +2,7 @@
 // update-locations.dto.ts
 export class UpdateLocationDto {
     readonly name?: string;
+    user_id: string;
     readonly address?: {
         street?: string;
         number?: number;

@@ -42,24 +42,32 @@ export class EventController {
         return this.eventService.create(createEventDto, userRole);
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @SetMetadata('role', 'admin') // Requiere rol 'admin' para modificar un evento
     @Patch(':id')
     async update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto, @Request() req: any) {
         const userRole = req.user.role;
+        const userId = req.user.userId;  // Extrae el userId del token JWT
+        updateEventDto.user_id = userId; // Asigna el userId al evento
         return this.eventService.update(id, updateEventDto, userRole);
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @SetMetadata('role', 'admin') // Requiere rol 'admin' para modificar un evento
     @Put(':id')
     async put(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto, @Request() req: any) {
         const userRole = req.user.role;
+        const userId = req.user.userId;  // Extrae el userId del token JWT
+        updateEventDto.user_id = userId; // Asigna el userId al evento
         return this.eventService.update(id, updateEventDto, userRole);
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @SetMetadata('role', 'admin') // Requiere rol 'admin' para modificar un evento
     @Delete(':id')
     async delete(@Param('id') id: string, @Request() req: any) {
         const userRole = req.user.role;
+        const userId = req.user.userId;  // Extrae el userId del token JWT
         return this.eventService.delete(id, userRole);
     }
 
