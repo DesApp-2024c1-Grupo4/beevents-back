@@ -21,17 +21,17 @@ export class LocationService {
         return createdLocation.save();
     }
 
-    async findAll(userRole: string): Promise<Location[]> {
-        if (userRole !== 'user' && userRole !== 'admin') {
-            throw new ForbiddenException('Solo los usuarios pueden ver los Locations');
-        }
+    async findAll(): Promise<Location[]> {
+    //    if (userRole !== 'user' && userRole !== 'admin') {
+    //        throw new ForbiddenException('Solo los usuarios pueden ver los Locations');
+    //    }
         return this.locationModel.find().exec();
     }
 
-    async findById(id: string, userRole: string): Promise<Location> {
-        if (userRole !== 'user' && userRole !== 'admin') {
-            throw new ForbiddenException('Solo los usuarios pueden ver los locations');
-        }
+    async findById(id: string): Promise<Location> {
+    //    if (userRole !== 'user' && userRole !== 'admin') {
+    //        throw new ForbiddenException('Solo los usuarios pueden ver los locations');
+    //    }
         const location = await this.locationModel.findById(id).exec();
         if (!location) {
             throw new NotFoundException('Location no encontrado');

@@ -26,17 +26,17 @@ export class EventService {
         return createdEvent.save();
     }
 
-    async findAll(userRole: string): Promise<Event[]> {
-        if (userRole !== 'user' && userRole !== 'admin') {
-            throw new ForbiddenException('Solo los usuarios pueden ver los eventos');
-        }
+    async findAll(): Promise<Event[]> {
+    //    if (userRole !== 'user' && userRole !== 'admin') {
+    //        throw new ForbiddenException('Solo los usuarios pueden ver los eventos');
+    //    }
         return this.eventModel.find().exec();
     }
 
-    async findUpcomingEvents(userRole: string): Promise<Event[]> {
-        if (userRole !== 'user' && userRole !== 'admin') {
-            throw new ForbiddenException('Solo los usuarios pueden ver los eventos');
-        }
+    async findUpcomingEvents(): Promise<Event[]> {
+    //    if (userRole !== 'user' && userRole !== 'admin') {
+    //        throw new ForbiddenException('Solo los usuarios pueden ver los eventos');
+    //    }
 
         const currentDate = new Date();
         const events = await this.eventModel.find().exec();
@@ -51,10 +51,10 @@ export class EventService {
     }
 
 
-    async findById(id: string, userRole: string): Promise<Event> {
-        if (userRole !== 'user' && userRole !== 'admin') {
-            throw new ForbiddenException('Solo los usuarios pueden ver los eventos');
-        }
+    async findById(id: string): Promise<Event> {
+    //    if (userRole !== 'user' && userRole !== 'admin') {
+    //        throw new ForbiddenException('Solo los usuarios pueden ver los eventos');
+    //    }
         const event = await this.eventModel.findById(id).exec();
         if (!event) {
             throw new NotFoundException('Evento no encontrado');

@@ -15,14 +15,14 @@ export class LocationController {
 
     @Get()
     async findAll(@Request() req: any) {
-        const user_role = req.user.role;
-        return this.locationService.findAll(user_role);
+    //    const user_role = req.user.role;
+        return this.locationService.findAll();
     }
 
     @Get(':id')
     async findById(@Param('id') id: string, @Request() req: any) {
-        const userRole = req.user.role;
-        return this.locationService.findById(id, userRole);
+    //    const userRole = req.user.role;
+        return this.locationService.findById(id);
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)

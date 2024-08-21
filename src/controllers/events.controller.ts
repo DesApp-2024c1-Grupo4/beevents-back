@@ -16,20 +16,20 @@ export class EventController {
 
     @Get()
     async findUpcomingEvents(@Request() req: any) {
-        const userRole = req.user.role;
-        return this.eventService.findUpcomingEvents(userRole);
+        //const userRole = req.user.role;
+        return this.eventService.findUpcomingEvents();
     }
 
     @Get('allEvents')
     async findAllEvents(@Request() req: any) {
-        const userRole = req.user.role;
-        return this.eventService.findAll(userRole);
+        //const userRole = req.user.role;
+        return this.eventService.findAll();
     }
 
     @Get(':id')
     async findById(@Param('id') id: string, @Request() req: any) {
-        const userRole = req.user.role;
-        return this.eventService.findById(id, userRole);
+        //const userRole = req.user.role;
+        return this.eventService.findById(id);
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
