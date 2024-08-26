@@ -26,22 +26,16 @@ export class UserController {
         return this.userService.findById(id);
     }
 
-    // @UseGuards(JwtAuthGuard, RolesGuard)
-    // @SetMetadata('role', 'admin') // Requiere rol 'admin' para crear un usuario
     @Post()
     async create(@Body() createUserDto: CreateUserDto) {
         return this.userService.create(createUserDto);
     }
 
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @SetMetadata('role', 'admin') // Requiere rol 'admin' para modificar un usuario
     @Patch(':id')
     async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
         return this.userService.update(id, updateUserDto);
     }
 
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @SetMetadata('role', 'admin') // Requiere rol 'admin' para modificar un usuario
     @Put(':id')
     async fullUpdate(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
         return this.userService.update(id, updateUserDto);
