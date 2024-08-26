@@ -27,17 +27,17 @@ export class UserService {
         return createdUser.save();
     }
 
-    async findAll(userRole: string): Promise<User[]> {
-        if (userRole !== 'user' && userRole !== 'admin') {
-            throw new ForbiddenException('Solo los usuarios admin pueden ver los usuarios');
-        }
+    async findAll(): Promise<User[]> {
+        // if (userRole !== 'user' && userRole !== 'admin') {
+        //     throw new ForbiddenException('Solo los usuarios admin pueden ver los usuarios');
+        // }
         return this.userModel.find().exec();
     }
 
-    async findById(id: string, userRole: string): Promise<User> {
-        if (userRole !== 'user' && userRole !== 'admin') {
-            throw new ForbiddenException('Solo los usuarios admin pueden ver los usuarios');
-        }
+    async findById(id: string): Promise<User> {
+        // if (userRole !== 'user' && userRole !== 'admin') {
+        //     throw new ForbiddenException('Solo los usuarios admin pueden ver los usuarios');
+        // }
         const user = await this.userModel.findById(id).exec();
         if (!user) {
             throw new NotFoundException('Usuario no encontrado');
@@ -45,7 +45,7 @@ export class UserService {
         return user;
     }
 
-    async update(id: string, userDto: UpdateUserDto, userRole: string): Promise<User> {
+    async update(id: string, userDto: UpdateUserDto): Promise<User> {
         const updatedUser = await this.userModel.findByIdAndUpdate(id, { password: userDto.password }, { new: true }).exec();
         if (!updatedUser) {
             throw new NotFoundException('Usuario no encontrado');
@@ -53,10 +53,10 @@ export class UserService {
         return updatedUser;
     }
 
-    async delete(id: string, userRole: string): Promise<User> {
-        if (userRole !== 'admin') {
-            throw new ForbiddenException('Solo los administradores pueden eliminar los usuarios');
-        }
+    async delete(id: string): Promise<User> {
+        // if (userRole !== 'admin') {
+        //     throw new ForbiddenException('Solo los administradores pueden eliminar los usuarios');
+        // }
         const deletedUser = await this.userModel.findByIdAndDelete(id).exec();
         if (!deletedUser) {
             throw new NotFoundException('Usuario no encontrado');

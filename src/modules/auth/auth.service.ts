@@ -44,13 +44,4 @@ export class AuthService {
     });
     return newUser;
   }
-
-  // const salt = await bcrypt.genSalt();
-  // const hashedPassword = await bcrypt.hash(userDto.password, salt);
-  //   const newUser = await this.userService.create({
-  //       ...userDto,
-  //       password: hashedPassword
-  //   });
-  //   return newUser;
-
 }
