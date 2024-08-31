@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
 // update-user.dto.ts
-export class UpdateUserDto {
-    readonly password?: string;
-}
+
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateUserDto } from './create-user.dto';
+
+export class UpdateUserDto extends PartialType(CreateUserDto) { }
