@@ -6,6 +6,7 @@ import { connectToMongoDB } from '../../database.connection';
 import { UserController } from '../../controllers/users.controller';
 import { UserService } from './users.services';
 import { User, UserSchema } from './users.schema';
+import { MailModule } from '../mail/mail.module'; // Importa el MailModule
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { User, UserSchema } from './users.schema';
             },
         }),
         MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+        MailModule, // Añade el MailModule aquí
     ],
     controllers: [UserController],
     providers: [UserService],

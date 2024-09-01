@@ -6,11 +6,13 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from './users.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { MailService } from '../mail/mail.service'; // Importa el MailService
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+        private readonly mailService: MailService, // Inyecta el MailService
     ) { }
 
     async create(userDto: CreateUserDto, userRole: string): Promise<User> {
@@ -45,7 +47,7 @@ export class UserService {
         }
         const updatedUser = await this.userModel.findByIdAndUpdate(id, userDto, { new: true }).exec();
         if (!updatedUser) {
-            throw new NotFoundException('Usuario no encontado');
+            throw new NotFoundException('Usuario no encontrado');
         }
         return updatedUser;
     }
@@ -59,5 +61,18 @@ export class UserService {
             throw new NotFoundException('Usuario no encontrado');
         }
         return deletedUser;
+    }
+
+    // Nuevo método para solicitar el restablecimiento de contraseña
+    async requestPasswordReset(email: string): Promise<void> {
+        const user = await this.userModel.findOne({ email }).exec();
+        if (!user) {
+            throw new NotFoundException('Usuario no encontrado');
+        }
+
+        const resetToken = 'someGeneratedToken'; // Aquí deberías implementar la generación de un token único
+        const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
+
+        await this.mailService.sendPasswordResetEmail(email, resetLink);
     }
 }

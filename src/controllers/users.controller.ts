@@ -52,4 +52,11 @@ export class UserController {
     async delete(@Param('id') id: string) {
         return this.userService.delete(id, user_role);
     }
+
+    // Controlador para restablecer contraseñas
+    @Post('forgot-password')
+    async forgotPassword(@Body('email') email: string) {
+        await this.userService.requestPasswordReset(email);
+        return { message: 'Si el correo está registrado, se enviará un enlace para restablecer la contraseña.' };
+    }
 }
