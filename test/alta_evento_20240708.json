@@ -1,0 +1,68 @@
+
+[{
+    "name": "Prueba5 Evento Modelo Tickets 20240708 v5",
+    "artist": "El cuarteto G4",
+    "image": "https://www.rockaxis.com/img/newsList/3008122.png",
+    "description": "Este evento es para probar si el modelado del documento del evento, incluyendo los array de dates, sectors, y rows con lista de listas si funciona, ver filas más de 30",
+    "location_id": "665f75a54a72077ce226e322",
+    "user_id": "user1",
+    "dates": [
+      {
+        "date_time": "2024-07-22T23:00:00.000Z",
+        "sectors": [
+          {
+            "name": "Campo",
+            "numbered": false,
+            "rowsNumber": 1,
+            "seatsNumber": 400
+          },
+          {
+            "name": "Platea Alta",
+            "numbered": true,
+            "rowsNumber": 5,
+            "seatsNumber": 10
+          }
+        ]
+      },
+      {
+        "date_time": "2024-06-22T23:00:00.000Z",
+        "sectors": [
+          {
+            "name": "Campo",
+            "numbered": false,
+            "rowsNumber": 1,
+            "seatsNumber": 500
+          },
+          {
+            "name": "Platea Alta",
+            "numbered": true,
+            "rowsNumber": 12,
+            "seatsNumber": 10
+          }
+        ]
+      }
+    ]
+}
+,
+{
+  "name": "SHAILA EN C ART MEDIA",
+  "artist": "SHAILA",
+  "image": "https://www.tuentrada.com/images/665f72286542e.webp",
+  "description": "Shaila se presentará el sábado 31 de agosto a las 19 h en C Art Media, entradas disponibles a través de BeEvents.\n\nAllí, la banda argentina de hardcore punk celebrará sus 30 años de carrera con un show único y que promete invitados especiales.",
+  "location_id": "6697b87779853f54f56ec591",
+  "user_id": "user1",
+  "dates": [
+    {
+      "date_time": "2024-08-31T22:00:00.000Z",
+      "sectors": [
+        {
+          "name": "Campo Nuevo",
+          "numbered": false,
+          "rowsNumber": 1,
+          "seatsNumber": 40
+        }
+      ]
+    }
+  ]
+}
+]

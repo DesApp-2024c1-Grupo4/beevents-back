@@ -1,10 +1,19 @@
+/* eslint-disable prettier/prettier */
+// app.module.ts
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { EventModule } from './modules/events/events.module';
+import { TicketModule } from './modules/tickets/tickets.module';
+import { UserModule } from './modules/users/users.module';
+import { LocationModule } from './modules/locations/locations.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    EventModule,
+    TicketModule,
+    UserModule,
+    LocationModule,
+    AuthModule
+  ]
 })
-export class AppModule {}
+export class AppModule { }
