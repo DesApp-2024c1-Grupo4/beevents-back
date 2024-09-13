@@ -9,6 +9,7 @@ export class UpdateLocationDto {
     };
     readonly configurations?: {
         name?: string;
+        description?: string;
         sectors?: {
             name?: string;
             numbered?: boolean;

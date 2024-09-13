@@ -1,0 +1,63 @@
+{
+    "name": "UNAHUR Sede La Patria",
+    "address": {
+        "street": "La Patria",
+        "number": 3800
+    },
+    "configurations": [
+        {
+            "name": "Colación Auditorio La Patria",
+            "description": "Lugar preparado con butacas para reservar ticket y también con espacio sin numerar",
+            "sectors": [
+                {
+                    "name": "Platea autoridades",
+                    "numbered": true,
+                    "rows": 2,
+                    "seats": 10
+                },
+                {
+                    "name": "Platea familiares",
+                    "numbered": true,
+                    "rows": 4,
+                    "seats": 10
+                },
+                {
+                    "name": "Publico general No numerado",
+                    "numbered": false,
+                    "rows": 1,
+                    "seats": 100
+                }
+            ]
+        },
+        {
+            "name": "Anfiteatro con config para concierto",
+            "description": "Espacio al aire libre en el anfiteatro del edificio La Patria de Unahur, con diferentes sectores tanto numerados como no numerados para conciertos del coro Unahur",
+            "sectors": [
+                {
+                    "name": "Musicos",
+                    "numbered": true,
+                    "rows": 3,
+                    "seats": 8
+                },
+                {
+                    "name": "Platea autoridades",
+                    "numbered": true,
+                    "rows": 2,
+                    "seats": 8
+                },
+                {
+                    "name": "Publico general No numerado VIP",
+                    "numbered": false,
+                    "rows": 1,
+                    "seats": 100
+                },
+                {
+                    "name": "Publico general No numerado",
+                    "numbered": false,
+                    "rows": 1,
+                    "seats": 300
+                }
+            ]
+        }
+    ]
+}

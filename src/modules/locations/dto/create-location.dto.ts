@@ -9,6 +9,7 @@ export class CreateLocationDto {
     };
     readonly configurations: {
         name: string;
+        description: string;
         sectors: {
             name: string;
             numbered: boolean;
