@@ -13,8 +13,8 @@ export class UpdateLocationDto {
         sectors?: {
             name?: string;
             numbered?: boolean;
-            rows?: number;
-            seats?: number;
+            rowsNumber?: number;
+            seatsNumber?: number;
         }[];
     }[];
 }

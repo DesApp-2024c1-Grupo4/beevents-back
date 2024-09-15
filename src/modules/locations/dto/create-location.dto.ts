@@ -13,8 +13,8 @@ export class CreateLocationDto {
         sectors: {
             name: string;
             numbered: boolean;
-            rows: number;
-            seats: number;
+            rowsNumber: number;
+            seatsNumber: number;
         }[];
     }[];
 }

@@ -12,20 +12,20 @@
                 {
                     "name": "Platea autoridades",
                     "numbered": true,
-                    "rows": 2,
-                    "seats": 10
+                    "rowsNumber": 2,
+                    "seatsNumber": 10
                 },
                 {
                     "name": "Platea familiares",
                     "numbered": true,
-                    "rows": 4,
-                    "seats": 10
+                    "rowsNumber": 4,
+                    "seatsNumber": 10
                 },
                 {
                     "name": "Publico general No numerado",
                     "numbered": false,
-                    "rows": 1,
-                    "seats": 100
+                    "rowsNumber": 1,
+                    "seatsNumber": 100
                 }
             ]
         },
@@ -36,26 +36,26 @@
                 {
                     "name": "Musicos",
                     "numbered": true,
-                    "rows": 3,
-                    "seats": 8
+                    "rowsNumber": 3,
+                    "seatsNumber": 8
                 },
                 {
                     "name": "Platea autoridades",
                     "numbered": true,
-                    "rows": 2,
-                    "seats": 8
+                    "rowsNumber": 2,
+                    "seatsNumber": 8
                 },
                 {
                     "name": "Publico general No numerado VIP",
                     "numbered": false,
-                    "rows": 1,
-                    "seats": 100
+                    "rowsNumber": 1,
+                    "seatsNumber": 100
                 },
                 {
                     "name": "Publico general No numerado",
                     "numbered": false,
-                    "rows": 1,
-                    "seats": 300
+                    "rowsNumber": 1,
+                    "seatsNumber": 300
                 }
             ]
         }

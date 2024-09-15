@@ -14,10 +14,10 @@ export class Sector {
     numbered: boolean;
 
     @Prop({ type: Number, required: true })
-    rows: number;
+    rowsNumber: number;
 
     @Prop({ type: Number, required: true })
-    seats: number;
+    seatsNumber: number;
 }
 
 const SectorSchema = SchemaFactory.createForClass(Sector);
