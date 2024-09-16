@@ -15,6 +15,8 @@ export class CreateLocationDto {
             numbered: boolean;
             rowsNumber: number;
             seatsNumber: number;
+            eliminated: [number, number][];
+            preReserved: [number, number][];
         }[];
     }[];
 }

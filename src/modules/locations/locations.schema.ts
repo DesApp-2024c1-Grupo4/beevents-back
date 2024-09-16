@@ -18,6 +18,12 @@ export class Sector {
 
     @Prop({ type: Number, required: true })
     seatsNumber: number;
+
+    @Prop({ type: [[Number]], required: false, default: [] })
+    eliminated: [number, number][];
+
+    @Prop({ type: [[Number]], required: false, default: [] })
+    preReserved: [number, number][];
 }
 
 const SectorSchema = SchemaFactory.createForClass(Sector);
