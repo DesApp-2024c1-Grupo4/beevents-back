@@ -3,7 +3,7 @@
 
 export class UpdateSeatDto {
     readonly displayId?: string;
-    readonly available?: boolean;
+    readonly available?: string;
     readonly timestamp?: Date;
     readonly reservedBy?: string;
     readonly idTicket?: string;
@@ -16,6 +16,8 @@ export class UpdateSectorDto {
     readonly seatsNumber?: number;
     readonly available?: number;
     readonly rows?: UpdateSeatDto[][];
+    readonly eliminated?: [number, number][];
+    readonly preReserved?: [number, number][];
 }
 
 export class UpdateDateDto {

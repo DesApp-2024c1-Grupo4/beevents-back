@@ -91,7 +91,7 @@ export class EventService {
                         for (let j = 0; j < sector.seatsNumber; j++) {
                             rowSeats.push({
                                 displayId: `${rowLabel}-${j + 1}`,
-                                available: true,
+                                available: "true",
                                 timestamp: new Date(),
                                 reservedBy: "vacio",
                                 idTicket: generateIdTicket()  // Generar idTicket para cada asiento
@@ -144,13 +144,14 @@ export class EventService {
         for (const row of sector.rows) {
             const seat = row.find(seatItem => seatItem.displayId === displayId);
             if (seat) {
-                if (!seat.available) {
+                if (seat.available!="true") {
                     throw new BadRequestException('El asiento no está disponible');
                 }
-                seat.available = false;
+                seat.available = "false";
                 seat.timestamp = currentDate;
                 seat.reservedBy = reservedBy;
                 seatUpdated = true;
+                sector.available -= 1;
                 break;
             }
         }
@@ -158,8 +159,6 @@ export class EventService {
         if (!seatUpdated) {
             throw new NotFoundException('Asiento no encontrado');
         }
-
-        sector.available -= 1;
 
         await event.save();
 
@@ -187,7 +186,7 @@ export class EventService {
 
         const seat = {
             displayId: '',
-            available: false,
+            available: "false",
             timestamp: currentDate,
             reservedBy: reservedBy,
             idTicket: generateIdTicket()  // Generar idTicket para el nuevo asiento

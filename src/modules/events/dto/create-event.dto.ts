@@ -3,7 +3,7 @@
 
 export class CreateSeatDto {
     readonly displayId: string;
-    readonly available: boolean;
+    readonly available: string;
     readonly timestamp: Date;
     readonly reservedBy: string;
     readonly idTicket: string;
@@ -16,6 +16,8 @@ export class CreateSectorDto {
     readonly seatsNumber: number;
     readonly available?: number;
     readonly rows: CreateSeatDto[][];
+    readonly eliminated: [number, number][];
+    readonly preReserved: [number, number][];
 }
 
 export class CreateDateDto {

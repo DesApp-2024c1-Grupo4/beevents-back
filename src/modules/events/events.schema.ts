@@ -11,8 +11,8 @@ export class Seat {
     @Prop({ type: String, required: false, default: '' })
     displayId: string;
 
-    @Prop({ type: Boolean, required: true })
-    available: boolean;
+    @Prop({ type: String, required: true })
+    available: string;
 
     @Prop({ type: Date, required: true, default: Date.now })
     timestamp: Date;
@@ -45,6 +45,12 @@ export class Sector extends Document {
 
     @Prop({ type: [[SeatSchema]], required: function() { return this.numbered; }, default: [] })
     rows: Seat[][];
+
+    @Prop({ type: [[Number]], required: false, default: [] })
+    eliminated: [number, number][];
+
+    @Prop({ type: [[Number]], required: false, default: [] })
+    preReserved: [number, number][];
 }
 
 const SectorSchema = SchemaFactory.createForClass(Sector);
@@ -114,22 +120,39 @@ EventSchema.pre<EventDocument>('save', function(next) {
     if (this.isNew) {
         this.dates.forEach(dateItem => {
             dateItem.sectors.forEach(sector => {
-                // Establecer la propiedad `available` siempre
-                sector.available = sector.rowsNumber * sector.seatsNumber;
+                // Inicializar disponible en 0 para contar asientos disponibles
+                sector.available = 0;
 
-                // Si `numbered` es true, crear los asientos
                 if (sector.numbered) {
                     sector.rows = []; // Inicializar como lista de listas
                     for (let i = 0; i < sector.rowsNumber; i++) {
                         const rowLabel = numberToAlphabet(i);
                         const rowSeats = [];
+
                         for (let j = 0; j < sector.seatsNumber; j++) {
+                            let availableStatus = "true"; // Asiento disponible por defecto
+
+                            // Verificar si está en la lista de eliminados
+                            if (sector.eliminated.some(([row, seat]) => row === i && seat === j)) {
+                                availableStatus = "eliminated";
+                            }
+
+                            // Verificar si está en la lista de preReservados
+                            if (sector.preReserved.some(([row, seat]) => row === i && seat === j)) {
+                                availableStatus = "preReserved";
+                            }
+
+                            // Si el asiento está disponible ("true"), incrementar el contador de asientos disponibles
+                            if (availableStatus === "true") {
+                                sector.available += 1;
+                            }
+
                             rowSeats.push({
                                 displayId: `${rowLabel}-${j + 1}`,
-                                available: true,
+                                available: availableStatus,
                                 timestamp: new Date(),
                                 reservedBy: "vacio",
-                                idTicket: generateIdTicket()  // Generar idTicket para cada asiento
+                                idTicket: generateIdTicket()
                             });
                         }
                         sector.rows.push(rowSeats);
