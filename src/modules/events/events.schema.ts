@@ -158,6 +158,9 @@ EventSchema.pre<EventDocument>('save', function(next) {
                         sector.rows.push(rowSeats);
                     }
                 }
+                else {
+                    sector.available = sector.rowsNumber * sector.seatsNumber
+                }
             });
         });
     }
