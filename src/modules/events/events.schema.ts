@@ -115,6 +115,7 @@ function generateIdTicket(): string {
     return idTicket;
 }
 
+/*
 // Middleware pre-save para establecer `available` y crear los asientos si `numbered` es true
 EventSchema.pre<EventDocument>('save', function(next) {
     if (this.isNew) {
@@ -166,3 +167,71 @@ EventSchema.pre<EventDocument>('save', function(next) {
     }
     next();
 });
+*/
+// Middleware pre-save para establecer available y crear los asientos si numbered es true
+EventSchema.pre<EventDocument>('save', function (next) {
+    if (this.isNew) {
+      this.dates.forEach(dateItem => {
+        dateItem.sectors.forEach(sector => {
+          // Inicializar disponible en 0 para contar asientos disponibles
+          sector.available = 0;
+  
+          if (sector.numbered) {
+            sector.rows = []; // Inicializar como lista de listas
+            for (let i = 0; i < sector.rowsNumber; i++) {
+              const rowLabel = numberToAlphabet(i);
+              const rowSeats = [];
+  
+              for (let j = 0; j < sector.seatsNumber; j++) {
+                let availableStatus = "true"; // Asiento disponible por defecto
+  
+                // Verificar si está en la lista de eliminados
+                if (sector.eliminated.some(([row, seat]) => row === i && seat === j)) {
+                  availableStatus = "eliminated";
+                }
+  
+                // Verificar si está en la lista de preReservados
+                if (sector.preReserved.some(([row, seat]) => row === i && seat === j)) {
+                  availableStatus = "preReserved";
+                }
+  
+                // Si el asiento está disponible ("true"), incrementar el contador de asientos disponibles
+                if (availableStatus === "true") {
+                  sector.available += 1;
+                }
+  
+                rowSeats.push({
+                  displayId: `${rowLabel}-${j + 1}`,
+                  available: availableStatus,
+                  timestamp: new Date(),
+                  reservedBy: "vacio",
+                  idTicket: generateIdTicket()
+                });
+              }
+              sector.rows.push(rowSeats);
+            }
+          } else {
+            // Sector not numbered
+            // Solo generar los asientos preReservados en el rowNumber 0
+            const preReservedCount = sector.preReserved.length > 0 ? sector.preReserved[0][0] : 0;
+            sector.available = sector.rowsNumber * sector.seatsNumber - preReservedCount;
+  
+            sector.rows = [[]]; // Inicializar la colección de filas, con la fila 0
+  
+            for (let i = 0; i < preReservedCount; i++) {
+              // Generar asientos preReservados dentro de rowNumber 0
+              sector.rows[0].push({
+                displayId: `preReserved-${i + 1}`,
+                available: "preReserved",
+                timestamp: new Date(),
+                reservedBy: "vacio",
+                idTicket: generateIdTicket()
+              });
+            }
+          }
+        });
+      });
+    }
+    next();
+  });
+  
