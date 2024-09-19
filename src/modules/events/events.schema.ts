@@ -193,6 +193,7 @@ EventSchema.pre<EventDocument>('save', function (next) {
                 // Verificar si está en la lista de preReservados
                 if (sector.preReserved.some(([row, seat]) => row === i && seat === j)) {
                   availableStatus = "preReserved";
+                  sector.available += 1;
                 }
   
                 // Si el asiento está disponible ("true"), incrementar el contador de asientos disponibles
