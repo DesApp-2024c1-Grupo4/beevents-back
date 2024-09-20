@@ -17,6 +17,7 @@ export class UpdateLocationDto {
             seatsNumber?: number;
             eliminated: [number, number][];
             preReserved: [number, number][];
+            capacity?: number;
         }[];
     }[];
 }

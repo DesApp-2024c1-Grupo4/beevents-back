@@ -51,6 +51,13 @@ export class Sector extends Document {
 
     @Prop({ type: [[Number]], required: false, default: [] })
     preReserved: [number, number][];
+
+    @Prop({ type: Number, required: false })
+    capacity: number;
+
+    @Prop({ type: Number, required: false })
+    ocuped: number;
+
 }
 
 const SectorSchema = SchemaFactory.createForClass(Sector);
@@ -115,97 +122,125 @@ function generateIdTicket(): string {
     return idTicket;
 }
 
-/*
-// Middleware pre-save para establecer `available` y crear los asientos si `numbered` es true
-EventSchema.pre<EventDocument>('save', function(next) {
-    if (this.isNew) {
-        this.dates.forEach(dateItem => {
-            dateItem.sectors.forEach(sector => {
-                // Inicializar disponible en 0 para contar asientos disponibles
-                sector.available = 0;
-
-                if (sector.numbered) {
-                    sector.rows = []; // Inicializar como lista de listas
-                    for (let i = 0; i < sector.rowsNumber; i++) {
-                        const rowLabel = numberToAlphabet(i);
-                        const rowSeats = [];
-
-                        for (let j = 0; j < sector.seatsNumber; j++) {
-                            let availableStatus = "true"; // Asiento disponible por defecto
-
-                            // Verificar si está en la lista de eliminados
-                            if (sector.eliminated.some(([row, seat]) => row === i && seat === j)) {
-                                availableStatus = "eliminated";
-                            }
-
-                            // Verificar si está en la lista de preReservados
-                            if (sector.preReserved.some(([row, seat]) => row === i && seat === j)) {
-                                availableStatus = "preReserved";
-                            }
-
-                            // Si el asiento está disponible ("true"), incrementar el contador de asientos disponibles
-                            if (availableStatus === "true") {
-                                sector.available += 1;
-                            }
-
-                            rowSeats.push({
-                                displayId: `${rowLabel}-${j + 1}`,
-                                available: availableStatus,
-                                timestamp: new Date(),
-                                reservedBy: "vacio",
-                                idTicket: generateIdTicket()
-                            });
-                        }
-                        sector.rows.push(rowSeats);
-                    }
-                }
-                else {
-                    sector.available = sector.rowsNumber * sector.seatsNumber
-                }
-            });
-        });
-    }
-    next();
-});
-*/
 // Middleware pre-save para establecer available y crear los asientos si numbered es true
+EventSchema.pre<EventDocument>('save', function (next) {
+  if (this.isNew) {
+    this.dates.forEach(dateItem => {
+      dateItem.sectors.forEach(sector => {
+        // Inicializar available, capacity y ocuped
+        sector.available = 0;
+        sector.capacity = 0;
+        sector.ocuped = 0;
+
+        if (sector.numbered) {
+          sector.rows = []; // Inicializar como lista de listas
+          for (let i = 0; i < sector.rowsNumber; i++) {
+            const rowLabel = numberToAlphabet(i);
+            const rowSeats = [];
+
+            for (let j = 0; j < sector.seatsNumber; j++) {
+              let availableStatus = "true"; // Asiento disponible por defecto
+              let preResUser = "vacio"; // Inicialmente vacío
+
+              // Verificar si está en la lista de eliminados
+              if (sector.eliminated.some(([row, seat]) => row === i && seat === j)) {
+                availableStatus = "eliminated";
+              }
+
+              // Verificar si está en la lista de preReservados
+              if (sector.preReserved.some(([row, seat]) => row === i && seat === j)) {
+                availableStatus = "preReserved";
+                preResUser = this.user_id; // Solo asigna el user_id si está preReservado
+                sector.ocuped += 1;
+              }
+
+              // Si el asiento está disponible ("true"), incrementar el contador de asientos disponibles
+              if (availableStatus === "true") {
+                sector.available += 1;
+              }
+
+              sector.capacity += 1; // Incrementar capacidad en cada iteración
+
+              rowSeats.push({
+                displayId: `${rowLabel}-${j + 1}`,
+                available: availableStatus,
+                timestamp: new Date(),
+                reservedBy: preResUser, // PreResUser solo es this.user_id si está preReservado
+                idTicket: generateIdTicket()
+              });
+            }
+            sector.rows.push(rowSeats);
+          }
+        } else {
+          // Sector no numerado
+          const preReservedCount = sector.preReserved.length > 0 ? sector.preReserved[0][0] : 0;
+          sector.available = sector.rowsNumber * sector.seatsNumber - preReservedCount;
+          sector.capacity = sector.rowsNumber * sector.seatsNumber;
+          sector.ocuped = preReservedCount;
+
+          sector.rows = [[]]; // Inicializar la colección de filas, con la fila 0
+
+          for (let i = 0; i < preReservedCount; i++) {
+            sector.rows[0].push({
+              displayId: `preReserved-${i + 1}`,
+              available: "preReserved",
+              timestamp: new Date(),
+              reservedBy: "vacio",
+              idTicket: generateIdTicket()
+            });
+          }
+        }
+      });
+    });
+  }
+  next();
+});
+
+/*
 EventSchema.pre<EventDocument>('save', function (next) {
     if (this.isNew) {
       this.dates.forEach(dateItem => {
         dateItem.sectors.forEach(sector => {
           // Inicializar disponible en 0 para contar asientos disponibles
           sector.available = 0;
+          sector.capacity = 0;
+          sector.ocuped = 0;
   
           if (sector.numbered) {
             sector.rows = []; // Inicializar como lista de listas
             for (let i = 0; i < sector.rowsNumber; i++) {
               const rowLabel = numberToAlphabet(i);
               const rowSeats = [];
-  
+              var preResUser = this.user_id
+
               for (let j = 0; j < sector.seatsNumber; j++) {
                 let availableStatus = "true"; // Asiento disponible por defecto
   
                 // Verificar si está en la lista de eliminados
                 if (sector.eliminated.some(([row, seat]) => row === i && seat === j)) {
                   availableStatus = "eliminated";
+                  preResUser = "vacio"
                 }
   
                 // Verificar si está en la lista de preReservados
                 if (sector.preReserved.some(([row, seat]) => row === i && seat === j)) {
                   availableStatus = "preReserved";
-                  sector.available += 1;
+                  sector.capacity += 1;
+                  sector.ocuped += 1;
                 }
   
                 // Si el asiento está disponible ("true"), incrementar el contador de asientos disponibles
                 if (availableStatus === "true") {
                   sector.available += 1;
+                  sector.capacity += 1;
+                  preResUser = "vacio"
                 }
   
                 rowSeats.push({
                   displayId: `${rowLabel}-${j + 1}`,
                   available: availableStatus,
                   timestamp: new Date(),
-                  reservedBy: "vacio",
+                  reservedBy: preResUser,
                   idTicket: generateIdTicket()
                 });
               }
@@ -216,6 +251,8 @@ EventSchema.pre<EventDocument>('save', function (next) {
             // Solo generar los asientos preReservados en el rowNumber 0
             const preReservedCount = sector.preReserved.length > 0 ? sector.preReserved[0][0] : 0;
             sector.available = sector.rowsNumber * sector.seatsNumber - preReservedCount;
+            sector.capacity = sector.rowsNumber * sector.seatsNumber;
+            sector.ocuped = preReservedCount;
   
             sector.rows = [[]]; // Inicializar la colección de filas, con la fila 0
   
@@ -235,4 +272,4 @@ EventSchema.pre<EventDocument>('save', function (next) {
     }
     next();
   });
-  
+  */

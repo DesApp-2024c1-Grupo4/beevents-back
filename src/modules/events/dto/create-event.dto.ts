@@ -18,6 +18,8 @@ export class CreateSectorDto {
     readonly rows: CreateSeatDto[][];
     readonly eliminated: [number, number][];
     readonly preReserved: [number, number][];
+    readonly capacity?: number;
+    readonly ocuped?: number;
 }
 
 export class CreateDateDto {

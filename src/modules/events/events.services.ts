@@ -152,6 +152,7 @@ export class EventService {
                 seat.reservedBy = reservedBy;
                 seatUpdated = true;
                 sector.available -= 1;
+                sector.ocuped += 1;
                 break;
             }
         }
@@ -203,6 +204,7 @@ export class EventService {
         }
 
         sector.available -= 1;
+        sector.ocuped += 1;
 
         await event.save();
 

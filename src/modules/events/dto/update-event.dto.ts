@@ -18,6 +18,8 @@ export class UpdateSectorDto {
     readonly rows?: UpdateSeatDto[][];
     readonly eliminated?: [number, number][];
     readonly preReserved?: [number, number][];
+    readonly capacity?: number;
+    readonly ocuped?: number;
 }
 
 export class UpdateDateDto {
