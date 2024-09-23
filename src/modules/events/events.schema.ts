@@ -152,14 +152,14 @@ EventSchema.pre<EventDocument>('save', function (next) {
                 availableStatus = "preReserved";
                 preResUser = this.user_id; // Solo asigna el user_id si está preReservado
                 sector.ocuped += 1;
+                sector.capacity += 1; // Incrementar capacidad en cada iteración
               }
 
               // Si el asiento está disponible ("true"), incrementar el contador de asientos disponibles
               if (availableStatus === "true") {
                 sector.available += 1;
+                sector.capacity += 1; // Incrementar capacidad en cada iteración
               }
-
-              sector.capacity += 1; // Incrementar capacidad en cada iteración
 
               rowSeats.push({
                 displayId: `${rowLabel}-${j + 1}`,
