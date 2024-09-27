@@ -203,8 +203,12 @@ export class EventService {
             sector.rows[0].push(seat);
         }
 
+        console.log(`Antes de incrementar, ocuped: ${sector.ocuped}`);
+        console.log(`Antes de incrementar, available: ${sector.available}`);
         sector.available -= 1;
         sector.ocuped += 1;
+        console.log(`Después de incrementar, ocuped: ${sector.ocuped}`);
+        console.log(`Después de incrementar, available: ${sector.available}`);
 
         await event.save();
 

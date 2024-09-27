@@ -143,12 +143,12 @@ EventSchema.pre<EventDocument>('save', function (next) {
               let preResUser = "vacio"; // Inicialmente vacío
 
               // Verificar si está en la lista de eliminados
-              if (sector.eliminated.some(([row, seat]) => row === i && seat === j)) {
+              if (sector.eliminated && sector.eliminated.some(([row, seat]) => row === i && seat === j)) {
                 availableStatus = "eliminated";
               }
 
               // Verificar si está en la lista de preReservados
-              if (sector.preReserved.some(([row, seat]) => row === i && seat === j)) {
+              if (sector.preReserved && sector.preReserved.some(([row, seat]) => row === i && seat === j)) {
                 availableStatus = "preReserved";
                 preResUser = this.user_id; // Solo asigna el user_id si está preReservado
                 sector.ocuped += 1;
@@ -173,7 +173,7 @@ EventSchema.pre<EventDocument>('save', function (next) {
           }
         } else {
           // Sector no numerado
-          const preReservedCount = sector.preReserved.length > 0 ? sector.preReserved[0][0] : 0;
+          const preReservedCount = sector.preReserved && sector.preReserved.length > 0 ? sector.preReserved[0][0] : 0;
           sector.available = sector.rowsNumber * sector.seatsNumber - preReservedCount;
           sector.capacity = sector.rowsNumber * sector.seatsNumber;
           sector.ocuped = preReservedCount;
@@ -195,6 +195,7 @@ EventSchema.pre<EventDocument>('save', function (next) {
   }
   next();
 });
+
 
 /*
 EventSchema.pre<EventDocument>('save', function (next) {
