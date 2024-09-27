@@ -1,0 +1,47 @@
+{
+    "name": "La Rural",
+    "address": {
+        "street": "Av. Sarmiento",
+        "number": 2704
+    },
+    "configurations": [
+        {
+            "name": "Configuracion  1 Simple",
+            "description": "Lugar preparado con butacas para reservar ticket y también con espacio sin numerar",
+            "sectors": [
+                {
+                    "name": "Platea autoridades",
+                    "numbered": true,
+                    "rowsNumber": 3,
+                    "seatsNumber": 10,
+                    "eliminated" : []
+                },
+                {
+                    "name": "Publico general No numerado",
+                    "numbered": false,
+                    "rowsNumber": 1,
+                    "seatsNumber": 100
+                }
+            ]
+        },
+        {
+            "name": "Config 2 ",
+            "description": "Espacio al aire libre ",
+            "sectors": [
+                {
+                    "name": "Sector Numerado 1",
+                    "numbered": true,
+                    "rowsNumber": 3,
+                    "seatsNumber": 8,
+                    "eliminated" : []
+                },
+                {
+                    "name": "Publico general No numerado",
+                    "numbered": false,
+                    "rowsNumber": 1,
+                    "seatsNumber": 300
+                }
+            ]
+        }
+    ]
+}

@@ -63,7 +63,7 @@ export class Location {
         number: number;
     };
 
-    @Prop({ type: [ConfigurationSchema], required: true })
+    @Prop({ type: [ConfigurationSchema], required: false, default: [] })
     configurations: Configuration[];
 
     // Otras propiedades y métodos según sea necesario

@@ -16,7 +16,14 @@ export class LocationService {
     // Función para calcular la capacidad de cada sector
     private calculateSectorCapacity(sectors: any[]): any[] {
         return sectors.map(sector => {
-            sector.capacity = (sector.rowsNumber * sector.seatsNumber) - sector.eliminated.length;
+            // Si el sector es numerado, calcular la capacidad considerando los eliminados
+            if (sector.numbered) {
+                sector.eliminated = sector.eliminated || []; // Asegurarse de que 'eliminated' siempre sea un array
+                sector.capacity = (sector.rowsNumber * sector.seatsNumber) - sector.eliminated.length;
+            } else {
+                // Si el sector no es numerado, la capacidad es simplemente filas * asientos
+                sector.capacity = sector.rowsNumber * sector.seatsNumber;
+            }
             return sector;
         });
     }
@@ -25,15 +32,19 @@ export class LocationService {
         if (userRole !== 'admin') {
             throw new ForbiddenException('Solo los administradores pueden crear Locations');
         }
-
-        // Calcular capacidad para cada sector en todas las configuraciones
-        locationDto.configurations.forEach(config => {
-            config.sectors = this.calculateSectorCapacity(config.sectors);
-        });
-
+    
+        // Verificar si configurations existe y no está vacío
+        if (locationDto.configurations && locationDto.configurations.length > 0) {
+            // Calcular capacidad para cada sector en todas las configuraciones
+            locationDto.configurations.forEach(config => {
+                config.sectors = this.calculateSectorCapacity(config.sectors);
+            });
+        }
+    
         const createdLocation = new this.locationModel(locationDto);
         return createdLocation.save();
     }
+    
 
     async findAll(): Promise<Location[]> {
     //    if (userRole !== 'user' && userRole !== 'admin') {
