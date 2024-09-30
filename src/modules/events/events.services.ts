@@ -50,9 +50,9 @@ export class EventService {
         if (!event) {
             throw new NotFoundException('Evento no encontrado');
         }
-        if (!event.publicated) {
-            throw new ForbiddenException('Evento no publicado');
-        }
+//        if (!event.publicated) {
+//            throw new ForbiddenException('Evento no publicado');
+//        }
         return event;
     }
 
