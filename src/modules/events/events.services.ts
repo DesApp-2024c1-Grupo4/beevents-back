@@ -34,30 +34,24 @@ export class EventService {
     }
 
     async findUpcomingEvents(): Promise<Event[]> {
-    //    if (userRole !== 'user' && userRole !== 'admin') {
-    //        throw new ForbiddenException('Solo los usuarios pueden ver los eventos');
-    //    }
-
         const currentDate = new Date();
-        const events = await this.eventModel.find().exec();
-
+        const events = await this.eventModel.find({ publicated: true }).exec();
+    
         return events
             .map(event => {
-                // Filtrar fechas dentro del evento que sean mayores o iguales a la fecha actual
                 event.dates = event.dates.filter(date => date.date_time >= currentDate);
                 return event;
             })
-            .filter(event => event.dates.length > 0); // Filtrar eventos que tienen fechas válidas
+            .filter(event => event.dates.length > 0);
     }
 
-
     async findById(id: string): Promise<Event> {
-    //    if (userRole !== 'user' && userRole !== 'admin') {
-    //        throw new ForbiddenException('Solo los usuarios pueden ver los eventos');
-    //    }
         const event = await this.eventModel.findById(id).exec();
         if (!event) {
             throw new NotFoundException('Evento no encontrado');
+        }
+        if (!event.publicated) {
+            throw new ForbiddenException('Evento no publicado');
         }
         return event;
     }
@@ -66,48 +60,46 @@ export class EventService {
         if (userRole !== 'admin') {
             throw new ForbiddenException('Solo los administradores pueden actualizar los eventos');
         }
-        
+    
         const event = await this.eventModel.findById(id).exec();
         if (!event) {
             throw new NotFoundException('Evento no encontrado');
         }
-
-        // Mantener una copia de los sectores actuales
+    
         const currentSectors = event.dates.flatMap(date => date.sectors);
-
-        // Actualizar el evento
         Object.assign(event, eventDto);
-        
-        // Verificar si hay sectores numerados nuevos y crear asientos
+    
         event.dates.forEach(dateItem => {
             dateItem.sectors.forEach(sector => {
-                const isExistingSector = currentSectors.some(currentSector => currentSector._id.toString() === sector._id.toString());
-                if (!isExistingSector && sector.numbered) {
-                    // Crear los asientos automáticamente
+                const existingSector = currentSectors.find(currentSector => currentSector._id.toString() === sector._id.toString());
+                if (existingSector && sector.numbered) {
                     sector.rows = [];
                     for (let i = 0; i < sector.rowsNumber; i++) {
                         const rowLabel = numberToAlphabet(i);
                         const rowSeats = [];
                         for (let j = 0; j < sector.seatsNumber; j++) {
+                            const seatStatus = existingSector.rows[i] && existingSector.rows[i][j]?.available === "eliminated" 
+                                ? "eliminated" 
+                                : "true";
                             rowSeats.push({
                                 displayId: `${rowLabel}-${j + 1}`,
-                                available: "true",
+                                available: seatStatus,
                                 timestamp: new Date(),
                                 reservedBy: "vacio",
-                                idTicket: generateIdTicket()  // Generar idTicket para cada asiento
+                                idTicket: generateIdTicket()
                             });
                         }
                         sector.rows.push(rowSeats);
                     }
-                }
-                if (!isExistingSector) {
+                } else if (!existingSector) {
                     sector.available = sector.rowsNumber * sector.seatsNumber;
                 }
             });
         });
-
+    
         return event.save();
     }
+    
 
     async delete(id: string, userRole: string): Promise<Event> {
         if (userRole !== 'admin') {
@@ -125,46 +117,48 @@ export class EventService {
         if (!event) {
             throw new NotFoundException('Evento no encontrado');
         }
-
+    
         const { sectorId, date_time, displayId, reservedBy } = updateSeatDto;
         const currentDate = new Date();
-
+    
         const date = event.dates.find(dateItem => dateItem.date_time.toISOString() === date_time);
         if (!date) {
             throw new NotFoundException('Fecha no encontrada');
         }
-
+    
         const sector = date.sectors.find(sectorItem => sectorItem._id.toString() === sectorId && sectorItem.numbered);
         if (!sector) {
             throw new NotFoundException('Sector no encontrado o no numerado');
         }
-
+    
         let seatUpdated = false;
-
+    
         for (const row of sector.rows) {
             const seat = row.find(seatItem => seatItem.displayId === displayId);
             if (seat) {
-                if (seat.available!="true") {
+                if (seat.available !== "true") {
                     throw new BadRequestException('El asiento no está disponible');
                 }
-                seat.available = "false";
+                seat.available = event.publicated ? "false" : "preReserved";
                 seat.timestamp = currentDate;
                 seat.reservedBy = reservedBy;
                 seatUpdated = true;
                 sector.available -= 1;
                 sector.ocuped += 1;
+                
                 break;
             }
         }
-
+    
         if (!seatUpdated) {
             throw new NotFoundException('Asiento no encontrado');
         }
-
+    
         await event.save();
-
+    
         return { message: 'Reserva realizada correctamente' };
     }
+    
 
     async createSeat(eventId: string, createSeatDto: CreateSeatDto): Promise<any> {
         const event = await this.eventModel.findById(eventId).exec();
@@ -187,7 +181,7 @@ export class EventService {
 
         const seat = {
             displayId: '',
-            available: "false",
+            available: event.publicated ? "false" : "preReserved",
             timestamp: currentDate,
             reservedBy: reservedBy,
             idTicket: generateIdTicket()  // Generar idTicket para el nuevo asiento
@@ -202,13 +196,17 @@ export class EventService {
         } else {
             sector.rows[0].push(seat);
         }
+        sector.available -= 1;
+        sector.ocuped += 1;
 
+        /*
         console.log(`Antes de incrementar, ocuped: ${sector.ocuped}`);
         console.log(`Antes de incrementar, available: ${sector.available}`);
         sector.available -= 1;
         sector.ocuped += 1;
         console.log(`Después de incrementar, ocuped: ${sector.ocuped}`);
         console.log(`Después de incrementar, available: ${sector.available}`);
+        */
 
         await event.save();
 

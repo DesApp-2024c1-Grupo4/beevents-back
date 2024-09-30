@@ -17,7 +17,7 @@ export class UpdateSectorDto {
     readonly available?: number;
     readonly rows?: UpdateSeatDto[][];
     readonly eliminated?: [number, number][];
-    readonly preReserved?: [number, number][];
+    //readonly preReserved?: [number, number][];
     readonly capacity?: number;
     readonly ocuped?: number;
 }
@@ -35,4 +35,5 @@ export class UpdateEventDto {
     readonly location_id?: string;
     user_id: string;
     readonly dates?: UpdateDateDto[];
+    readonly publicated?: boolean;
 }

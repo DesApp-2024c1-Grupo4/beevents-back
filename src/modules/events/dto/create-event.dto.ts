@@ -17,7 +17,7 @@ export class CreateSectorDto {
     readonly available?: number;
     readonly rows: CreateSeatDto[][];
     readonly eliminated: [number, number][];
-    readonly preReserved: [number, number][];
+    //readonly preReserved: [number, number][];
     readonly capacity?: number;
     readonly ocuped?: number;
 }
@@ -35,4 +35,5 @@ export class CreateEventDto {
     readonly location_id: string;
     user_id: string;
     readonly dates: CreateDateDto[];
+    readonly publicated: boolean;
 }
