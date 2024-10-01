@@ -14,14 +14,20 @@ import { RolesGuard } from '../modules/auth/roles.guard';
 export class EventController {
     constructor(private readonly eventService: EventService) { }
 
-    @Get()
+    @Get() // eventos que no están vencidos y están publicados
     async findUpcomingEvents(@Request() req: any) {
         //const userRole = req.user.role;
         return this.eventService.findUpcomingEvents();
     }
 
-    @Get('allEvents')
+    @Get('allEvents') // todos los eventos
     async findAllEvents(@Request() req: any) {
+        //const userRole = req.user.role;
+        return this.eventService.findAll();
+    }
+
+    @Get('pubAndNotPub') // eventos que no están vencidos y publicados y no publicados
+    async findUpcomingAll(@Request() req: any) {
         //const userRole = req.user.role;
         return this.eventService.findAll();
     }

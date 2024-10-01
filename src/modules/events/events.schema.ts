@@ -40,7 +40,7 @@ export class Sector extends Document {
     @Prop({ type: Number, required: true })
     seatsNumber: number;
 
-    @Prop({ type: Number, required: false })
+    @Prop({ type: Number, required: false, default: 0 })
     available: number;
 
     @Prop({ type: [[SeatSchema]], required: function() { return this.numbered; }, default: [] })
@@ -52,10 +52,10 @@ export class Sector extends Document {
     //@Prop({ type: [[Number]], required: false, default: [] })
     //preReserved: [number, number][];
 
-    @Prop({ type: Number, required: false })
+    @Prop({ type: Number, required: false, default: 0 })
     capacity: number;
 
-    @Prop({ type: Number, required: false })
+    @Prop({ type: Number, required: false, default: 0})
     ocuped: number;
 
 }
@@ -63,7 +63,7 @@ export class Sector extends Document {
 const SectorSchema = SchemaFactory.createForClass(Sector);
 
 @Schema()
-export class Dates {
+export class Dates extends Document {
     @Prop({ type: Date, required: true })
     date_time: Date;
 
