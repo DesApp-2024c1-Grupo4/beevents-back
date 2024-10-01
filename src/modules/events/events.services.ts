@@ -27,11 +27,42 @@ export class EventService {
     }
 
     async findAll(): Promise<Event[]> {
-    //    if (userRole !== 'user' && userRole !== 'admin') {
-    //        throw new ForbiddenException('Solo los usuarios pueden ver los eventos');
-    //    }
         return this.eventModel.find().exec();
     }
+
+/*
+//*** Retorna solo algunos campos del evento
+async findAll(): Promise<any[]> {
+    const events = await this.eventModel.find().exec();
+    
+    // Mapeamos los datos para responder solo con la información necesaria
+    return events.map(event => ({
+        _id: event._id,
+        name: event.name,
+        artist: event.artist,
+        image: event.image,
+        description: event.description,
+        location_id: event.location_id,
+        user_id: event.user_id,
+        dates: event.dates.map(date => ({
+            date_time: date.date_time,
+            sectors: date.sectors.map(sector => ({
+                name: sector.name,
+                numbered: sector.numbered,
+                _id: sector._id,
+                available: sector.available,
+                capacity: sector.capacity,
+                ocuped: sector.ocuped,
+            })),
+            _id: date._id,
+        })),
+        publicated: event.publicated,
+    }));
+}
+
+
+*/
+
 
 
     async findUpcomingEvents(): Promise<Event[]> {
@@ -95,6 +126,43 @@ async findUpcomingEvents(): Promise<any[]> {
             })
             .filter(event => event.dates.length > 0);
     }
+
+/*
+//*** Retorna solo algunos campos del evento
+async findUpcomingAll(): Promise<any[]> {
+    const currentDate = new Date();
+    const events = await this.eventModel.find().exec();
+
+    return events
+        .map(event => ({
+            _id: event._id,
+            name: event.name,
+            artist: event.artist,
+            image: event.image,
+            description: event.description,
+            location_id: event.location_id,
+            user_id: event.user_id,
+            dates: event.dates
+                .filter(date => date.date_time >= currentDate)
+                .map(date => ({
+                    date_time: date.date_time,
+                    sectors: date.sectors.map(sector => ({
+                        name: sector.name,
+                        numbered: sector.numbered,
+                        _id: sector._id,
+                        available: sector.available,
+                        capacity: sector.capacity,
+                        ocuped: sector.ocuped,
+                    })),
+                    _id: date._id,
+                })),
+            publicated: event.publicated,
+        }))
+        .filter(event => event.dates.length > 0);
+}
+
+*/
+
 
     async findById(id: string): Promise<Event> {
         const event = await this.eventModel.findById(id).exec();
