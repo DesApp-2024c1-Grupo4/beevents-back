@@ -26,11 +26,13 @@ export class EventService {
         return createdEvent.save();
     }
 
+    /*
     async findAll(): Promise<Event[]> {
         return this.eventModel.find().exec();
     }
+    */
 
-/*
+
 //*** Retorna solo algunos campos del evento
 async findAll(): Promise<any[]> {
     const events = await this.eventModel.find().exec();
@@ -61,10 +63,10 @@ async findAll(): Promise<any[]> {
 }
 
 
-*/
 
 
 
+/*
     async findUpcomingEvents(): Promise<Event[]> {
         const currentDate = new Date();
         const events = await this.eventModel.find({ publicated: true }).exec();
@@ -77,7 +79,8 @@ async findAll(): Promise<any[]> {
             .filter(event => event.dates.length > 0);
     }
 
-/*
+*/
+
 
 //*** Retorna solo algunos campos del evento
 
@@ -114,7 +117,7 @@ async findUpcomingEvents(): Promise<any[]> {
         .filter(event => event.dates.length > 0);
 }
 
-*/
+
     async findUpcomingAll(): Promise<Event[]> {
         const currentDate = new Date();
         const events = await this.eventModel.find().exec();
