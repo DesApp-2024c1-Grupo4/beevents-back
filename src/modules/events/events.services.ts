@@ -8,6 +8,7 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto, UpdateSectorDto } from './dto/update-event.dto';
 import { UpdateSeatDto } from './dto/update-seat.dto';
 import { CreateSeatDto } from './dto/create-seat.dto';
+import { CreateEventReservationsDto } from './dto/reservations.dto'
 import { Location, LocationDocument } from '../locations/locations.schema'; // Importamos el modelo de Location para obtener el name
 import * as crypto from 'crypto';
 
@@ -17,6 +18,101 @@ export class EventService {
         @InjectModel(Event.name) private readonly eventModel: Model<EventDocument>,
         @InjectModel(Location.name) private readonly locationModel: Model<LocationDocument>, // Inyecta el modelo de Location
     ) { }
+
+    async reservations(eventId: string, reservationsDto: CreateEventReservationsDto): Promise<any> {
+        const event = await this.eventModel.findById(eventId).exec();
+        if (!event) {
+            throw new NotFoundException('Evento no encontrado');
+        }
+    
+        const { date_time, reservedBy, numbered, notNumbered } = reservationsDto;
+        const currentDate = new Date();
+    
+        const date = event.dates.find(dateItem => dateItem.date_time.toISOString() === date_time);
+        if (!date) {
+            throw new NotFoundException('Fecha no encontrada');
+        }
+    
+        // Manejo para sectores numerados
+        for (const numberedSector of numbered) {
+            const sector = date.sectors.find(sectorItem => sectorItem._id.toString() === numberedSector.sector_id && sectorItem.numbered);
+            if (!sector) {
+                throw new NotFoundException('Sector numerado no encontrado');
+            }
+    
+            // Validar si todos los asientos en el DTO están disponibles
+            const allAvailable = numberedSector.reservations.every(reservation => {
+                return sector.rows.some(row =>
+                    row.some(seat => seat.displayId === reservation.displayId && seat.available === "true")
+                );
+            });
+    
+            if (!allAvailable) {
+                throw new BadRequestException('Alguno de los asientos no está disponible');
+            }
+    
+            // Actualización de los asientos
+            for (const reservation of numberedSector.reservations) {
+                let seatUpdated = false;
+                for (const row of sector.rows) {
+                    const seat = row.find(seatItem => seatItem.displayId === reservation.displayId);
+                    if (seat) {
+                        seat.available = event.publicated ? "false" : "preReserved";
+                        seat.timestamp = currentDate;
+                        seat.reservedBy = reservedBy;
+                        sector.available -= 1;
+                        sector.ocuped += 1;
+                        seatUpdated = true;
+                        break;
+                    }
+                }
+                if (!seatUpdated) {
+                    throw new NotFoundException(`Asiento con displayId ${reservation.displayId} no encontrado`);
+                }
+            }
+        }
+    
+        // Manejo para sectores no numerados
+        for (const notNumberedSector of notNumbered) {
+            const sector = date.sectors.find(sectorItem => sectorItem._id.toString() === notNumberedSector.sector_id && !sectorItem.numbered);
+            if (!sector) {
+                throw new NotFoundException('Sector no numerado no encontrado');
+            }
+    
+            // Validar si hay suficientes asientos disponibles
+            if (notNumberedSector.quantity > sector.available) {
+                throw new BadRequestException('No hay suficientes asientos disponibles en el sector no numerado');
+            }
+    
+            // Crear asientos en el sector no numerado
+            for (let i = 0; i < notNumberedSector.quantity; i++) {
+                const seat = {
+                    displayId: '',
+                    available: event.publicated ? "false" : "preReserved",
+                    timestamp: currentDate,
+                    reservedBy: reservedBy,
+                    idTicket: generateIdTicket()
+                };
+    
+                if (!sector.rows) {
+                    sector.rows = [];
+                }
+    
+                if (sector.rows.length === 0) {
+                    sector.rows.push([seat]);
+                } else {
+                    sector.rows[0].push(seat);
+                }
+                sector.available -= 1;
+                sector.ocuped += 1;
+            }
+        }
+    
+        await event.save();
+    
+        return { message: 'Reservas realizadas correctamente' };
+    }
+            
 
     async create(eventDto: CreateEventDto, userRole: string): Promise<Event> {
         if (userRole !== 'admin') {
@@ -178,6 +274,64 @@ async findUpcomingAll(): Promise<any[]> {
         return event;
     }
 
+
+    // nueva lógica de update
+    async update(id: string, eventDto: UpdateEventDto, userRole: string): Promise<Event> {
+        if (userRole !== 'admin') {
+            throw new ForbiddenException('Solo los administradores pueden actualizar los eventos');
+        }
+    
+        const event = await this.eventModel.findById(id).exec();
+        if (!event) {
+            throw new NotFoundException('Evento no encontrado');
+        }
+    
+        const currentSectors = event.dates.flatMap(date => date.sectors);
+        Object.assign(event, eventDto);
+    
+        event.dates.forEach(dateItem => {
+            dateItem.sectors.forEach(sector => {
+                const existingSector = currentSectors.find(currentSector => currentSector._id.toString() === sector._id.toString());
+    
+                if (existingSector) {
+                    // Si el sector ya existe, mantenemos las filas y la disponibilidad existentes
+                    sector.rows = existingSector.rows; // Mantenemos las filas existentes
+                    sector.available = existingSector.available; // Mantenemos la disponibilidad existente
+                } else {
+                    // Si el sector no existe, inicializamos sus filas y asientos
+                    if (sector.numbered) {
+                        sector.rows = []; // Reiniciamos filas solo si es un sector numerado
+                        for (let i = 0; i < sector.rowsNumber; i++) {
+                            const rowLabel = numberToAlphabet(i);
+                            const rowSeats = [];
+                            for (let j = 0; j < sector.seatsNumber; j++) {
+                                const isEliminated = existingSector && existingSector.eliminated[i] && existingSector.eliminated[i][j];
+                                rowSeats.push({
+                                    displayId: `${rowLabel}-${j + 1}`,
+                                    available: isEliminated ? "eliminated" : "true", // Verificamos si el asiento está en eliminados
+                                    timestamp: new Date(),
+                                    reservedBy: "vacio",
+                                    idTicket: generateIdTicket()
+                                });
+                            }
+                            sector.rows.push(rowSeats);
+                        }
+                        sector.available = sector.rowsNumber * sector.seatsNumber; // Establecemos la capacidad total
+                    } else {
+                        // Para sectores no numerados, se puede inicializar la capacidad
+                        sector.available = sector.rowsNumber * sector.seatsNumber; // Establecemos la capacidad total
+                    }
+                }
+            });
+        });
+    
+        return event.save();
+    }
+    
+
+/*
+** logica previa de update
+
     async update(id: string, eventDto: UpdateEventDto, userRole: string): Promise<Event> {
         if (userRole !== 'admin') {
             throw new ForbiddenException('Solo los administradores pueden actualizar los eventos');
@@ -221,7 +375,9 @@ async findUpcomingAll(): Promise<any[]> {
     
         return event.save();
     }
+
     
+*/
 
     async delete(id: string, userRole: string): Promise<Event> {
         if (userRole !== 'admin') {
