@@ -3,9 +3,9 @@
 
 export class UpdateSeatDto {
     readonly displayId?: string;
-    readonly available?: string;
+    available?: string;
     readonly timestamp?: Date;
-    readonly reservedBy?: string;
+    reservedBy?: string;
     readonly idTicket?: string;
 }
 
@@ -18,8 +18,8 @@ export class UpdateSectorDto {
     readonly rows?: UpdateSeatDto[][];
     readonly eliminated?: [number, number][];
     //readonly preReserved?: [number, number][];
-    readonly capacity?: number;
-    readonly ocuped?: number;
+    capacity?: number;
+    ocuped?: number;
 }
 
 export class UpdateDateDto {
@@ -33,7 +33,7 @@ export class UpdateEventDto {
     readonly image?: string;
     readonly description?: string;
     readonly location_id?: string;
-    user_id: string;
+    user_id?: string;
     readonly dates?: UpdateDateDto[];
     readonly publicated?: boolean;
 }

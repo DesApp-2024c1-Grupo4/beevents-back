@@ -275,7 +275,7 @@ async findUpcomingAll(): Promise<any[]> {
     }
 
 
-    // nueva lógica de update
+    // lógica de update
     async update(id: string, eventDto: UpdateEventDto, userRole: string): Promise<Event> {
         if (userRole !== 'admin') {
             throw new ForbiddenException('Solo los administradores pueden actualizar los eventos');
@@ -319,7 +319,8 @@ async findUpcomingAll(): Promise<any[]> {
                         sector.available = sector.rowsNumber * sector.seatsNumber; // Establecemos la capacidad total
                     } else {
                         // Para sectores no numerados, se puede inicializar la capacidad
-                        sector.available = sector.rowsNumber * sector.seatsNumber; // Establecemos la capacidad total
+                        sector.available = sector.rowsNumber * sector.seatsNumber; // Establecemos el disponible del sector no numerado
+                        sector.capacity = sector.rowsNumber * sector.seatsNumber; // Establecemos la capacidad total
                     }
                 }
             });
@@ -327,57 +328,7 @@ async findUpcomingAll(): Promise<any[]> {
     
         return event.save();
     }
-    
-
-/*
-** logica previa de update
-
-    async update(id: string, eventDto: UpdateEventDto, userRole: string): Promise<Event> {
-        if (userRole !== 'admin') {
-            throw new ForbiddenException('Solo los administradores pueden actualizar los eventos');
-        }
-    
-        const event = await this.eventModel.findById(id).exec();
-        if (!event) {
-            throw new NotFoundException('Evento no encontrado');
-        }
-    
-        const currentSectors = event.dates.flatMap(date => date.sectors);
-        Object.assign(event, eventDto);
-    
-        event.dates.forEach(dateItem => {
-            dateItem.sectors.forEach(sector => {
-                const existingSector = currentSectors.find(currentSector => currentSector._id.toString() === sector._id.toString());
-                if (existingSector && sector.numbered) {
-                    sector.rows = [];
-                    for (let i = 0; i < sector.rowsNumber; i++) {
-                        const rowLabel = numberToAlphabet(i);
-                        const rowSeats = [];
-                        for (let j = 0; j < sector.seatsNumber; j++) {
-                            const seatStatus = existingSector.rows[i] && existingSector.rows[i][j]?.available === "eliminated" 
-                                ? "eliminated" 
-                                : "true";
-                            rowSeats.push({
-                                displayId: `${rowLabel}-${j + 1}`,
-                                available: seatStatus,
-                                timestamp: new Date(),
-                                reservedBy: "vacio",
-                                idTicket: generateIdTicket()
-                            });
-                        }
-                        sector.rows.push(rowSeats);
-                    }
-                } else if (!existingSector) {
-                    sector.available = sector.rowsNumber * sector.seatsNumber;
-                }
-            });
-        });
-    
-        return event.save();
-    }
-
-    
-*/
+ 
 
     async delete(id: string, userRole: string): Promise<Event> {
         if (userRole !== 'admin') {
