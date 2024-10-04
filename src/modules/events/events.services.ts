@@ -274,8 +274,7 @@ async findUpcomingAll(): Promise<any[]> {
         return event;
     }
 
-
-    // lógica de update
+    // lógica de update que agrega sectores pero al agregar fecha no limpia las reservas
     async update(id: string, eventDto: UpdateEventDto, userRole: string): Promise<Event> {
         if (userRole !== 'admin') {
             throw new ForbiddenException('Solo los administradores pueden actualizar los eventos');
@@ -286,6 +285,13 @@ async findUpcomingAll(): Promise<any[]> {
             throw new NotFoundException('Evento no encontrado');
         }
     
+        // Si en el body solo se informa el atributo publicated, actualizamos solo ese campo
+        if (Object.keys(eventDto).length === 2 && 'publicated' in eventDto) {
+            event.publicated = eventDto.publicated;
+            return event.save();
+        }
+    
+        // Continuamos con la lógica original si se informan más atributos
         const currentSectors = event.dates.flatMap(date => date.sectors);
         Object.assign(event, eventDto);
     
@@ -295,12 +301,12 @@ async findUpcomingAll(): Promise<any[]> {
     
                 if (existingSector) {
                     // Si el sector ya existe, mantenemos las filas y la disponibilidad existentes
-                    sector.rows = existingSector.rows; // Mantenemos las filas existentes
-                    sector.available = existingSector.available; // Mantenemos la disponibilidad existente
+                    sector.rows = existingSector.rows;
+                    sector.available = existingSector.available;
                 } else {
                     // Si el sector no existe, inicializamos sus filas y asientos
                     if (sector.numbered) {
-                        sector.rows = []; // Reiniciamos filas solo si es un sector numerado
+                        sector.rows = [];
                         for (let i = 0; i < sector.rowsNumber; i++) {
                             const rowLabel = numberToAlphabet(i);
                             const rowSeats = [];
@@ -308,7 +314,7 @@ async findUpcomingAll(): Promise<any[]> {
                                 const isEliminated = existingSector && existingSector.eliminated[i] && existingSector.eliminated[i][j];
                                 rowSeats.push({
                                     displayId: `${rowLabel}-${j + 1}`,
-                                    available: isEliminated ? "eliminated" : "true", // Verificamos si el asiento está en eliminados
+                                    available: isEliminated ? "eliminated" : "true",
                                     timestamp: new Date(),
                                     reservedBy: "vacio",
                                     idTicket: generateIdTicket()
@@ -316,11 +322,10 @@ async findUpcomingAll(): Promise<any[]> {
                             }
                             sector.rows.push(rowSeats);
                         }
-                        sector.available = sector.rowsNumber * sector.seatsNumber; // Establecemos la capacidad total
+                        sector.available = sector.rowsNumber * sector.seatsNumber;
                     } else {
-                        // Para sectores no numerados, se puede inicializar la capacidad
-                        sector.available = sector.rowsNumber * sector.seatsNumber; // Establecemos el disponible del sector no numerado
-                        sector.capacity = sector.rowsNumber * sector.seatsNumber; // Establecemos la capacidad total
+                        sector.available = sector.rowsNumber * sector.seatsNumber;
+                        sector.capacity = sector.rowsNumber * sector.seatsNumber;
                     }
                 }
             });
@@ -328,6 +333,7 @@ async findUpcomingAll(): Promise<any[]> {
     
         return event.save();
     }
+    
  
 
     async delete(id: string, userRole: string): Promise<Event> {
