@@ -214,6 +214,7 @@ async findUpcomingEvents(): Promise<any[]> {
 }
 
 
+/*
     async findUpcomingAll(): Promise<Event[]> {
         const currentDate = new Date();
         const events = await this.eventModel.find().exec();
@@ -226,7 +227,8 @@ async findUpcomingEvents(): Promise<any[]> {
             .filter(event => event.dates.length > 0);
     }
 
-/*
+*/
+
 //*** Retorna solo algunos campos del evento
 async findUpcomingAll(): Promise<any[]> {
     const currentDate = new Date();
@@ -260,7 +262,7 @@ async findUpcomingAll(): Promise<any[]> {
         .filter(event => event.dates.length > 0);
 }
 
-*/
+
 
 
     async findById(id: string): Promise<Event> {
