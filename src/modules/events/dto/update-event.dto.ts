@@ -15,11 +15,12 @@ export class UpdateSectorDto {
     readonly rowsNumber?: number;
     readonly seatsNumber?: number;
     readonly available?: number;
-    readonly rows?: UpdateSeatDto[][];
+    rows?: UpdateSeatDto[][];
     readonly eliminated?: [number, number][];
     //readonly preReserved?: [number, number][];
     capacity?: number;
     ocuped?: number;
+    readonly _id?: string;
 }
 
 export class UpdateDateDto {

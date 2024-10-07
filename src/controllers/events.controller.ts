@@ -30,7 +30,7 @@ export class EventController {
     @Get('pubAndNotPub') // eventos que no están vencidos y publicados y no publicados
     async findUpcomingAll(@Request() req: any) {
         //const userRole = req.user.role;
-        return this.eventService.findAll();
+        return this.eventService.findUpcomingAll();
     }
 
     @Get(':id')

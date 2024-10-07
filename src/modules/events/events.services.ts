@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Event, EventDocument } from './events.schema';
 import { CreateEventDto } from './dto/create-event.dto';
-import { UpdateEventDto, UpdateSectorDto } from './dto/update-event.dto';
+import { UpdateEventDto } from './dto/update-event.dto';
 import { UpdateSeatDto } from './dto/update-seat.dto';
 import { CreateSeatDto } from './dto/create-seat.dto';
 import { CreateEventReservationsDto } from './dto/reservations.dto'
@@ -273,6 +273,71 @@ async findUpcomingAll(): Promise<any[]> {
 //        }
         return event;
     }
+          
+
+
+
+// logica previa
+/*
+async update(id: string, eventDto: UpdateEventDto, userRole: string): Promise<Event> {
+    if (userRole !== 'admin') {
+        throw new ForbiddenException('Solo los administradores pueden actualizar los eventos');
+    }
+
+    const event = await this.eventModel.findById(id).exec();
+    if (!event) {
+        throw new NotFoundException('Evento no encontrado');
+    }
+
+    // Si en el body solo se informa el atributo publicated, actualizamos solo ese campo
+    if (Object.keys(eventDto).length === 2 && 'publicated' in eventDto) {
+        event.publicated = eventDto.publicated;
+        return event.save();
+    }
+
+    const currentSectors = event.dates.flatMap(date => date.sectors);
+    Object.assign(event, eventDto);
+
+    event.dates.forEach(dateItem => {
+        dateItem.sectors.forEach(sector => {
+            const existingSector = currentSectors.find(currentSector => currentSector._id.toString() === sector._id.toString());
+
+            if (existingSector) {
+                // Si el sector ya existe, mantenemos las filas y la disponibilidad existentes
+                sector.rows = existingSector.rows; // Mantenemos las filas existentes
+                sector.available = existingSector.available; // Mantenemos la disponibilidad existente
+            } else {
+                // Si el sector no existe, inicializamos sus filas y asientos
+                if (sector.numbered) {
+                    sector.rows = []; // Reiniciamos filas solo si es un sector numerado
+                    for (let i = 0; i < sector.rowsNumber; i++) {
+                        const rowLabel = numberToAlphabet(i);
+                        const rowSeats = [];
+                        for (let j = 0; j < sector.seatsNumber; j++) {
+                            const isEliminated = existingSector && existingSector.eliminated[i] && existingSector.eliminated[i][j];
+                            rowSeats.push({
+                                displayId: `${rowLabel}-${j + 1}`,
+                                available: isEliminated ? "eliminated" : "true", // Verificamos si el asiento está en eliminados
+                                timestamp: new Date(),
+                                reservedBy: "vacio",
+                                idTicket: generateIdTicket()
+                            });
+                        }
+                        sector.rows.push(rowSeats);
+                    }
+                    sector.available = sector.rowsNumber * sector.seatsNumber; // Establecemos la capacidad total
+                } else {
+                    // Para sectores no numerados, se puede inicializar la capacidad
+                    sector.available = sector.rowsNumber * sector.seatsNumber; // Establecemos el disponible del sector no numerado
+                    sector.capacity = sector.rowsNumber * sector.seatsNumber; // Establecemos la capacidad total
+                }
+            }
+        });
+    });
+
+    return event.save();
+}
+*/
 
     // lógica de update que agrega sectores pero al agregar fecha no limpia las reservas
     async update(id: string, eventDto: UpdateEventDto, userRole: string): Promise<Event> {
@@ -334,7 +399,6 @@ async findUpcomingAll(): Promise<any[]> {
         return event.save();
     }
     
- 
 
     async delete(id: string, userRole: string): Promise<Event> {
         if (userRole !== 'admin') {
