@@ -19,6 +19,110 @@ export class EventService {
         @InjectModel(Location.name) private readonly locationModel: Model<LocationDocument>, // Inyecta el modelo de Location
     ) { }
 
+
+    async reservations(eventId: string, reservationsDto: CreateEventReservationsDto): Promise<any> {
+        const event = await this.eventModel.findById(eventId).exec();
+        if (!event) {
+            throw new NotFoundException('Evento no encontrado');
+        }
+    
+        const { reservedBy, numbered, notNumbered } = reservationsDto;
+        const currentDate = new Date();
+    
+        // Manejo para sectores numerados
+        for (const numberedSector of numbered) {
+            // Busca la fecha dentro del sector numerado
+            const date = event.dates.find(dateItem => dateItem.date_time.toISOString() === numberedSector.date_time);
+            if (!date) {
+                throw new NotFoundException('Fecha no encontrada');
+            }
+    
+            const sector = date.sectors.find(sectorItem => sectorItem._id.toString() === numberedSector.sector_id && sectorItem.numbered);
+            if (!sector) {
+                throw new NotFoundException('Sector numerado no encontrado');
+            }
+    
+            // Validar si todos los asientos en el DTO están disponibles
+            const allAvailable = numberedSector.reservations.every(reservation => {
+                return sector.rows.some(row =>
+                    row.some(seat => seat.displayId === reservation.displayId && seat.available === "true")
+                );
+            });
+    
+            if (!allAvailable) {
+                throw new BadRequestException('Alguno de los asientos no está disponible');
+            }
+    
+            // Actualización de los asientos
+            for (const reservation of numberedSector.reservations) {
+                let seatUpdated = false;
+                for (const row of sector.rows) {
+                    const seat = row.find(seatItem => seatItem.displayId === reservation.displayId);
+                    if (seat) {
+                        seat.available = event.publicated ? "false" : "preReserved";
+                        seat.timestamp = currentDate;
+                        seat.reservedBy = reservedBy;
+                        sector.available -= 1;
+                        sector.ocuped += 1;
+                        seatUpdated = true;
+                        break;
+                    }
+                }
+                if (!seatUpdated) {
+                    throw new NotFoundException(`Asiento con displayId ${reservation.displayId} no encontrado`);
+                }
+            }
+        }
+    
+        // Manejo para sectores no numerados
+        for (const notNumberedSector of notNumbered) {
+            // Busca la fecha dentro del sector no numerado
+            const date = event.dates.find(dateItem => dateItem.date_time.toISOString() === notNumberedSector.date_time);
+            if (!date) {
+                throw new NotFoundException('Fecha no encontrada');
+            }
+    
+            const sector = date.sectors.find(sectorItem => sectorItem._id.toString() === notNumberedSector.sector_id && !sectorItem.numbered);
+            if (!sector) {
+                throw new NotFoundException('Sector no numerado no encontrado');
+            }
+    
+            // Validar si hay suficientes asientos disponibles
+            if (notNumberedSector.quantity > sector.available) {
+                throw new BadRequestException('No hay suficientes asientos disponibles en el sector no numerado');
+            }
+    
+            // Crear asientos en el sector no numerado
+            for (let i = 0; i < notNumberedSector.quantity; i++) {
+                const seat = {
+                    displayId: '',
+                    available: event.publicated ? "false" : "preReserved",
+                    timestamp: currentDate,
+                    reservedBy: reservedBy,
+                    idTicket: generateIdTicket()
+                };
+    
+                if (!sector.rows) {
+                    sector.rows = [];
+                }
+    
+                if (sector.rows.length === 0) {
+                    sector.rows.push([seat]);
+                } else {
+                    sector.rows[0].push(seat);
+                }
+                sector.available -= 1;
+                sector.ocuped += 1;
+            }
+        }
+    
+        await event.save();
+    
+        return { message: 'Reservas realizadas correctamente' };
+    }
+    
+
+    /* version previa a la pedida por Luqui
     async reservations(eventId: string, reservationsDto: CreateEventReservationsDto): Promise<any> {
         const event = await this.eventModel.findById(eventId).exec();
         if (!event) {
@@ -113,6 +217,7 @@ export class EventService {
         return { message: 'Reservas realizadas correctamente' };
     }
             
+*/
 
     async create(eventDto: CreateEventDto, userRole: string): Promise<Event> {
         if (userRole !== 'admin') {
@@ -122,11 +227,11 @@ export class EventService {
         return createdEvent.save();
     }
 
-    /*
-    async findAll(): Promise<Event[]> {
+    
+    async findAllFull(): Promise<Event[]> {
         return this.eventModel.find().exec();
     }
-    */
+    
 
 
 //*** Retorna solo algunos campos del evento
@@ -229,7 +334,7 @@ async findUpcomingEvents(): Promise<any[]> {
 
 */
 
-//*** Retorna solo algunos campos del evento
+//*** Retorna solo algunos campos del evento 
 async findUpcomingAll(): Promise<any[]> {
     const currentDate = new Date();
     const events = await this.eventModel.find().exec();
