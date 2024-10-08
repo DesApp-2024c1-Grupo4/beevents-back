@@ -21,19 +21,19 @@ export class EventController {
         return this.eventService.findUpcomingEvents();
     }
 
-    @Get('allEvents') // todos los eventos
+    @Get('allEvents') // todos los eventos vencidos, no vencidos, publicados, no publicados sin los asientos
     async findAllEvents(@Request() req: any) {
         //const userRole = req.user.role;
         return this.eventService.findAll();
     }
 
-    @Get('allEventsFull') // todos los eventos
+    @Get('allEventsFull') // todos los eventos, vencidos, no vencidos, publicados, no publicados con los Seat
     async findAllFull(@Request() req: any) {
         //const userRole = req.user.role;
         return this.eventService.findAllFull();
     }
 
-    @Get('pubAndNotPub') // eventos que no están vencidos y publicados y no publicados
+    @Get('pubAndNotPub') // eventos que no están vencidos, publicados y no publicados
     async findUpcomingAll(@Request() req: any) {
         //const userRole = req.user.role;
         return this.eventService.findUpcomingAll();

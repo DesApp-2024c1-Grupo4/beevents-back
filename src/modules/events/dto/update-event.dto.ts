@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 // update-event.dto.ts
-
+import mongoose from "mongoose";
 export class UpdateSeatDto {
     readonly displayId?: string;
     available?: string;
@@ -20,12 +20,12 @@ export class UpdateSectorDto {
     //readonly preReserved?: [number, number][];
     capacity?: number;
     ocuped?: number;
-    readonly _id?: string;
+    readonly _id?: mongoose.Types.ObjectId; // Cambiar a ObjectId
 }
 
 export class UpdateDateDto {
-    readonly date_time?: Date;
-    readonly sectors?: UpdateSectorDto[];
+    date_time?: Date;
+    sectors?: UpdateSectorDto[];
 }
 
 export class UpdateEventDto {
