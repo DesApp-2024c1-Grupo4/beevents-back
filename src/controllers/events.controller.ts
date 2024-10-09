@@ -7,6 +7,7 @@ import { CreateEventDto } from '../modules/events/dto/create-event.dto';
 import { UpdateEventDto } from '../modules/events/dto/update-event.dto';
 import { UpdateSeatDto } from '../modules/events/dto/update-seat.dto';
 import { CreateSeatDto } from '../modules/events/dto/create-seat.dto';
+import { CreateEventReservationsDto } from '../modules/events/dto/reservations.dto';
 import { JwtAuthGuard } from '../modules/auth/jwt-auth.guard';
 import { RolesGuard } from '../modules/auth/roles.guard';
 
@@ -14,16 +15,28 @@ import { RolesGuard } from '../modules/auth/roles.guard';
 export class EventController {
     constructor(private readonly eventService: EventService) { }
 
-    @Get()
+    @Get() // eventos que no están vencidos y están publicados
     async findUpcomingEvents(@Request() req: any) {
         //const userRole = req.user.role;
         return this.eventService.findUpcomingEvents();
     }
 
-    @Get('allEvents')
+    @Get('allEvents') // todos los eventos vencidos, no vencidos, publicados, no publicados sin los asientos
     async findAllEvents(@Request() req: any) {
         //const userRole = req.user.role;
         return this.eventService.findAll();
+    }
+
+    @Get('allEventsFull') // todos los eventos, vencidos, no vencidos, publicados, no publicados con los Seat
+    async findAllFull(@Request() req: any) {
+        //const userRole = req.user.role;
+        return this.eventService.findAllFull();
+    }
+
+    @Get('pubAndNotPub') // eventos que no están vencidos, publicados y no publicados
+    async findUpcomingAll(@Request() req: any) {
+        //const userRole = req.user.role;
+        return this.eventService.findUpcomingAll();
     }
 
     @Get(':id')
@@ -78,6 +91,17 @@ export class EventController {
         return this.eventService.updateSeat(eventId, updateSeatDto);
     }
 
+    // controlador para enviar lista de reservas
+    //********************************************
+    @UseGuards(JwtAuthGuard)
+    @Patch(':eventId/reservations')
+    async reservations(@Param('eventId') eventId: string, @Body() reservationsDto: CreateEventReservationsDto, @Request() req: any) {
+        const userRole = req.user.role;
+        return this.eventService.reservations(eventId, reservationsDto);
+    }
+    //********************************************
+
+
     @UseGuards(JwtAuthGuard)
     @Patch(':eventId/place')
     async createSeat(@Param('eventId') eventId: string, @Body() createSeatDto: CreateSeatDto, @Request() req: any) {
@@ -90,4 +114,6 @@ export class EventController {
     async getReservationsByReservedBy(@Param('id') id: string, @Request() req: any) {
         return this.eventService.getReservationsByReservedBy(id);
     }
+
 }
+

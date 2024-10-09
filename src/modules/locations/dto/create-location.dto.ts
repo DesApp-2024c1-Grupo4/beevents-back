@@ -9,11 +9,15 @@ export class CreateLocationDto {
     };
     readonly configurations: {
         name: string;
+        description: string;
         sectors: {
             name: string;
             numbered: boolean;
-            rows: number;
-            seats: number;
+            rowsNumber: number;
+            seatsNumber: number;
+            eliminated: [number, number][];
+            //preReserved: [number, number][];
+            capacity: number;
         }[];
     }[];
 }

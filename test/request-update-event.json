@@ -1,0 +1,750 @@
+{
+    "name": "Prueba fechas",
+    "artist": "g4",
+    "image": "https://www.yeeply.com/wp-content/uploads/2019/11/quality_assurance_laptop_app_testing.jpg",
+    "description": "prueba update",
+    "location_id": "66ecc0d947f10bbc323d9474",
+    "user_id": "66bcbb59833ad41d52468652",
+    "dates": [
+      {
+        "date_time": "2024-11-21T03:00:00.000Z",
+        "sectors": [
+          {
+            "name": "Platea autoridades",
+            "numbered": true,
+            "rowsNumber": 4,
+            "seatsNumber": 10,
+            "available": 38,
+            "rows": [
+              [
+                {
+                  "displayId": "A-1",
+                  "available": "eliminated",
+                  "timestamp": "2024-10-08T12:29:29.708Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "9NELMB",
+                  "_id": "670525a98a4f74315e5f197f"
+                },
+                {
+                  "displayId": "A-2",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.708Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "HAKLM6",
+                  "_id": "670525a98a4f74315e5f1980"
+                },
+                {
+                  "displayId": "A-3",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.708Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "ZQS2U0",
+                  "_id": "670525a98a4f74315e5f1981"
+                },
+                {
+                  "displayId": "A-4",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.708Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "QMI6TC",
+                  "_id": "670525a98a4f74315e5f1982"
+                },
+                {
+                  "displayId": "A-5",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.709Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "K2FLCZ",
+                  "_id": "670525a98a4f74315e5f1983"
+                },
+                {
+                  "displayId": "A-6",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.709Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "3OAM91",
+                  "_id": "670525a98a4f74315e5f1984"
+                },
+                {
+                  "displayId": "A-7",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.709Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "82OCD6",
+                  "_id": "670525a98a4f74315e5f1985"
+                },
+                {
+                  "displayId": "A-8",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.709Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "GP9CE2",
+                  "_id": "670525a98a4f74315e5f1986"
+                },
+                {
+                  "displayId": "A-9",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.709Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "E3BENW",
+                  "_id": "670525a98a4f74315e5f1987"
+                },
+                {
+                  "displayId": "A-10",
+                  "available": "eliminated",
+                  "timestamp": "2024-10-08T12:29:29.709Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "BDCW0W",
+                  "_id": "670525a98a4f74315e5f1988"
+                }
+              ],
+              [
+                {
+                  "displayId": "B-1",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "49Y1NB",
+                  "_id": "670525a98a4f74315e5f1989"
+                },
+                {
+                  "displayId": "B-2",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "QFJJEF",
+                  "_id": "670525a98a4f74315e5f198a"
+                },
+                {
+                  "displayId": "B-3",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "VO7JCG",
+                  "_id": "670525a98a4f74315e5f198b"
+                },
+                {
+                  "displayId": "B-4",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "MG3EKX",
+                  "_id": "670525a98a4f74315e5f198c"
+                },
+                {
+                  "displayId": "B-5",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "928DTY",
+                  "_id": "670525a98a4f74315e5f198d"
+                },
+                {
+                  "displayId": "B-6",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "CGOTAV",
+                  "_id": "670525a98a4f74315e5f198e"
+                },
+                {
+                  "displayId": "B-7",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "2TJRLO",
+                  "_id": "670525a98a4f74315e5f198f"
+                },
+                {
+                  "displayId": "B-8",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "BGQ6BM",
+                  "_id": "670525a98a4f74315e5f1990"
+                },
+                {
+                  "displayId": "B-9",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "U5KNKA",
+                  "_id": "670525a98a4f74315e5f1991"
+                },
+                {
+                  "displayId": "B-10",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.712Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "PQBM2D",
+                  "_id": "670525a98a4f74315e5f1992"
+                }
+              ],
+              [
+                {
+                  "displayId": "C-1",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.712Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "JHG80K",
+                  "_id": "670525a98a4f74315e5f1993"
+                },
+                {
+                  "displayId": "C-2",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "KAO0AZ",
+                  "_id": "670525a98a4f74315e5f1994"
+                },
+                {
+                  "displayId": "C-3",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "OVJ4KV",
+                  "_id": "670525a98a4f74315e5f1995"
+                },
+                {
+                  "displayId": "C-4",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "I2335D",
+                  "_id": "670525a98a4f74315e5f1996"
+                },
+                {
+                  "displayId": "C-5",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "B0VG26",
+                  "_id": "670525a98a4f74315e5f1997"
+                },
+                {
+                  "displayId": "C-6",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "LH45JK",
+                  "_id": "670525a98a4f74315e5f1998"
+                },
+                {
+                  "displayId": "C-7",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "FS7KPE",
+                  "_id": "670525a98a4f74315e5f1999"
+                },
+                {
+                  "displayId": "C-8",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "H9YTB1",
+                  "_id": "670525a98a4f74315e5f199a"
+                },
+                {
+                  "displayId": "C-9",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "V2901M",
+                  "_id": "670525a98a4f74315e5f199b"
+                },
+                {
+                  "displayId": "C-10",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "9FLTA2",
+                  "_id": "670525a98a4f74315e5f199c"
+                }
+              ],
+              [
+                {
+                  "displayId": "D-1",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "MB43BD",
+                  "_id": "670525a98a4f74315e5f199d"
+                },
+                {
+                  "displayId": "D-2",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "OR7MH6",
+                  "_id": "670525a98a4f74315e5f199e"
+                },
+                {
+                  "displayId": "D-3",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "OCZ80O",
+                  "_id": "670525a98a4f74315e5f199f"
+                },
+                {
+                  "displayId": "D-4",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "V5OK0J",
+                  "_id": "670525a98a4f74315e5f19a0"
+                },
+                {
+                  "displayId": "D-5",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "QJ59JH",
+                  "_id": "670525a98a4f74315e5f19a1"
+                },
+                {
+                  "displayId": "D-6",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "HT6KNT",
+                  "_id": "670525a98a4f74315e5f19a2"
+                },
+                {
+                  "displayId": "D-7",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "AXSRZ7",
+                  "_id": "670525a98a4f74315e5f19a3"
+                },
+                {
+                  "displayId": "D-8",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "ADCEP7",
+                  "_id": "670525a98a4f74315e5f19a4"
+                },
+                {
+                  "displayId": "D-9",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "37KF5O",
+                  "_id": "670525a98a4f74315e5f19a5"
+                },
+                {
+                  "displayId": "D-10",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "OI2T7H",
+                  "_id": "670525a98a4f74315e5f19a6"
+                }
+              ]
+            ],
+            "eliminated": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                9
+              ]
+            ],
+            "capacity": 38,
+            "ocuped": 0,
+            "_id": "66ecc0d947f10bbc323d9477"
+          },
+          {
+            "name": "Publico general No numerado",
+            "numbered": false,
+            "rowsNumber": 1,
+            "seatsNumber": 100,
+            "available": 100,
+            "rows": [
+              []
+            ],
+            "eliminated": [],
+            "capacity": 100,
+            "ocuped": 0,
+            "_id": "66ecc0d947f10bbc323d9478"
+          }
+        ]
+      },
+      {
+        "date_time": "2024-11-28T03:00:00.000Z",
+        "sectors": [
+          {
+            "name": "Platea autoridades",
+            "numbered": true,
+            "rowsNumber": 4,
+            "seatsNumber": 10,
+            "available": 38,
+            "rows": [
+              [
+                {
+                  "displayId": "A-1",
+                  "available": "eliminated",
+                  "timestamp": "2024-10-08T12:29:29.708Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "9NELMB",
+                  "_id": "670525a98a4f74315e5f197f"
+                },
+                {
+                  "displayId": "A-2",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.708Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "HAKLM6",
+                  "_id": "670525a98a4f74315e5f1980"
+                },
+                {
+                  "displayId": "A-3",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.708Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "ZQS2U0",
+                  "_id": "670525a98a4f74315e5f1981"
+                },
+                {
+                  "displayId": "A-4",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.708Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "QMI6TC",
+                  "_id": "670525a98a4f74315e5f1982"
+                },
+                {
+                  "displayId": "A-5",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.709Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "K2FLCZ",
+                  "_id": "670525a98a4f74315e5f1983"
+                },
+                {
+                  "displayId": "A-6",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.709Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "3OAM91",
+                  "_id": "670525a98a4f74315e5f1984"
+                },
+                {
+                  "displayId": "A-7",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.709Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "82OCD6",
+                  "_id": "670525a98a4f74315e5f1985"
+                },
+                {
+                  "displayId": "A-8",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.709Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "GP9CE2",
+                  "_id": "670525a98a4f74315e5f1986"
+                },
+                {
+                  "displayId": "A-9",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.709Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "E3BENW",
+                  "_id": "670525a98a4f74315e5f1987"
+                },
+                {
+                  "displayId": "A-10",
+                  "available": "eliminated",
+                  "timestamp": "2024-10-08T12:29:29.709Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "BDCW0W",
+                  "_id": "670525a98a4f74315e5f1988"
+                }
+              ],
+              [
+                {
+                  "displayId": "B-1",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "49Y1NB",
+                  "_id": "670525a98a4f74315e5f1989"
+                },
+                {
+                  "displayId": "B-2",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "QFJJEF",
+                  "_id": "670525a98a4f74315e5f198a"
+                },
+                {
+                  "displayId": "B-3",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "VO7JCG",
+                  "_id": "670525a98a4f74315e5f198b"
+                },
+                {
+                  "displayId": "B-4",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "MG3EKX",
+                  "_id": "670525a98a4f74315e5f198c"
+                },
+                {
+                  "displayId": "B-5",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "928DTY",
+                  "_id": "670525a98a4f74315e5f198d"
+                },
+                {
+                  "displayId": "B-6",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "CGOTAV",
+                  "_id": "670525a98a4f74315e5f198e"
+                },
+                {
+                  "displayId": "B-7",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "2TJRLO",
+                  "_id": "670525a98a4f74315e5f198f"
+                },
+                {
+                  "displayId": "B-8",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "BGQ6BM",
+                  "_id": "670525a98a4f74315e5f1990"
+                },
+                {
+                  "displayId": "B-9",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.711Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "U5KNKA",
+                  "_id": "670525a98a4f74315e5f1991"
+                },
+                {
+                  "displayId": "B-10",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.712Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "PQBM2D",
+                  "_id": "670525a98a4f74315e5f1992"
+                }
+              ],
+              [
+                {
+                  "displayId": "C-1",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.712Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "JHG80K",
+                  "_id": "670525a98a4f74315e5f1993"
+                },
+                {
+                  "displayId": "C-2",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "KAO0AZ",
+                  "_id": "670525a98a4f74315e5f1994"
+                },
+                {
+                  "displayId": "C-3",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "OVJ4KV",
+                  "_id": "670525a98a4f74315e5f1995"
+                },
+                {
+                  "displayId": "C-4",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "I2335D",
+                  "_id": "670525a98a4f74315e5f1996"
+                },
+                {
+                  "displayId": "C-5",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "B0VG26",
+                  "_id": "670525a98a4f74315e5f1997"
+                },
+                {
+                  "displayId": "C-6",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "LH45JK",
+                  "_id": "670525a98a4f74315e5f1998"
+                },
+                {
+                  "displayId": "C-7",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "FS7KPE",
+                  "_id": "670525a98a4f74315e5f1999"
+                },
+                {
+                  "displayId": "C-8",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "H9YTB1",
+                  "_id": "670525a98a4f74315e5f199a"
+                },
+                {
+                  "displayId": "C-9",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "V2901M",
+                  "_id": "670525a98a4f74315e5f199b"
+                },
+                {
+                  "displayId": "C-10",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.713Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "9FLTA2",
+                  "_id": "670525a98a4f74315e5f199c"
+                }
+              ],
+              [
+                {
+                  "displayId": "D-1",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "MB43BD",
+                  "_id": "670525a98a4f74315e5f199d"
+                },
+                {
+                  "displayId": "D-2",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "OR7MH6",
+                  "_id": "670525a98a4f74315e5f199e"
+                },
+                {
+                  "displayId": "D-3",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "OCZ80O",
+                  "_id": "670525a98a4f74315e5f199f"
+                },
+                {
+                  "displayId": "D-4",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "V5OK0J",
+                  "_id": "670525a98a4f74315e5f19a0"
+                },
+                {
+                  "displayId": "D-5",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "QJ59JH",
+                  "_id": "670525a98a4f74315e5f19a1"
+                },
+                {
+                  "displayId": "D-6",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "HT6KNT",
+                  "_id": "670525a98a4f74315e5f19a2"
+                },
+                {
+                  "displayId": "D-7",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "AXSRZ7",
+                  "_id": "670525a98a4f74315e5f19a3"
+                },
+                {
+                  "displayId": "D-8",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "ADCEP7",
+                  "_id": "670525a98a4f74315e5f19a4"
+                },
+                {
+                  "displayId": "D-9",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "37KF5O",
+                  "_id": "670525a98a4f74315e5f19a5"
+                },
+                {
+                  "displayId": "D-10",
+                  "available": "true",
+                  "timestamp": "2024-10-08T12:29:29.714Z",
+                  "reservedBy": "vacio",
+                  "idTicket": "OI2T7H",
+                  "_id": "670525a98a4f74315e5f19a6"
+                }
+              ]
+            ],
+            "eliminated": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                9
+              ]
+            ],
+            "capacity": 38,
+            "ocuped": 0,
+            "_id": "66ecc0d947f10bbc323d9477"
+          },
+          {
+            "name": "Publico general No numerado",
+            "numbered": false,
+            "rowsNumber": 1,
+            "seatsNumber": 100,
+            "available": 100,
+            "rows": [
+              []
+            ],
+            "eliminated": [],
+            "capacity": 100,
+            "ocuped": 0,
+            "_id": "66ecc0d947f10bbc323d9478"
+          }
+        ]
+      }
+    ]
+  }
+  
+  

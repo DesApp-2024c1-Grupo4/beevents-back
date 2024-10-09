@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
 // update-event.dto.ts
-
+import mongoose from "mongoose";
 export class UpdateSeatDto {
     readonly displayId?: string;
-    readonly available?: boolean;
+    available?: string;
     readonly timestamp?: Date;
-    readonly reservedBy?: string;
+    reservedBy?: string;
     readonly idTicket?: string;
 }
 
@@ -15,12 +15,17 @@ export class UpdateSectorDto {
     readonly rowsNumber?: number;
     readonly seatsNumber?: number;
     readonly available?: number;
-    readonly rows?: UpdateSeatDto[][];
+    rows?: UpdateSeatDto[][];
+    readonly eliminated?: [number, number][];
+    //readonly preReserved?: [number, number][];
+    capacity?: number;
+    ocuped?: number;
+    readonly _id?: mongoose.Types.ObjectId; // Cambiar a ObjectId
 }
 
 export class UpdateDateDto {
-    readonly date_time?: Date;
-    readonly sectors?: UpdateSectorDto[];
+    date_time?: Date;
+    sectors?: UpdateSectorDto[];
 }
 
 export class UpdateEventDto {
@@ -29,6 +34,7 @@ export class UpdateEventDto {
     readonly image?: string;
     readonly description?: string;
     readonly location_id?: string;
-    user_id: string;
+    user_id?: string;
     readonly dates?: UpdateDateDto[];
+    readonly publicated?: boolean;
 }

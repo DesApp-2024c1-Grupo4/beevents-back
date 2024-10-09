@@ -1,0 +1,29 @@
+{
+    "eventId": "66fedbd1dbbc2677e3dbbfd5",
+    "date_time": "2024-11-22T23:00:00.000Z",
+    "reservedBy": "usuario123",
+    "numbered": [
+      {
+        "sector_id": "66fedbd1dbbc2677e3dbbfd8",
+        "reservations": [
+          {
+            "displayId": "A-3",
+            "timestamp": "2024-10-03T15:30:00.000Z",
+            "_id": "66fedbd1dbbc2677e3dbbfde"
+          },
+          {
+            "displayId": "A-2",
+            "timestamp": "2024-10-03T15:35:00.000Z",
+            "_id": "66fedbd1dbbc2677e3dbbfdd"
+          }
+        ]
+      }
+    ],
+    "notNumbered": [
+      {
+        "sector_id": "66fedbd1dbbc2677e3dbbfd7",
+        "quantity": 5
+      }
+    ]
+  }
+  

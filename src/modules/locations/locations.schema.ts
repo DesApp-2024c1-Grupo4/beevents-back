@@ -14,10 +14,20 @@ export class Sector {
     numbered: boolean;
 
     @Prop({ type: Number, required: true })
-    rows: number;
+    rowsNumber: number;
 
     @Prop({ type: Number, required: true })
-    seats: number;
+    seatsNumber: number;
+
+    @Prop({ type: [[Number]], required: false, default: [] })
+    eliminated: [number, number][];
+
+    //@Prop({ type: [[Number]], required: false, default: [] })
+    //preReserved: [number, number][];
+
+    @Prop({ type: Number, required: false, default: 0})
+    capacity: number;
+
 }
 
 const SectorSchema = SchemaFactory.createForClass(Sector);
@@ -26,6 +36,9 @@ const SectorSchema = SchemaFactory.createForClass(Sector);
 export class Configuration {
     @Prop({ type: String, required: true })
     name: string;
+
+    @Prop({ type: String, required: false })
+    description: string;
 
     @Prop({ type: [SectorSchema], required: true })
     sectors: Sector[];
@@ -50,7 +63,7 @@ export class Location {
         number: number;
     };
 
-    @Prop({ type: [ConfigurationSchema], required: true })
+    @Prop({ type: [ConfigurationSchema], required: false, default: [] })
     configurations: Configuration[];
 
     // Otras propiedades y métodos según sea necesario

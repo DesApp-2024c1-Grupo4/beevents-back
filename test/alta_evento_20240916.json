@@ -1,0 +1,29 @@
+{
+    "name": "Prueba Evento con sector irregular",
+    "artist": "El cuarteto G4",
+    "image": "https://prod-cms-static.ticketek.com.ar/sites/default/files/images/show-header/cir960_0.png",
+    "description": "Este evento es para probar un sector irregular",
+    "location_id": "665f75a54a72077ce226e322",
+    "user_id": "user1",
+    "dates": [
+      {
+        "date_time": "2024-10-22T23:00:00.000Z",
+        "sectors": [
+          {
+            "name": "Campo",
+            "numbered": false,
+            "rowsNumber": 1,
+            "seatsNumber": 40
+          },
+          {
+            "name": "Platea Alta",
+            "numbered": true,
+            "rowsNumber": 3,
+            "seatsNumber": 10,
+            "eliminated": [[0,0],[0,9]],
+            "preReserved": []
+          }
+        ]
+      }
+    ]
+}
