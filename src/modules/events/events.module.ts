@@ -7,6 +7,8 @@ import { EventController } from '../../controllers/events.controller';
 import { EventService } from './events.services';
 import { Event, EventSchema } from './events.schema';
 import { Location, LocationSchema } from '../locations/locations.schema';
+import { LocationService } from '../locations/locations.services';
+import { LocationModule } from '../locations/locations.module';  // Asegúrate de que la ruta sea correcta
 
 @Module({
     imports: [
@@ -23,8 +25,11 @@ import { Location, LocationSchema } from '../locations/locations.schema';
             { name: Event.name, schema: EventSchema },
             { name: Location.name, schema: LocationSchema },
         ]),
+        MongooseModule.forFeature([{ name: Event.name, schema: EventSchema }]),
+        LocationModule,  // Importa el LocationModule aquí        
     ],
-    controllers: [EventController],
+    controllers: [EventController/*, LocationService*/],
     providers: [EventService],
+    exports: [EventService],
 })
 export class EventModule { }

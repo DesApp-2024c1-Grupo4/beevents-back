@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 // create-event.dto.ts
+// import { IsNotEmpty, IsOptional, IsArray, IsNumber } from 'class-validator';
 
 export class CreateSeatDto {
     readonly displayId: string;
@@ -24,11 +25,19 @@ export class CreateDateDto {
 }
 
 export class CreateEventDto {
+    // @IsNotEmpty()
     readonly name: string;
     readonly artist: string;
     readonly image: string;
     readonly description: string;
+
+    // @IsNotEmpty()
     readonly location_id: string;
+    // @IsOptional()
+    // @IsArray()
+    // @IsNumber({}, { each: true })
+    readonly coordinates?: [number, number]; // Coordenadas opcionales
+
     user_id: string;
     readonly dates: CreateDateDto[];
 }

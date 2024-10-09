@@ -43,7 +43,7 @@ export class Sector extends Document {
     @Prop({ type: Number, required: false })
     available: number;
 
-    @Prop({ type: [[SeatSchema]], required: function() { return this.numbered; }, default: [] })
+    @Prop({ type: [[SeatSchema]], required: function () { return this.numbered; }, default: [] })
     rows: Seat[][];
 }
 
@@ -62,6 +62,7 @@ const DatesSchema = SchemaFactory.createForClass(Dates);
 
 @Schema()
 export class Event {
+
     @Prop({ required: true })
     name: string;
 
@@ -72,22 +73,42 @@ export class Event {
     image: string;
 
     @Prop({ required: true })
-    description: string;    
+    description: string;
 
     @Prop({ required: true })
     location_id: string;
+
+    @Prop({ type: [Number], index: '2dsphere' }) // Index geoespacial para coordenadas
+    coordinates?: [number, number];  // Coordenadas en formato [longitud, latitud]
+
+    // @Prop({
+    //     type: {
+    //         type: String, // GeoJSON tipo 'Point'
+    //         enum: ['Point'],
+    //     },
+    //     coordinates: {
+    //         type: [Number], // Array de números [longitud, latitud]
+    //     },
+    //     _id: false, // Para evitar que este subdocumento tenga su propio _id
+    // })
+    // coordinates?: { type: string, coordinates: [number, number] };  // GeoJSON para coordenadas, opcional
+
 
     @Prop({ required: true })
     user_id: string;
 
     @Prop({ type: [DatesSchema], required: true })
     dates: Dates[];
-    
+
     // Otras propiedades y métodos según sea necesario
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);
 
+// Se agrega un índice geoespacial, aunque sea una propiedad opcional
+EventSchema.index({ coordinates: '2dsphere' });
+
+// Funciones auxiliares
 // Función para convertir un número a una secuencia alfabética
 function numberToAlphabet(num: number): string {
     let str = '';
@@ -110,7 +131,7 @@ function generateIdTicket(): string {
 }
 
 // Middleware pre-save para establecer `available` y crear los asientos si `numbered` es true
-EventSchema.pre<EventDocument>('save', function(next) {
+EventSchema.pre<EventDocument>('save', function (next) {
     if (this.isNew) {
         this.dates.forEach(dateItem => {
             dateItem.sectors.forEach(sector => {

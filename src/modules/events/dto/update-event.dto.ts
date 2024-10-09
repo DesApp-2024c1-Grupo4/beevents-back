@@ -29,6 +29,7 @@ export class UpdateEventDto {
     readonly image?: string;
     readonly description?: string;
     readonly location_id?: string;
+    readonly coordinates?: [number, number]; // Coordenadas opcionales
     user_id: string;
     readonly dates?: UpdateDateDto[];
 }
