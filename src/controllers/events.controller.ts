@@ -67,18 +67,21 @@ export class EventController {
     @Get('nearby')
     async getNearbyEvents(@Request() req) {
         try {
-            // Llama a un servicio externo para obtener la IP pública
+
             const response = await axios.get('https://api.ipify.org?format=json');
+            // const response = await axios.get('https://get.geojs.io/v1/ip/geo.json');
             const clientIP = response.data.ip;
+
             // const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
             console.log(`IP pública del cliente: ${clientIP}`);
             // return { ip: clientIP };
             // Lógica para obtener la ubicación según la IP pública
-            const clientLocation = await this.getLocationFromIP(clientIP);
+            const clientLocation = await this.getLocationFromIP();
             // return { LOCATION: clientLocation };
 
             if (clientLocation) {
                 const { lon, lat } = clientLocation;
+
                 const events = await this.eventService.findNearbyEvents(lon, lat);
                 return events;
             } else {
@@ -91,20 +94,38 @@ export class EventController {
     }
 
     // Definir la función getLocationFromIP en el controlador
-    async getLocationFromIP(ip: string) {
+    async getLocationFromIP() {
         try {
-            const response = await axios.get(`http://ip-api.com/json/${ip}`);
-            if (response.data.status === 'success') {
+            // // Intentamos obtener la ubicación con ip-api
+            // try {
+            //     const response = await axios.get(`https://ip-api.com/json/${ip}`);
+            //     if (response.data.status === 'success') {
+            //         return {
+            //             lat: response.data.lat,
+            //             lon: response.data.lon
+            //         };
+            //     }
+            // } catch (error) {
+            //     console.warn('Error al usar ip-api:', error);
+            // }
+
+            // Si ip-api falla, usamos get.geojs.io
+            try {
+                const geoResponse = await axios.get('https://get.geojs.io/v1/ip/geo.json');
                 return {
-                    lat: response.data.lat,
-                    lon: response.data.lon
+                    lat: geoResponse.data.latitude,
+                    lon: geoResponse.data.longitude
                 };
+            } catch (error) {
+                console.error('Error al usar geojs.io:', error);
             }
+
         } catch (error) {
             console.error('Error obteniendo ubicación por IP:', error);
         }
         return null;
     }
+
 
     // Endpoint para obtener los eventos futuros. No requiere autenticación.
     @Get() // eventos que no están vencidos y están publicados

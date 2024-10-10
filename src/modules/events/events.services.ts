@@ -734,21 +734,40 @@ export class EventService {
 
 
     // Encontrar hasta 4 eventos cercanos a una ubicación geoespacial
-    async findNearbyEvents(longitude: number, latitude: number): Promise<Event[]> {
-        return this.eventModel
-            .find({
-                coordinates: {
-                    $near: {
-                        $geometry: {
-                            type: 'Point',
-                            coordinates: [longitude, latitude], // Coordenadas para la búsqueda geoespacial
-                        },
+    async findNearbyEvents(lon: any, lat: any): Promise<any[]> {
+        // Agregar logs para verificar los valores de lon y lat
+        console.log('Longitud recibida (lon):', lon);
+        console.log('Latitud recibida (lat):', lat);
+
+        const events = await this.eventModel.find({
+            publicated: true, // Solo eventos publicados
+            coordinates: {
+                $near: {
+                    $geometry: {
+                        type: 'Point', // Asegurarse de especificar el tipo de geometría
+                        coordinates: [lon, lat]
                     },
+                    $maxDistance: 100000, // Distancia máxima de ejemplo
                 },
-            })
-            .limit(4) // Limitar a 3 eventos
+            },
+        })
+            .limit(4) // Limitar a 4 eventos
             .exec();
+
+        // Filtramos los datos para responder solo con la información necesaria
+        return events.map(event => ({
+            _id: event._id,
+            name: event.name,
+            artist: event.artist,
+            image: event.image,
+            description: event.description,
+            location_id: event.location_id,
+            publicated: event.publicated,
+            coordinates: event.coordinates,
+        }));
     }
+
+
 
     // Método para actualizar coordenadas en el evento
     async updateEventCoordinates(eventId: string, coordinates: [number, number]) {
@@ -759,8 +778,8 @@ export class EventService {
         ).exec();
     }
 
-
 }
+
 
 // Funciones auxiliares
 // Función para convertir un número a una secuencia alfabética
