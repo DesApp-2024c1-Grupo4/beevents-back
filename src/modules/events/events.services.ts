@@ -747,7 +747,7 @@ export class EventService {
                         type: 'Point', // Asegurarse de especificar el tipo de geometría
                         coordinates: [lon, lat]
                     },
-                    $maxDistance: 100000, // Distancia máxima de ejemplo
+                    //$maxDistance: 100000, // Distancia máxima de ejemplo
                 },
             },
         })
