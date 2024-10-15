@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 // events.controller.ts
 
-import { Controller, Get, Post, Patch, Delete, Param, Body, Put, UseGuards, Request, SetMetadata, HttpCode, HttpStatus, Logger } from '@nestjs/common';
+import { Controller, Get, Query, Post, Patch, Delete, Param, Body, Put, UseGuards, Request, SetMetadata, HttpCode, HttpStatus, Logger } from '@nestjs/common';
 import { EventService } from '../modules/events/events.services';
 import { Event, EventDocument } from '../modules/events/events.schema';
 import { CreateEventDto } from '../modules/events/dto/create-event.dto';
@@ -63,35 +63,58 @@ export class EventController {
         return null;
     }
 
+
     // Endpoint para obtener los eventos cercanos a la ubicación del usuario según su IP. No requiere autenticación.
-    @Get('nearby')
-    async getNearbyEvents(@Request() req) {
+    @Get('nearby') // Esta es la ruta que debería coincidir
+    async getNearbyEvents(@Query('lat') lat: any, @Query('lon') lon: any) {
+        console.log('Entrando al controlador nearby'); // Para verificar que se está llamando
         try {
-
-            const response = await axios.get('https://api.ipify.org?format=json');
-            // const response = await axios.get('https://get.geojs.io/v1/ip/geo.json');
-            const clientIP = response.data.ip;
-
-            // const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-            console.log(`IP pública del cliente: ${clientIP}`);
-            // return { ip: clientIP };
-            // Lógica para obtener la ubicación según la IP pública
-            const clientLocation = await this.getLocationFromIP();
-            // return { LOCATION: clientLocation };
-
-            if (clientLocation) {
-                const { lon, lat } = clientLocation;
-
-                const events = await this.eventService.findNearbyEvents(lon, lat);
-                return events;
-            } else {
-                return { message: 'No se pudo obtener la ubicación' };
+            console.log(`lat:${lat}, lon:${lon}`);
+            if (!lat || !lon) {
+                return { message: 'Faltan las coordenadas de latitud y longitud' };
             }
+
+            console.log(`Coordenadas recibidas: lat=${lat}, lon=${lon}`);
+
+            // Lógica para obtener eventos cercanos
+            const events = await this.eventService.findNearbyEvents(lon, lat);
+            return events;
         } catch (error) {
-            console.error('Error al obtener la IP pública:', error);
-            return { message: 'Error al obtener la IP pública' };
+            console.error('Error al obtener los eventos cercanos:', error);
+            return { message: 'Error al obtener los eventos cercanos' };
         }
     }
+
+
+    // // Endpoint para obtener los eventos cercanos a la ubicación del usuario según su IP. No requiere autenticación.
+    // @Get('nearby')
+    // async getNearbyEvents(@Request() req) {
+    //     try {
+
+    //         const response = await axios.get('https://api.ipify.org?format=json');
+    //         // const response = await axios.get('https://get.geojs.io/v1/ip/geo.json');
+    //         const clientIP = response.data.ip;
+
+    //         // const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    //         console.log(`IP pública del cliente: ${clientIP}`);
+    //         // return { ip: clientIP };
+    //         // Lógica para obtener la ubicación según la IP pública
+    //         const clientLocation = await this.getLocationFromIP();
+    //         // return { LOCATION: clientLocation };
+
+    //         if (clientLocation) {
+    //             const { lon, lat } = clientLocation;
+
+    //             const events = await this.eventService.findNearbyEvents(lon, lat);
+    //             return events;
+    //         } else {
+    //             return { message: 'No se pudo obtener la ubicación' };
+    //         }
+    //     } catch (error) {
+    //         console.error('Error al obtener la IP pública:', error);
+    //         return { message: 'Error al obtener la IP pública' };
+    //     }
+    // }
 
     // Definir la función getLocationFromIP en el controlador
     async getLocationFromIP() {
