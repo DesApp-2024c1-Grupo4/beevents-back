@@ -36,4 +36,5 @@ export class CreateEventDto {
     user_id: string;
     readonly dates: CreateDateDto[];
     readonly publicated: boolean;
+    coordinates?: [number, number]; // Coordenadas opcionales
 }

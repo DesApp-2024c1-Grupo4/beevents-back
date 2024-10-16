@@ -37,4 +37,5 @@ export class UpdateEventDto {
     user_id?: string;
     readonly dates?: UpdateDateDto[];
     readonly publicated?: boolean;
+    readonly coordinates?: [number, number]; // Coordenadas opcionales
 }

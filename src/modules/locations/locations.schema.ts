@@ -25,7 +25,7 @@ export class Sector {
     //@Prop({ type: [[Number]], required: false, default: [] })
     //preReserved: [number, number][];
 
-    @Prop({ type: Number, required: false, default: 0})
+    @Prop({ type: Number, required: false, default: 0 })
     capacity: number;
 
 }

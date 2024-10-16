@@ -22,5 +22,6 @@ import { Location, LocationSchema } from './locations.schema';
     ],
     controllers: [LocationController],
     providers: [LocationService],
+    exports: [LocationService],  // Exporta el LocationService para que otros módulos puedan usarlo    
 })
 export class LocationModule { }
