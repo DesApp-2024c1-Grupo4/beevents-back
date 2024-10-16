@@ -738,8 +738,13 @@ export class EventService {
         // Agregar logs para verificar los valores de lon y lat
         // console.log('Longitud recibida (lon):', lon);
         // console.log('Latitud recibida (lat):', lat);
+        const currentDate = new Date(); // Fecha y hora actuales
 
+        // Filtrar eventos publicados y con al menos una fecha válida
         const events = await this.eventModel.find({
+            dates: {
+                $elemMatch: { 'date_time': { $gte: currentDate } } // Al menos una fecha futura
+            },
             publicated: true, // Solo eventos publicados
             coordinates: {
                 $near: {

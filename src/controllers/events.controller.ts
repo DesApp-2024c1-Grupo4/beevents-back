@@ -241,6 +241,10 @@ export class EventController {
                 createEventDto.coordinates = coordinates;
             } else {
                 this.logger.warn(`No se pudieron obtener coordenadas para la ubicación con ID: ${createEventDto.location_id}`);
+                // Asignar coordenadas del Obelisco de Buenos Aires
+                createEventDto.coordinates = [-58.3816, -34.6037]; // [lon, lat]
+                this.logger.warn('Se asignaron las coordenadas por defecto del Obelisco de Buenos Aires');
+
             }
         }
         console.log('EVENTO POR CREAR: ', createEventDto); // Para verificar que se está llamando
