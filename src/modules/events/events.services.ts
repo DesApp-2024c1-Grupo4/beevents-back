@@ -736,8 +736,8 @@ export class EventService {
     // Encontrar hasta 4 eventos cercanos a una ubicación geoespacial
     async findNearbyEvents(lon: any, lat: any): Promise<any[]> {
         // Agregar logs para verificar los valores de lon y lat
-        console.log('Longitud recibida (lon):', lon);
-        console.log('Latitud recibida (lat):', lat);
+        // console.log('Longitud recibida (lon):', lon);
+        // console.log('Latitud recibida (lat):', lat);
 
         const events = await this.eventModel.find({
             publicated: true, // Solo eventos publicados

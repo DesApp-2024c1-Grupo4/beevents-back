@@ -67,20 +67,20 @@ export class EventController {
     // Endpoint para obtener los eventos cercanos a la ubicación del usuario según su IP. No requiere autenticación.
     @Get('nearby') // Esta es la ruta que debería coincidir
     async getNearbyEvents(@Query('lat') lat: any, @Query('lon') lon: any) {
-        console.log('Entrando al controlador nearby'); // Para verificar que se está llamando
+        console.log('Llamado al controlador nearby'); // Para verificar que se está llamando
         try {
-            console.log(`lat:${lat}, lon:${lon}`);
+            // console.log(`lat:${lat}, lon:${lon}`);
             if (!lat || !lon) {
                 return { message: 'Faltan las coordenadas de latitud y longitud' };
             }
 
-            console.log(`Coordenadas recibidas: lat=${lat}, lon=${lon}`);
+            // console.log(`Coordenadas recibidas: lat=${lat}, lon=${lon}`);
 
             // Lógica para obtener eventos cercanos
             const events = await this.eventService.findNearbyEvents(lon, lat);
             return events;
         } catch (error) {
-            console.error('Error al obtener los eventos cercanos:', error);
+            // console.error('Error al obtener los eventos cercanos:', error);
             return { message: 'Error al obtener los eventos cercanos' };
         }
     }
@@ -187,10 +187,44 @@ export class EventController {
 
 
     // Endpoint para crear un evento. Requiere autenticación JWT y rol de 'admin'.
+    // @UseGuards(JwtAuthGuard, RolesGuard)
+    // @SetMetadata('role', 'admin') // Requiere rol 'admin' para crear un evento
+    // @Post()
+    // async create(@Body() createEventDto: CreateEventDto, @Request() req: any) {
+    //     const userRole = req.user.role;
+    //     const userId = req.user.userId;  // Extrae el userId del token JWT
+    //     createEventDto.user_id = userId; // Asigna el userId al evento
+
+    //     // Crear el evento en la base de datos
+    //     const createdEvent = await this.eventService.create(createEventDto, userRole);
+
+    //     // Actualizar las coordenadas del evento recién creado
+    //     try {
+    //         const address = await this.eventService.getAddress(createdEvent.location_id);
+    //         const coordinates = await this.getCoordinatesFromAddress(address);
+
+    //         if (coordinates) {
+    //             await this.eventService.updateEventCoordinates(createdEvent._id, coordinates);
+    //             this.logger.log(`Evento ${createdEvent._id} actualizado con coordenadas ${coordinates}`);
+    //         } else {
+    //             this.logger.warn(`No se pudieron obtener coordenadas para la ubicación con ID: ${createdEvent.location_id}`);
+    //         }
+    //     } catch (error) {
+    //         this.logger.error(`Error al actualizar las coordenadas del evento ${createdEvent._id}:`, error);
+    //     }
+
+    //     // Retornar el evento creado
+    //     return createdEvent;
+    // }
+
+
+
     @UseGuards(JwtAuthGuard, RolesGuard)
     @SetMetadata('role', 'admin') // Requiere rol 'admin' para crear un evento
     @Post()
     async create(@Body() createEventDto: CreateEventDto, @Request() req: any) {
+        console.log('Llamado al controlador crear evento'); // Para verificar que se está llamando
+
         const userRole = req.user.role;
         const userId = req.user.userId;  // Extrae el userId del token JWT
         createEventDto.user_id = userId; // Asigna el userId al evento
@@ -199,6 +233,8 @@ export class EventController {
         if (!createEventDto.coordinates) {
             const address = await this.eventService.getAddress(createEventDto.location_id);
             const coordinates = await this.getCoordinatesFromAddress(address);
+            console.log('DIRECCION: ', address); // Para verificar que se está llamando
+            console.log('COORDENADAS: ', coordinates); // Para verificar que se está llamando
 
             if (coordinates) {
                 createEventDto.coordinates = coordinates;
@@ -206,6 +242,7 @@ export class EventController {
                 this.logger.warn(`No se pudieron obtener coordenadas para la ubicación con ID: ${createEventDto.location_id}`);
             }
         }
+        console.log('EVENTO POR CREAR: ', createEventDto); // Para verificar que se está llamando
 
         return this.eventService.create(createEventDto, userRole);
     }
