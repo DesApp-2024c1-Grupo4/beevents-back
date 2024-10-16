@@ -171,16 +171,6 @@ EventSchema.pre<EventDocument>('save', function (next) {
                 availableStatus = "eliminated";
               }
 
-              /*
-              * No habrá preReservas en el alta
-              // Verificar si está en la lista de preReservados
-              if (sector.preReserved && sector.preReserved.some(([row, seat]) => row === i && seat === j)) {
-                availableStatus = "preReserved";
-                preResUser = this.user_id; // Solo asigna el user_id si está preReservado
-                sector.ocuped += 1;
-                sector.capacity += 1; // Incrementar capacidad en cada iteración
-              }
-              */
 
               // Si el asiento está disponible ("true"), incrementar el contador de asientos disponibles
               if (availableStatus === "true") {
@@ -200,26 +190,11 @@ EventSchema.pre<EventDocument>('save', function (next) {
           }
         } else {
           // Sector no numerado
-          //const preReservedCount = sector.preReserved && sector.preReserved.length > 0 ? sector.preReserved[0][0] : 0;
-          //sector.available = sector.rowsNumber * sector.seatsNumber - preReservedCount;
           sector.available = sector.rowsNumber * sector.seatsNumber
           sector.capacity = sector.rowsNumber * sector.seatsNumber;
-          //sector.ocuped = preReservedCount;
           sector.ocuped = 0;
 
           sector.rows = [[]]; // Inicializar la colección de filas, con la fila 0
-
-          /*
-          for (let i = 0; i < preReservedCount; i++) {
-            sector.rows[0].push({
-              displayId: `preReserved-${i + 1}`,
-              available: "preReserved",
-              timestamp: new Date(),
-              reservedBy: "vacio",
-              idTicket: generateIdTicket()
-            });
-          }
-          */
         }
       });
     });

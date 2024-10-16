@@ -14,9 +14,6 @@ import { RolesGuard } from '../modules/auth/roles.guard';
 import { LocationService } from '../modules/locations/locations.services';
 import axios from 'axios';  // Asegúrate de tener axios instalado
 
-
-
-
 @Controller('event')
 export class EventController {
     private readonly logger = new Logger(EventController.name);
@@ -70,69 +67,22 @@ export class EventController {
     async getNearbyEvents(@Query('lat') lat: any, @Query('lon') lon: any) {
         console.log('Llamado al controlador nearby'); // Para verificar que se está llamando
         try {
-            // console.log(`lat:${lat}, lon:${lon}`);
             if (!lat || !lon) {
                 return { message: 'Faltan las coordenadas de latitud y longitud' };
             }
-
-            // console.log(`Coordenadas recibidas: lat=${lat}, lon=${lon}`);
 
             // Lógica para obtener eventos cercanos
             const events = await this.eventService.findNearbyEvents(lon, lat);
             return events;
         } catch (error) {
-            // console.error('Error al obtener los eventos cercanos:', error);
             return { message: 'Error al obtener los eventos cercanos' };
         }
     }
 
 
-    // // Endpoint para obtener los eventos cercanos a la ubicación del usuario según su IP. No requiere autenticación.
-    // @Get('nearby')
-    // async getNearbyEvents(@Request() req) {
-    //     try {
-
-    //         const response = await axios.get('https://api.ipify.org?format=json');
-    //         // const response = await axios.get('https://get.geojs.io/v1/ip/geo.json');
-    //         const clientIP = response.data.ip;
-
-    //         // const clientIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    //         console.log(`IP pública del cliente: ${clientIP}`);
-    //         // return { ip: clientIP };
-    //         // Lógica para obtener la ubicación según la IP pública
-    //         const clientLocation = await this.getLocationFromIP();
-    //         // return { LOCATION: clientLocation };
-
-    //         if (clientLocation) {
-    //             const { lon, lat } = clientLocation;
-
-    //             const events = await this.eventService.findNearbyEvents(lon, lat);
-    //             return events;
-    //         } else {
-    //             return { message: 'No se pudo obtener la ubicación' };
-    //         }
-    //     } catch (error) {
-    //         console.error('Error al obtener la IP pública:', error);
-    //         return { message: 'Error al obtener la IP pública' };
-    //     }
-    // }
-
     // Definir la función getLocationFromIP en el controlador
     async getLocationFromIP() {
         try {
-            // // Intentamos obtener la ubicación con ip-api
-            // try {
-            //     const response = await axios.get(`https://ip-api.com/json/${ip}`);
-            //     if (response.data.status === 'success') {
-            //         return {
-            //             lat: response.data.lat,
-            //             lon: response.data.lon
-            //         };
-            //     }
-            // } catch (error) {
-            //     console.warn('Error al usar ip-api:', error);
-            // }
-
             // Si ip-api falla, usamos get.geojs.io
             try {
                 const geoResponse = await axios.get('https://get.geojs.io/v1/ip/geo.json');
@@ -175,51 +125,17 @@ export class EventController {
     // Endpoint para obtener todos los eventos que no están vencidos, publicados y no publicados
     @Get('pubAndNotPub')
     async findUpcomingAll(@Request() req: any) {
-        //const userRole = req.user.role;
         return this.eventService.findUpcomingAll();
     }
 
     // Endpoint para obtener un evento por su ID. No requiere autenticación.
     @Get(':id')
     async findById(@Param('id') id: string, @Request() req: any) {
-        //const userRole = req.user.role;
         return this.eventService.findById(id);
     }
 
 
     // Endpoint para crear un evento. Requiere autenticación JWT y rol de 'admin'.
-    // @UseGuards(JwtAuthGuard, RolesGuard)
-    // @SetMetadata('role', 'admin') // Requiere rol 'admin' para crear un evento
-    // @Post()
-    // async create(@Body() createEventDto: CreateEventDto, @Request() req: any) {
-    //     const userRole = req.user.role;
-    //     const userId = req.user.userId;  // Extrae el userId del token JWT
-    //     createEventDto.user_id = userId; // Asigna el userId al evento
-
-    //     // Crear el evento en la base de datos
-    //     const createdEvent = await this.eventService.create(createEventDto, userRole);
-
-    //     // Actualizar las coordenadas del evento recién creado
-    //     try {
-    //         const address = await this.eventService.getAddress(createdEvent.location_id);
-    //         const coordinates = await this.getCoordinatesFromAddress(address);
-
-    //         if (coordinates) {
-    //             await this.eventService.updateEventCoordinates(createdEvent._id, coordinates);
-    //             this.logger.log(`Evento ${createdEvent._id} actualizado con coordenadas ${coordinates}`);
-    //         } else {
-    //             this.logger.warn(`No se pudieron obtener coordenadas para la ubicación con ID: ${createdEvent.location_id}`);
-    //         }
-    //     } catch (error) {
-    //         this.logger.error(`Error al actualizar las coordenadas del evento ${createdEvent._id}:`, error);
-    //     }
-
-    //     // Retornar el evento creado
-    //     return createdEvent;
-    // }
-
-
-
     @UseGuards(JwtAuthGuard, RolesGuard)
     @SetMetadata('role', 'admin') // Requiere rol 'admin' para crear un evento
     @Post()
@@ -244,24 +160,12 @@ export class EventController {
                 // Asignar coordenadas del Obelisco de Buenos Aires
                 createEventDto.coordinates = [-58.3816, -34.6037]; // [lon, lat]
                 this.logger.warn('Se asignaron las coordenadas por defecto del Obelisco de Buenos Aires');
-
             }
         }
         console.log('EVENTO POR CREAR: ', createEventDto); // Para verificar que se está llamando
 
         return this.eventService.create(createEventDto, userRole);
     }
-
-
-    // @UseGuards(JwtAuthGuard, RolesGuard)
-    // @SetMetadata('role', 'admin') // Requiere rol 'admin' para crear un evento
-    // @Post()
-    // async create(@Body() createEventDto: CreateEventDto, @Request() req: any) {
-    //     const userRole = req.user.role;
-    //     const userId = req.user.userId;  // Extrae el userId del token JWT
-    //     createEventDto.user_id = userId; // Asigna el userId al evento
-    //     return this.eventService.create(createEventDto, userRole);
-    // }
 
 
     // Endpoint para actualizar un evento (PATCH). Requiere autenticación JWT y rol de 'admin'.
