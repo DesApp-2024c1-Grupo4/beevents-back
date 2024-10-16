@@ -50,7 +50,8 @@ export class EventController {
 
     private async getCoordinatesFromAddress(address: string): Promise<[number, number] | null> {
         const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`;
-
+        this.logger.warn(`Direccion obtenida: ${encodeURIComponent(address)}`);
+        this.logger.warn(`URL obtenida: ${url}`);
         try {
             const response = await axios.get(url);
             if (response.data && response.data.length > 0) {
