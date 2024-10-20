@@ -338,7 +338,7 @@ export class EventService {
                                     displayId: `${String.fromCharCode(65 + i)}-${j + 1}`,
                                     available: availableStatus,
                                     timestamp: new Date(),
-                                    reservedBy: '',
+                                    reservedBy: 'vacio',
                                     idTicket: generateIdTicket()
                                 });
                             }
