@@ -268,58 +268,63 @@ export class EventService {
     }
 
 
-    // events.services.ts
-
     async update(id: string, eventDto: UpdateEventDto, userRole: string): Promise<Event> {
         if (userRole !== 'admin') {
             throw new ForbiddenException('Solo los administradores pueden actualizar los eventos');
         }
-
+    
         const event = await this.eventModel.findById(id).exec();
         if (!event) {
             throw new NotFoundException('Evento no encontrado');
         }
-
+    
         console.log('Contenido del body (eventDto):', JSON.stringify(eventDto, null, 2));
-
+    
         // Si solo se envían `publicated` y `user_id`, se actualiza solo `publicated`
         if (eventDto.publicated !== undefined && eventDto.user_id !== undefined) {
             event.publicated = eventDto.publicated;
         }
-
+    
+        // Eliminar sectores si existen `delete_sectors_name`
+        if (eventDto.delete_sectors_name && eventDto.delete_sectors_name.length > 0) {
+            event.dates.forEach(date => {
+                date.sectors = date.sectors.filter(sector => !eventDto.delete_sectors_name.includes(sector.name));
+            });
+        }
+    
+        // Guardar el evento actualizado con los sectores eliminados
+        await event.save();
+    
         // Actualizar los campos generales del evento
         if (eventDto.name) event.name = eventDto.name;
         if (eventDto.artist) event.artist = eventDto.artist;
         if (eventDto.image) event.image = eventDto.image;
         if (eventDto.description) event.description = eventDto.description;
         if (eventDto.location_id) event.location_id = eventDto.location_id;
-
+    
         // Asignar user_id del token al evento
         event.user_id = eventDto.user_id;
-
+    
         // Actualizar fechas si existen `new_date_times`
         if (eventDto.new_date_times && eventDto.new_date_times.length > 0) {
             for (const newDate of eventDto.new_date_times) {
                 // Crea un nuevo subdocumento "Date" usando el esquema de Mongoose
                 const newDate = new this.eventModel({
                     dates: [{
-                    date_time: eventDto.new_date_times, // o lo que sea relevante aquí
-                    sectors: [], // Inicializa el sector vacío o con datos relevantes
+                        date_time: eventDto.new_date_times, // o lo que sea relevante aquí
+                        sectors: [], // Inicializa el sector vacío o con datos relevantes
                     }]
                 }).dates[0];
     
-
                 // Clonar sectores actuales sin las reservas y pre-reservas
                 for (const sector of event.dates[0].sectors) {
-                    console.log('valor de rowsNumber:', sector.rowsNumber)
-                    console.log('valor de seatsNumber:', sector.seatsNumber)
                     const clonedSector = {
                         ...sector.toObject(), // Clonar los campos del sector
                         available: (sector.rowsNumber * sector.seatsNumber) - sector.eliminated.length, // Restablecer los valores
                         ocuped: 0, // Sin asientos ocupados
                         rows: sector.numbered ? [] : [[]] // Si es numerado, inicializar las filas
                     };
-
+    
                     // Si es numerado, generar asientos con las mismas configuraciones
                     if (sector.numbered) {
                         for (let i = 0; i < sector.rowsNumber; i++) {
@@ -328,7 +333,7 @@ export class EventService {
                                 const availableStatus = sector.eliminated.some(([row, seat]) => row === i && seat === j) 
                                     ? 'eliminated' 
                                     : 'true';
-
+    
                                 rowSeats.push({
                                     displayId: `${String.fromCharCode(65 + i)}-${j + 1}`,
                                     available: availableStatus,
@@ -340,23 +345,20 @@ export class EventService {
                             clonedSector.rows.push(rowSeats);
                         }
                     }
-
+    
                     newDate.sectors.push(clonedSector); // Agregar sector clonado a la nueva fecha
                 }
-
+    
                 event.dates.push(newDate); // Agregar la nueva fecha al evento
             }
         }
-
-        // Primero, asegúrate de tener importado el esquema de Sector
-
+    
         // Actualizar sectores si existen `new_sectors`
         if (eventDto.new_sectors && eventDto.new_sectors.length > 0) {
             for (const newSector of eventDto.new_sectors) {
-
+    
                 // Crear una nueva instancia del modelo Sector utilizando Mongoose
                 const newSectorObj = new this.sectorModel({
-                //    _id: new Types.ObjectId(), // Generar un ObjectId único para cada sector
                     available: 0,
                     capacity: 0,
                     ocuped: 0,
@@ -367,27 +369,27 @@ export class EventService {
                     seatsNumber: newSector.seatsNumber,
                     eliminated: newSector.eliminated || []
                 });
-
+    
                 // Lógica para sectores numerados
                 if (newSector.numbered) {
                     for (let i = 0; i < newSector.rowsNumber; i++) {
                         const rowLabel = numberToAlphabet(i);
                         const rowSeats = [];
-
+    
                         for (let j = 0; j < newSector.seatsNumber; j++) {
                             let availableStatus = "true";
                             let preResUser = "vacio";
-
+    
                             // Verificar si el asiento está en la lista de eliminados
                             if (newSector.eliminated && newSector.eliminated.some(([row, seat]) => row === i && seat === j)) {
                                 availableStatus = "eliminated";
                             }
-
+    
                             if (availableStatus === "true") {
                                 newSectorObj.available += 1;
                                 newSectorObj.capacity += 1;
                             }
-
+    
                             rowSeats.push({
                                 displayId: `${rowLabel}-${j + 1}`,
                                 available: availableStatus,
@@ -396,7 +398,7 @@ export class EventService {
                                 idTicket: generateIdTicket()
                             });
                         }
-
+    
                         newSectorObj.rows.push(rowSeats);
                     }
                 } else {
@@ -405,32 +407,24 @@ export class EventService {
                     newSectorObj.capacity = newSector.rowsNumber * newSector.seatsNumber;
                     newSectorObj.ocuped = 0;
                 }
-
+    
                 // Agregar el nuevo sector al array de sectores de cada fecha
                 event.dates.forEach(date => {
                     date.sectors.push(newSectorObj); // Empujar el nuevo sector en el array
                 });
             }
         }
-
-
-
+    
         // Eliminar fechas si existen `delete_date_times_id`
         if (eventDto.delete_date_times_id && eventDto.delete_date_times_id.length > 0) {
             event.dates = event.dates.filter(date => !eventDto.delete_date_times_id.includes(date._id.toString()));
         }
-
-        // Eliminar sectores si existen `delete_sectors_id`
-        if (eventDto.delete_sectors_id && eventDto.delete_sectors_id.length > 0) {
-            event.dates.forEach(date => {
-                date.sectors = date.sectors.filter(sector => !eventDto.delete_sectors_id.includes(sector._id.toString()));
-            });
-        }
-
-    // Guardar el evento actualizado
-    const updatedEvent = await event.save();
-    return updatedEvent;
-}
+    
+        // Guardar el evento actualizado
+        const updatedEvent = await event.save();
+        return updatedEvent;
+    }
+    
 
 
 /*

@@ -45,5 +45,5 @@ export class UpdateEventDto {
 
     // IDs para eliminar fechas y sectores
     readonly delete_date_times_id?: string[];   // IDs de las fechas a eliminar
-    readonly delete_sectors_id?: string[];      // IDs de los sectores a eliminar
+    readonly delete_sectors_name?: string[];      // Names de los sectores a eliminar
 }
