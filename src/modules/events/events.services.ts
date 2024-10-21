@@ -278,7 +278,7 @@ export class EventService {
             throw new NotFoundException('Evento no encontrado');
         }
     
-        console.log('Contenido del body (eventDto):', JSON.stringify(eventDto, null, 2));
+        //console.log('Contenido del body (eventDto):', JSON.stringify(eventDto, null, 2));
     
         // Si solo se envían `publicated` y `user_id`, se actualiza solo `publicated`
         if (eventDto.publicated !== undefined && eventDto.user_id !== undefined) {
@@ -430,7 +430,8 @@ export class EventService {
 /*
 
     // Actualizar un evento, sólo permitido para administradores
-    // lógica de update que agrega sectores pero al agregar fecha no limpia las reservas
+    // lógica de update que solo permite modificar algunos atributos del evento pero no agrega ni elimina
+    // fechas ni sectores
     async update(id: string, eventDto: UpdateEventDto, userRole: string): Promise<Event> {
         if (userRole !== 'admin') {
             throw new ForbiddenException('Solo los administradores pueden actualizar los eventos');
