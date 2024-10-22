@@ -1,12 +1,13 @@
 /* eslint-disable prettier/prettier */
-// update-event.dto.ts
 import mongoose from "mongoose";
+
 export class UpdateSeatDto {
     readonly displayId?: string;
     available?: string;
     readonly timestamp?: Date;
     reservedBy?: string;
     readonly idTicket?: string;
+    readonly _id?: mongoose.Types.ObjectId;
 }
 
 export class UpdateSectorDto {
@@ -14,18 +15,17 @@ export class UpdateSectorDto {
     readonly numbered?: boolean;
     readonly rowsNumber?: number;
     readonly seatsNumber?: number;
-    readonly available?: number;
+    available?: number;
     rows?: UpdateSeatDto[][];
-    readonly eliminated?: [number, number][];
-    //readonly preReserved?: [number, number][];
+    readonly eliminated?: [number, number][]; // Matriz de asientos eliminados
     capacity?: number;
     ocuped?: number;
-    readonly _id?: mongoose.Types.ObjectId; // Cambiar a ObjectId
 }
 
 export class UpdateDateDto {
     date_time?: Date;
     sectors?: UpdateSectorDto[];
+    readonly _id?: mongoose.Types.ObjectId;
 }
 
 export class UpdateEventDto {
@@ -38,4 +38,12 @@ export class UpdateEventDto {
     readonly dates?: UpdateDateDto[];
     readonly publicated?: boolean;
     readonly coordinates?: [number, number]; // Coordenadas opcionales
+
+    // Nuevos campos para fechas y sectores
+    readonly new_date_times?: Date[];         // Nuevas fechas a agregar
+    readonly new_sectors?: UpdateSectorDto[]; // Nuevos sectores a agregar
+
+    // IDs para eliminar fechas y sectores
+    readonly delete_date_times_id?: string[];   // IDs de las fechas a eliminar
+    readonly delete_sectors_name?: string[];      // Names de los sectores a eliminar
 }

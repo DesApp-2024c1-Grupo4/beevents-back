@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
 // event.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document , Types } from 'mongoose';
 import * as crypto from 'crypto';
 
 export type EventDocument = Event & Document;
+export type SectorDocument = Sector & Document;
 
 @Schema()
 export class Seat {
@@ -17,7 +18,7 @@ export class Seat {
   @Prop({ type: Date, required: true, default: Date.now })
   timestamp: Date;
 
-  @Prop({ type: String, required: true, default: '' })
+  @Prop({ type: String, required: false, default: '' })
   reservedBy: string;
 
   @Prop({ type: String, required: true, default: () => generateIdTicket() })
@@ -28,6 +29,9 @@ const SeatSchema = SchemaFactory.createForClass(Seat);
 
 @Schema()
 export class Sector extends Document {
+  @Prop({ type: Types.ObjectId, required: false, default: () => new Types.ObjectId() }) // Genera un ObjectId único
+  _id: Types.ObjectId;
+
   @Prop({ type: String, required: true })
   name: string;
 
@@ -60,7 +64,7 @@ export class Sector extends Document {
 
 }
 
-const SectorSchema = SchemaFactory.createForClass(Sector);
+export const SectorSchema = SchemaFactory.createForClass(Sector);
 
 @Schema()
 export class Dates extends Document {
@@ -151,6 +155,8 @@ EventSchema.pre<EventDocument>('save', function (next) {
   if (this.isNew) {
     this.dates.forEach(dateItem => {
       dateItem.sectors.forEach(sector => {
+        sector._id = new Types.ObjectId(); // Genera un ObjectId único para cada sector
+
         // Inicializar available, capacity y ocuped
         sector.available = 0;
         sector.capacity = 0;
@@ -171,7 +177,6 @@ EventSchema.pre<EventDocument>('save', function (next) {
                 availableStatus = "eliminated";
               }
 
-
               // Si el asiento está disponible ("true"), incrementar el contador de asientos disponibles
               if (availableStatus === "true") {
                 sector.available += 1;
@@ -190,7 +195,7 @@ EventSchema.pre<EventDocument>('save', function (next) {
           }
         } else {
           // Sector no numerado
-          sector.available = sector.rowsNumber * sector.seatsNumber
+          sector.available = sector.rowsNumber * sector.seatsNumber;
           sector.capacity = sector.rowsNumber * sector.seatsNumber;
           sector.ocuped = 0;
 

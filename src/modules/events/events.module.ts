@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { connectToMongoDB } from '../../database.connection';
 import { EventController } from '../../controllers/events.controller';
 import { EventService } from './events.services';
-import { Event, EventSchema } from './events.schema';
+import { Event, EventSchema, Sector, SectorSchema } from './events.schema';
 import { Location, LocationSchema } from '../locations/locations.schema';
 import { LocationService } from '../locations/locations.services';
 import { LocationModule } from '../locations/locations.module';  // Asegúrate de que la ruta sea correcta
@@ -24,6 +24,7 @@ import { LocationModule } from '../locations/locations.module';  // Asegúrate d
         MongooseModule.forFeature([
             { name: Event.name, schema: EventSchema },
             { name: Location.name, schema: LocationSchema },
+            { name: Sector.name, schema: SectorSchema },
         ]),
         MongooseModule.forFeature([{ name: Event.name, schema: EventSchema }]),
         LocationModule,  // Importa el LocationModule aquí       

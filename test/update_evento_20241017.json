@@ -1,0 +1,26 @@
+{
+    "name": "Prueba fechas 3",
+    "artist": "g4",
+    "image": "https://live.staticflickr.com/3549/3344166694_bc1f0d1be0_b.jpg",
+    "description": "prueba fechas",
+    "location_id": "66ecc0d947f10bbc323d9474",
+    "user_id": "66bcbb59833ad41d52468652",
+    "new_date_times" : ["2024-12-01T03:00:00.000Z","2024-12-02T03:00:00.000Z"],
+    "new_sectors" : [
+        {
+            "name": "Campo",
+            "numbered": false,
+            "rowsNumber": 1,
+            "seatsNumber": 40
+        },
+        {
+            "name": "Platea Alta",
+            "numbered": true,
+            "rowsNumber": 3,
+            "seatsNumber": 10,
+            "eliminated": [[0,0],[0,9]]
+        }
+    ],
+    "delete_date_times_id": ["acd4444frdfd","acd4444frd23"],
+    "delete_sectors_id" : ["scd4444frdfd","scd4444frd23"]
+}
