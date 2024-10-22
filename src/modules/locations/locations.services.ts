@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { Location, LocationDocument } from './locations.schema';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { UpdateLocationDto } from './dto/update-location.dto';
+import axios from 'axios';
 
 @Injectable()
 export class LocationService {
@@ -32,7 +33,7 @@ export class LocationService {
         if (userRole !== 'admin') {
             throw new ForbiddenException('Solo los administradores pueden crear Locations');
         }
-    
+
         // Verificar si configurations existe y no está vacío
         if (locationDto.configurations && locationDto.configurations.length > 0) {
             // Calcular capacidad para cada sector en todas las configuraciones
@@ -40,23 +41,23 @@ export class LocationService {
                 config.sectors = this.calculateSectorCapacity(config.sectors);
             });
         }
-    
+
         const createdLocation = new this.locationModel(locationDto);
         return createdLocation.save();
     }
-    
+
 
     async findAll(): Promise<Location[]> {
-    //    if (userRole !== 'user' && userRole !== 'admin') {
-    //        throw new ForbiddenException('Solo los usuarios pueden ver los Locations');
-    //    }
+        //    if (userRole !== 'user' && userRole !== 'admin') {
+        //        throw new ForbiddenException('Solo los usuarios pueden ver los Locations');
+        //    }
         return this.locationModel.find().exec();
     }
 
     async findById(id: string): Promise<Location> {
-    //    if (userRole !== 'user' && userRole !== 'admin') {
-    //        throw new ForbiddenException('Solo los usuarios pueden ver los locations');
-    //    }
+        //    if (userRole !== 'user' && userRole !== 'admin') {
+        //        throw new ForbiddenException('Solo los usuarios pueden ver los locations');
+        //    }
         const location = await this.locationModel.findById(id).exec();
         if (!location) {
             throw new NotFoundException('Location no encontrado');
@@ -94,5 +95,25 @@ export class LocationService {
             throw new NotFoundException('Location no encontrado');
         }
         return deletedLocation;
+    }
+
+
+    async getCoordinatesFromAddress(fullAddress: string): Promise<[number, number] | null> {
+        try {
+            const formattedAddress = encodeURIComponent(fullAddress); // Codifica la dirección
+            const response = await axios.get(
+                `https://nominatim.openstreetmap.org/search?format=json&q=${formattedAddress}`
+            );
+
+            if (response.data && response.data.length > 0) {
+                const { lat, lon } = response.data[0]; // Obtén la primera coincidencia
+                return [parseFloat(lon), parseFloat(lat)];
+            }
+
+            return null; // Si no hay resultados
+        } catch (error) {
+            console.error('Error al obtener coordenadas:', error);
+            return null; // Manejo del error
+        }
     }
 }

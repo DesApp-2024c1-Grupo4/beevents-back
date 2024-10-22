@@ -7,6 +7,7 @@ export class CreateLocationDto {
         street: string;
         number: number;
     };
+    coordinates?: [number, number]; // Coordenadas opcionales
     readonly configurations: {
         name: string;
         description: string;
