@@ -54,6 +54,11 @@ export class LocationService {
         return this.locationModel.find().exec();
     }
 
+    // Obtener todas las locations como documentos
+    async findAllDocuments(): Promise<LocationDocument[]> {
+        return this.locationModel.find().exec(); // Esto retorna EventDocument[]
+    }
+
     async findById(id: string): Promise<Location> {
         //    if (userRole !== 'user' && userRole !== 'admin') {
         //        throw new ForbiddenException('Solo los usuarios pueden ver los locations');
@@ -120,4 +125,12 @@ export class LocationService {
             return null; // Manejo del error
         }
     }
+
+
+    async updateLocationCoordinates(locationId: string, coordinates: [number, number]): Promise<void> {
+        await this.locationModel.findByIdAndUpdate(locationId, {
+            $set: { coordinates }
+        }).exec();
+    }
+
 }

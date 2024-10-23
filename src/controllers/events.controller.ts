@@ -50,7 +50,11 @@ export class EventController {
         this.logger.warn(`Direccion obtenida: ${encodeURIComponent(address)}`);
         this.logger.warn(`URL obtenida: ${url}`);
         try {
-            const response = await axios.get(url);
+            const response = await axios.get(url, {
+                headers: {
+                    'User-Agent': 'Beevents/1.0 (restorepass.beevents@gmail.com)' // Agrega un User-Agent válido
+                }
+            });
             if (response.data && response.data.length > 0) {
                 const { lat, lon } = response.data[0];
                 return [parseFloat(lon), parseFloat(lat)];

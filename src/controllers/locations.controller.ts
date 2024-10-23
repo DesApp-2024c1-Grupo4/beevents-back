@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
 //locations.controller.ts
 
-import { Controller, Get, Post, Patch, Delete, Param, Body, Put, UseGuards, Request, SetMetadata, Logger } from '@nestjs/common';
+import { Controller, Get, Query, Post, Patch, Delete, Param, Body, Put, UseGuards, Request, SetMetadata, HttpCode, HttpStatus, Logger } from '@nestjs/common';
+// import { Controller, Get, Post, Patch, Delete, Param, Body, Put, UseGuards, Request, SetMetadata, Logger } from '@nestjs/common';
 import { LocationService } from '../modules/locations/locations.services';
 import { CreateLocationDto } from '../modules/locations/dto/create-location.dto';
 import { UpdateLocationDto } from '../modules/locations/dto/update-location.dto';
@@ -123,7 +124,12 @@ export class LocationController {
         this.logger.warn(`Direccion obtenida: ${encodeURIComponent(address)}`);
         this.logger.warn(`URL obtenida: ${url}`);
         try {
-            const response = await axios.get(url);
+            const response = await axios.get(url, {
+                headers: {
+                    'User-Agent': 'Beevents/1.0 (restorepass.beevents@gmail.com)' // Agrega un User-Agent válido
+                }
+            });
+
             if (response.data && response.data.length > 0) {
                 const { lat, lon } = response.data[0];
                 return [parseFloat(lon), parseFloat(lat)];
@@ -163,4 +169,51 @@ export class LocationController {
         const userId = req.user.userId;  // Extrae el userId del token JWT
         return this.locationService.delete(id, userRole);
     }
+
+
+
+    // Endpoint para actualizar todas las ubicaciones agregando la propiedad coordenadas
+    @Post('update-coordinates')
+    @HttpCode(HttpStatus.OK)
+    async updateLocationsWithCoordinates(): Promise<void> {
+        try {
+            // Obtener todas las ubicaciones (locations) de la base de datos
+            const locations = await this.locationService.findAllDocuments();
+
+            for (const location of locations) {
+                const address = location.address; // Asume que cada ubicación tiene un campo "address"
+                const fullAddress = `${address.street} ${address.number}`;
+                const coordinates = await this.getCoordinatesFromAddress(fullAddress);
+
+                if (coordinates) {
+                    // Actualizar las coordenadas de la ubicación
+                    await this.locationService.updateLocationCoordinates(location._id, coordinates);
+                    this.logger.log(`Ubicación ${location._id} actualizada con coordenadas ${coordinates}`);
+                } else {
+                    this.logger.warn(`No se pudieron obtener coordenadas para la ubicación ${location._id}`);
+                }
+            }
+        } catch (error) {
+            this.logger.error('Error al actualizar ubicaciones:', error);
+        }
+    }
+
+    // Método para obtener coordenadas desde una dirección
+    // private async getCoordinatesFromAddress(address: string): Promise<[number, number] | null> {
+    //     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`;
+    //     this.logger.warn(`Direccion obtenida: ${encodeURIComponent(address)}`);
+    //     this.logger.warn(`URL obtenida: ${url}`);
+
+    //     try {
+    //         const response = await axios.get(url);
+    //         if (response.data && response.data.length > 0) {
+    //             const { lat, lon } = response.data[0];
+    //             return [parseFloat(lon), parseFloat(lat)];
+    //         }
+    //     } catch (error) {
+    //         this.logger.error('Error obteniendo coordenadas:', error);
+    //     }
+    //     return null;
+    // }
+
 }
