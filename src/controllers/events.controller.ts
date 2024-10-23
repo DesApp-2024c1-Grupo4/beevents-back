@@ -150,19 +150,19 @@ export class EventController {
         if (!createEventDto.coordinates) {
             const address = await this.eventService.getAddress(createEventDto.location_id);
             const coordinates = await this.getCoordinatesFromAddress(address);
-            console.log('DIRECCION: ', address); // Para verificar que se está llamando
-            console.log('COORDENADAS: ', coordinates); // Para verificar que se está llamando
+            // console.log('DIRECCION: ', address); // Para verificar que se está llamando
+            // console.log('COORDENADAS: ', coordinates); // Para verificar que se está llamando
 
             if (coordinates) {
                 createEventDto.coordinates = coordinates;
             } else {
-                this.logger.warn(`No se pudieron obtener coordenadas para la ubicación con ID: ${createEventDto.location_id}`);
+                // this.logger.warn(`No se pudieron obtener coordenadas para la ubicación con ID: ${createEventDto.location_id}`);
                 // Asignar coordenadas del Obelisco de Buenos Aires
                 createEventDto.coordinates = [-58.3816, -34.6037]; // [lon, lat]
-                this.logger.warn('Se asignaron las coordenadas por defecto del Obelisco de Buenos Aires');
+                // this.logger.warn('Se asignaron las coordenadas por defecto del Obelisco de Buenos Aires');
             }
         }
-        console.log('EVENTO POR CREAR: ', createEventDto); // Para verificar que se está llamando
+        // console.log('EVENTO POR CREAR: ', createEventDto); // Para verificar que se está llamando
 
         return this.eventService.create(createEventDto, userRole);
     }

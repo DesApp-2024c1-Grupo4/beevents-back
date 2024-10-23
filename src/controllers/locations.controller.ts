@@ -38,6 +38,7 @@ export class LocationController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Post()
     async create(@Body() createLocationDto: CreateLocationDto, @Request() req: any) {
+        console.log('Llamado al controlador crear location'); // Para verificar que se está llamando
         const userRole = req.user.role;
         const userId = req.user.userId;  // Extrae el userId del token JWT
         createLocationDto.user_id = userId; // Asigna el userId a la location
@@ -45,16 +46,19 @@ export class LocationController {
         // Si no se proporcionan las coordenadas en el DTO, obtenlas desde la dirección
         if (!createLocationDto.coordinates) {
             const address = createLocationDto.address; // Obtiene la dirección del DTO
+            console.log('DIRECCION COMPLETA:', `${address.street} ${address.number}`);
             const coordinates = await this.getCoordinatesFromAddress(address);
             console.log('DIRECCION: ', address); // Para verificar que se está llamando
             console.log('COORDENADAS: ', coordinates); // Para verificar que se está llamando
 
             if (coordinates) {
                 createLocationDto.coordinates = coordinates;
+                console.log('COORDENADAS ASIGNADAS:', createLocationDto.coordinates);
             } else {
                 console.warn(`No se pudieron obtener coordenadas para la dirección: ${address}`);
                 // Asignar coordenadas del Obelisco de Buenos Aires como fallback
                 createLocationDto.coordinates = [-58.3816, -34.6037]; // [lon, lat]
+                console.log('COORDENADAS ASIGNADAS POR DEFECTO:', createLocationDto.coordinates);
                 console.warn('Se asignaron las coordenadas por defecto del Obelisco de Buenos Aires');
             }
         }

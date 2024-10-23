@@ -105,11 +105,15 @@ export class LocationService {
                 `https://nominatim.openstreetmap.org/search?format=json&q=${formattedAddress}`
             );
 
+            console.log('RESPONSE DATA:', response.data); // Log de los resultados de la API
+
             if (response.data && response.data.length > 0) {
                 const { lat, lon } = response.data[0]; // Obtén la primera coincidencia
+                console.log('COORDENADAS OBTENIDAS:', [lon, lat]); // Log de las coordenadas
                 return [parseFloat(lon), parseFloat(lat)];
             }
 
+            console.warn('No se encontraron coordenadas para la dirección:', fullAddress);
             return null; // Si no hay resultados
         } catch (error) {
             console.error('Error al obtener coordenadas:', error);
