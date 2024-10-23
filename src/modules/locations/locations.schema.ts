@@ -28,22 +28,6 @@ export class Sector {
     @Prop({ type: Number, required: false, default: 0 })
     capacity: number;
 
-    @Prop({ type: [Number], index: '2dsphere' }) // Index geoespacial para coordenadas
-    coordinates?: [number, number];  // Coordenadas en formato [longitud, latitud]
-
-    // @Prop({
-    //   type: {
-    //     type: String, // GeoJSON tipo 'Point'
-    //     enum: ['Point'],
-    //   },
-    //   coordinates: {
-    //     type: [Number], // Array de números [longitud, latitud]
-    //   },
-    //   _id: false, // Para evitar que este subdocumento tenga su propio _id
-    // })
-    // coordinates?: { type: string, coordinates: [number, number] };  // GeoJSON para coordenadas, opcional
-
-
 }
 
 const SectorSchema = SchemaFactory.createForClass(Sector);
@@ -83,6 +67,23 @@ export class Location {
     configurations: Configuration[];
 
     // Otras propiedades y métodos según sea necesario
+
+    @Prop({ type: [Number], index: '2dsphere' }) // Index geoespacial para coordenadas
+    coordinates?: [number, number];  // Coordenadas en formato [longitud, latitud]
+
+    // @Prop({
+    //   type: {
+    //     type: String, // GeoJSON tipo 'Point'
+    //     enum: ['Point'],
+    //   },
+    //   coordinates: {
+    //     type: [Number], // Array de números [longitud, latitud]
+    //   },
+    //   _id: false, // Para evitar que este subdocumento tenga su propio _id
+    // })
+    // coordinates?: { type: string, coordinates: [number, number] };  // GeoJSON para coordenadas, opcional
+
+
 }
 
 export const LocationSchema = SchemaFactory.createForClass(Location);
