@@ -44,8 +44,8 @@ export class LocationController {
             const address = `${createLocationDto.address.street} ${createLocationDto.address.number}`;
             // const address = createLocationDto.address.street; // Obtiene la dirección del DTO
             const coordinates = await this.getCoordinatesFromAddress(address);
-            // console.log('DIRECCION: ', address); // Para verificar que se está llamando
-            // console.log('COORDENADAS: ', coordinates); // Para verificar que se está llamando
+            console.log('DIRECCION: ', address); // Para verificar que se está llamando
+            console.log('COORDENADAS: ', coordinates); // Para verificar que se está llamando
 
             if (coordinates) {
                 createLocationDto.coordinates = coordinates;
@@ -53,10 +53,10 @@ export class LocationController {
                 // this.logger.warn(`No se pudieron obtener coordenadas para la ubicación con ID: ${createEventDto.location_id}`);
                 // Asignar coordenadas del Obelisco de Buenos Aires
                 createLocationDto.coordinates = [-58.3816, -34.6037]; // [lon, lat]
-                // this.logger.warn('Se asignaron las coordenadas por defecto del Obelisco de Buenos Aires');
+                this.logger.warn('Se asignaron las coordenadas por defecto del Obelisco de Buenos Aires');
             }
         }
-        // console.log('EVENTO POR CREAR: ', createEventDto); // Para verificar que se está llamando
+        console.log('LOCATION POR CREAR: ', createLocationDto); // Para verificar que se está llamando
 
         return this.locationService.create(createLocationDto, userRole);
     }
