@@ -426,47 +426,6 @@ export class EventService {
     }
     
 
-
-/*
-
-    // Actualizar un evento, sólo permitido para administradores
-    // lógica de update que solo permite modificar algunos atributos del evento pero no agrega ni elimina
-    // fechas ni sectores
-    async update(id: string, eventDto: UpdateEventDto, userRole: string): Promise<Event> {
-        if (userRole !== 'admin') {
-            throw new ForbiddenException('Solo los administradores pueden actualizar los eventos');
-        }
-
-        const event = await this.eventModel.findById(id).exec();
-        if (!event) {
-            throw new NotFoundException('Evento no encontrado');
-        }
-
-        // Agregamos un console.log para imprimir el contenido completo de eventDto
-        console.log('Contenido del body (eventDto):', JSON.stringify(eventDto, null, 2));
-
-        // Si solo se envían `publicated` y `user_id`, se actualiza solo `publicated`
-        if (eventDto.publicated !== undefined && eventDto.user_id !== undefined) {
-            event.publicated = eventDto.publicated;
-        }
-
-        // Actualización de campos permitidos
-        if (eventDto.name || eventDto.artist || eventDto.image || eventDto.description || eventDto.location_id) {
-            if (eventDto.name) event.name = eventDto.name;
-            if (eventDto.artist) event.artist = eventDto.artist;
-            if (eventDto.image) event.image = eventDto.image;
-            if (eventDto.description) event.description = eventDto.description;
-            if (eventDto.location_id) event.location_id = eventDto.location_id;
-        }
-
-        // Guardar el evento actualizado
-        const updatedEvent = await event.save();
-        return updatedEvent;
-    }
-
-
-*/
-
     // Eliminar un evento por ID, sólo permitido para administradores
     async delete(id: string, userRole: string): Promise<Event> {
         if (userRole !== 'admin') {

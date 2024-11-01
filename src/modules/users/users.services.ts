@@ -45,11 +45,23 @@ export class UserService {
         return user;
     }
 
-    async update(id: string, userDto: UpdateUserDto): Promise<User> {
-        const updatedUser = await this.userModel.findByIdAndUpdate(id, { password: userDto.password }, { new: true }).exec();
+    async update(id: string, userDto: UpdateUserDto, tokenUserId: string): Promise<User> {
+        // Confirmar que el usuario autenticado está intentando actualizar solo sus propios datos
+        if (id !== tokenUserId) {
+            throw new ForbiddenException('No tienes permiso para modificar este usuario.');
+        }
+    
+        // Solo permitir actualizar los campos `names` y `surname`
+        const updateFields = {
+            ...(userDto.names && { names: userDto.names }),
+            ...(userDto.surname && { surname: userDto.surname })
+        };
+    
+        const updatedUser = await this.userModel.findByIdAndUpdate(id, updateFields, { new: true }).exec();
         if (!updatedUser) {
             throw new NotFoundException('Usuario no encontrado');
         }
+    
         return updatedUser;
     }
 
