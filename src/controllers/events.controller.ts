@@ -12,7 +12,7 @@ import { CreateEventReservationsDto } from '../modules/events/dto/reservations.d
 import { JwtAuthGuard } from '../modules/auth/jwt-auth.guard';
 import { RolesGuard } from '../modules/auth/roles.guard';
 import { LocationService } from '../modules/locations/locations.services';
-import axios from 'axios';  // Asegúrate de tener axios instalado
+import axios from 'axios';
 
 @Controller('event')
 export class EventController {
@@ -20,10 +20,10 @@ export class EventController {
 
     constructor(
         private readonly eventService: EventService,
-        private readonly locationtService: EventService,
+        private readonly locationService: LocationService, // Corrección en el typo
     ) { }
 
-    // Endpoin para actualizar todos los eventos agregando la propiedad coordenadas
+    // Endpoint para actualizar todos los eventos agregando la propiedad coordenadas
     @Post('update-coordinates')
     @HttpCode(HttpStatus.OK)
     async updateEventsWithCoordinates(): Promise<void> {
@@ -47,7 +47,7 @@ export class EventController {
 
     private async getCoordinatesFromAddress(address: string): Promise<[number, number] | null> {
         const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`;
-        this.logger.warn(`Direccion obtenida: ${encodeURIComponent(address)}`);
+        this.logger.warn(`Dirección obtenida: ${encodeURIComponent(address)}`);
         this.logger.warn(`URL obtenida: ${url}`);
         try {
             const response = await axios.get(url);
@@ -61,17 +61,15 @@ export class EventController {
         return null;
     }
 
-
     // Endpoint para obtener los eventos cercanos a la ubicación del usuario según su IP. No requiere autenticación.
-    @Get('nearby') // Esta es la ruta que debería coincidir
+    @Get('nearby')
     async getNearbyEvents(@Query('lat') lat: any, @Query('lon') lon: any) {
-        console.log('Llamado al controlador nearby'); // Para verificar que se está llamando
+        console.log('Llamado al controlador nearby');
         try {
             if (!lat || !lon) {
                 return { message: 'Faltan las coordenadas de latitud y longitud' };
             }
 
-            // Lógica para obtener eventos cercanos
             const events = await this.eventService.findNearbyEvents(lon, lat);
             return events;
         } catch (error) {
@@ -79,163 +77,130 @@ export class EventController {
         }
     }
 
-
-    // Definir la función getLocationFromIP en el controlador
-    async getLocationFromIP() {
+    // Método auxiliar para obtener ubicación desde la IP
+    private async getLocationFromIP() {
         try {
-            // Si ip-api falla, usamos get.geojs.io
-            try {
-                const geoResponse = await axios.get('https://get.geojs.io/v1/ip/geo.json');
-                return {
-                    lat: geoResponse.data.latitude,
-                    lon: geoResponse.data.longitude
-                };
-            } catch (error) {
-                console.error('Error al usar geojs.io:', error);
-            }
-
+            const geoResponse = await axios.get('https://get.geojs.io/v1/ip/geo.json');
+            return {
+                lat: geoResponse.data.latitude,
+                lon: geoResponse.data.longitude,
+            };
         } catch (error) {
             console.error('Error obteniendo ubicación por IP:', error);
         }
         return null;
     }
 
-
     // Endpoint para obtener los eventos futuros. No requiere autenticación.
-    @Get() // eventos que no están vencidos y están publicados
-    async findUpcomingEvents(@Request() req: any) {
-        //const userRole = req.user.role;
+    @Get()
+    async findUpcomingEvents() {
         return this.eventService.findUpcomingEvents();
     }
 
     // Endpoint para obtener todos los eventos. No requiere autenticación.
     @Get('allEvents')
-    async findAllEvents(@Request() req: any) {
-        //const userRole = req.user.role;
+    async findAllEvents() {
         return this.eventService.findAll();
     }
 
-    // Endpoint para obtener todos los eventos, vencidos, no vencidos, publicados, no publicados con los Seat
+    // Endpoint para obtener todos los eventos, con o sin publicaciones y con detalles de asientos.
     @Get('allEventsFull')
-    async findAllFull(@Request() req: any) {
-        //const userRole = req.user.role;
+    async findAllFull() {
         return this.eventService.findAllFull();
     }
 
-    // Endpoint para obtener todos los eventos que no están vencidos, publicados y no publicados
+    // Endpoint para obtener todos los eventos, vencidos, publicados y no publicados.
     @Get('pubAndNotPub')
-    async findUpcomingAll(@Request() req: any) {
+    async findUpcomingAll() {
         return this.eventService.findUpcomingAll();
     }
 
     // Endpoint para obtener un evento por su ID. No requiere autenticación.
     @Get(':id')
-    async findById(@Param('id') id: string, @Request() req: any) {
+    async findById(@Param('id') id: string) {
         return this.eventService.findById(id);
     }
 
-
     // Endpoint para crear un evento. Requiere autenticación JWT y rol de 'admin'.
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @SetMetadata('role', 'admin') // Requiere rol 'admin' para crear un evento
+    @SetMetadata('role', 'admin')
     @Post()
     async create(@Body() createEventDto: CreateEventDto, @Request() req: any) {
-        console.log('Llamado al controlador crear evento'); // Para verificar que se está llamando
+        console.log('Llamado al controlador crear evento');
 
         const userRole = req.user.role;
-        const userId = req.user.userId;  // Extrae el userId del token JWT
-        createEventDto.user_id = userId; // Asigna el userId al evento
+        const userId = req.user.userId;
+        createEventDto.user_id = userId;
 
-        // Si no se proporcionan las coordenadas en el DTO, obtenlas desde la ubicación (location_id)
+        // Obtiene coordenadas si no se proporcionan en el DTO
         if (!createEventDto.coordinates) {
             const address = await this.eventService.getAddress(createEventDto.location_id);
             const coordinates = await this.getCoordinatesFromAddress(address);
-            console.log('DIRECCION: ', address); // Para verificar que se está llamando
-            console.log('COORDENADAS: ', coordinates); // Para verificar que se está llamando
+            console.log('DIRECCIÓN:', address);
+            console.log('COORDENADAS:', coordinates);
 
             if (coordinates) {
                 createEventDto.coordinates = coordinates;
             } else {
                 this.logger.warn(`No se pudieron obtener coordenadas para la ubicación con ID: ${createEventDto.location_id}`);
-                // Asignar coordenadas del Obelisco de Buenos Aires
-                createEventDto.coordinates = [-58.3816, -34.6037]; // [lon, lat]
-                this.logger.warn('Se asignaron las coordenadas por defecto del Obelisco de Buenos Aires');
+                createEventDto.coordinates = [-58.3816, -34.6037]; // Coordenadas por defecto
+                this.logger.warn('Se asignaron las coordenadas del Obelisco de Buenos Aires');
             }
         }
-        console.log('EVENTO POR CREAR: ', createEventDto); // Para verificar que se está llamando
+        console.log('EVENTO POR CREAR:', createEventDto);
 
         return this.eventService.create(createEventDto, userRole);
     }
 
-
-    // Endpoint para actualizar un evento (PATCH). Requiere autenticación JWT y rol de 'admin'.
+    // Métodos para actualizar y eliminar eventos, requieren autenticación y rol de 'admin'
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @SetMetadata('role', 'admin') // Requiere rol 'admin' para modificar un evento
+    @SetMetadata('role', 'admin')
     @Patch(':id')
     async update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto, @Request() req: any) {
         const userRole = req.user.role;
-        const userId = req.user.userId;  // Extrae el userId del token JWT
-        updateEventDto.user_id = userId; // Asigna el userId al evento
+        updateEventDto.user_id = req.user.userId;
         return this.eventService.update(id, updateEventDto, userRole);
     }
 
-
-    // Endpoint para actualizar un evento (PATCH). Requiere autenticación JWT y rol de 'admin'.
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @SetMetadata('role', 'admin') // Requiere rol 'admin' para modificar un evento
+    @SetMetadata('role', 'admin')
     @Put(':id')
     async put(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto, @Request() req: any) {
         const userRole = req.user.role;
-        const userId = req.user.userId;  // Extrae el userId del token JWT
-        updateEventDto.user_id = userId; // Asigna el userId al evento
+        updateEventDto.user_id = req.user.userId;
         return this.eventService.update(id, updateEventDto, userRole);
     }
 
-
-    // Endpoint para eliminar un evento. Requiere autenticación JWT y rol de 'admin'.
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @SetMetadata('role', 'admin') // Requiere rol 'admin' para modificar un evento
+    @SetMetadata('role', 'admin')
     @Delete(':id')
     async delete(@Param('id') id: string, @Request() req: any) {
         const userRole = req.user.role;
-        const userId = req.user.userId;  // Extrae el userId del token JWT
         return this.eventService.delete(id, userRole);
     }
 
-
-    // Endpoint para actualizar un asiento dentro de un evento. Requiere autenticación JWT.
+    // Métodos para manejar asientos y reservas en eventos, requieren autenticación
     @UseGuards(JwtAuthGuard)
     @Patch(':eventId/seat')
-    async updateSeat(@Param('eventId') eventId: string, @Body() updateSeatDto: UpdateSeatDto, @Request() req: any) {
-        const userRole = req.user.role;
+    async updateSeat(@Param('eventId') eventId: string, @Body() updateSeatDto: UpdateSeatDto) {
         return this.eventService.updateSeat(eventId, updateSeatDto);
     }
 
-
-    // Endpoint para enviar lista de reservas. Requiere autenticación JWT.
     @UseGuards(JwtAuthGuard)
     @Patch(':eventId/reservations')
-    async reservations(@Param('eventId') eventId: string, @Body() reservationsDto: CreateEventReservationsDto, @Request() req: any) {
-        const userRole = req.user.role;
+    async reservations(@Param('eventId') eventId: string, @Body() reservationsDto: CreateEventReservationsDto) {
         return this.eventService.reservations(eventId, reservationsDto);
     }
 
-
-    // Endpoint para crear un asiento en un evento. Requiere autenticación JWT.
     @UseGuards(JwtAuthGuard)
     @Patch(':eventId/place')
-    async createSeat(@Param('eventId') eventId: string, @Body() createSeatDto: CreateSeatDto, @Request() req: any) {
-        const userRole = req.user.role;
+    async createSeat(@Param('eventId') eventId: string, @Body() createSeatDto: CreateSeatDto) {
         return this.eventService.createSeat(eventId, createSeatDto);
     }
 
-
-    // Endpoint para obtener las reservas realizadas por un usuario específico. Requiere autenticación JWT.
     @UseGuards(JwtAuthGuard)
     @Get('reservedBy/:id')
-    async getReservationsByReservedBy(@Param('id') id: string, @Request() req: any) {
+    async getReservationsByReservedBy(@Param('id') id: string) {
         return this.eventService.getReservationsByReservedBy(id);
     }
-
 }
-
