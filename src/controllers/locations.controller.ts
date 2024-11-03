@@ -79,6 +79,32 @@ export class LocationController {
         return null;
     }
 
+    // Endpoint para actualizar todas las ubicaciones agregando la propiedad coordenadas
+    @Post('update-coordinates')
+    @HttpCode(HttpStatus.OK)
+    async updateLocationsWithCoordinates(): Promise<void> {
+        try {
+            // Obtener todas las ubicaciones (locations) de la base de datos
+            const locations = await this.locationService.findAllDocuments();
+
+            for (const location of locations) {
+                const address = location.address; // Asume que cada ubicación tiene un campo "address"
+                const fullAddress = `${address.street} ${address.number}`;
+                const coordinates = await this.getCoordinatesFromAddress(fullAddress);
+
+                if (coordinates) {
+                    // Actualizar las coordenadas de la ubicación
+                    await this.locationService.updateLocationCoordinates(location._id, coordinates);
+                    this.logger.log(`Ubicación ${location._id} actualizada con coordenadas ${coordinates}`);
+                } else {
+                    this.logger.warn(`No se pudieron obtener coordenadas para la ubicación ${location._id}`);
+                }
+            }
+        } catch (error) {
+            this.logger.error('Error al actualizar ubicaciones:', error);
+        }
+    }
+
 
     @UseGuards(JwtAuthGuard, RolesGuard)
     @SetMetadata('role', 'admin') // Requiere rol 'admin' para modificar un location
