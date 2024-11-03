@@ -44,7 +44,7 @@ export class LocationController {
             if (coordinates) {
                 createLocationDto.coordinates = coordinates;
             } else {
-                this.logger.warn(`No se pudieron obtener coordenadas para la ubicación con ID: ${createEventDto.location_id}`);
+                this.logger.warn(`No se pudieron obtener coordenadas para la direccion postal: ${address}`);
                 // Asignar coordenadas [0, 0]
                 createLocationDto.coordinates = [0, 0]; // [lon, lat]
                 this.logger.warn('Se asignaron las coordenadas por defecto  [0, 0] para indicar que no tiene coordenadas');
