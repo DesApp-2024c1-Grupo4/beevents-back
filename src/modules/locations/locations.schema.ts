@@ -66,6 +66,10 @@ export class Location {
     @Prop({ type: [ConfigurationSchema], required: false, default: [] })
     configurations: Configuration[];
 
+
+    @Prop({ type: [Number], index: '2dsphere' }) // Index geoespacial para coordenadas
+    coordinates?: [number, number];  // Coordenadas en formato [longitud, latitud]
+
     // Otras propiedades y métodos según sea necesario
 }
 
