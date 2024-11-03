@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 // event.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document , Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import * as crypto from 'crypto';
 
 export type EventDocument = Event & Document;
@@ -107,19 +107,6 @@ export class Event {
 
   @Prop({ type: [Number], index: '2dsphere' }) // Index geoespacial para coordenadas
   coordinates?: [number, number];  // Coordenadas en formato [longitud, latitud]
-
-  // @Prop({
-  //   type: {
-  //     type: String, // GeoJSON tipo 'Point'
-  //     enum: ['Point'],
-  //   },
-  //   coordinates: {
-  //     type: [Number], // Array de números [longitud, latitud]
-  //   },
-  //   _id: false, // Para evitar que este subdocumento tenga su propio _id
-  // })
-  // coordinates?: { type: string, coordinates: [number, number] };  // GeoJSON para coordenadas, opcional
-
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);
