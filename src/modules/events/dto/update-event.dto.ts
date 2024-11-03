@@ -37,7 +37,7 @@ export class UpdateEventDto {
     user_id?: string;
     readonly dates?: UpdateDateDto[];
     readonly publicated?: boolean;
-    readonly coordinates?: [number, number]; // Coordenadas opcionales
+    coordinates?: [number, number]; // Coordenadas opcionales
 
     // Nuevos campos para fechas y sectores
     readonly new_date_times?: Date[];         // Nuevas fechas a agregar
