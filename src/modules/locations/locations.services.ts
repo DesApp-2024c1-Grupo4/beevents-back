@@ -32,7 +32,7 @@ export class LocationService {
         if (userRole !== 'admin') {
             throw new ForbiddenException('Solo los administradores pueden crear Locations');
         }
-    
+
         // Verificar si configurations existe y no está vacío
         if (locationDto.configurations && locationDto.configurations.length > 0) {
             // Calcular capacidad para cada sector en todas las configuraciones
@@ -40,23 +40,35 @@ export class LocationService {
                 config.sectors = this.calculateSectorCapacity(config.sectors);
             });
         }
-    
+
         const createdLocation = new this.locationModel(locationDto);
         return createdLocation.save();
     }
-    
 
+
+    // Obtener todas las locations
     async findAll(): Promise<Location[]> {
-    //    if (userRole !== 'user' && userRole !== 'admin') {
-    //        throw new ForbiddenException('Solo los usuarios pueden ver los Locations');
-    //    }
         return this.locationModel.find().exec();
     }
 
+    // Obtener todas las locations como documentos
+    async findAllDocuments(): Promise<LocationDocument[]> {
+        return this.locationModel.find().exec(); // Esto retorna EventDocument[]
+    }
+
+    // Actualizar las coordenadas de una location
+    async updateLocationCoordinates(locationId: string, coordinates: [number, number]): Promise<void> {
+        await this.locationModel.findByIdAndUpdate(locationId, {
+            $set: { coordinates }
+        }).exec();
+    }
+
+
+    // Obtener las locations por id
     async findById(id: string): Promise<Location> {
-    //    if (userRole !== 'user' && userRole !== 'admin') {
-    //        throw new ForbiddenException('Solo los usuarios pueden ver los locations');
-    //    }
+        //    if (userRole !== 'user' && userRole !== 'admin') {
+        //        throw new ForbiddenException('Solo los usuarios pueden ver los locations');
+        //    }
         const location = await this.locationModel.findById(id).exec();
         if (!location) {
             throw new NotFoundException('Location no encontrado');

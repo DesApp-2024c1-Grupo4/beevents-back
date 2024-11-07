@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 // events.controller.ts
+// import { LocationService } from '../modules/locations/locations.services';
 
 import { Controller, Get, Query, Post, Patch, Delete, Param, Body, Put, UseGuards, Request, SetMetadata, HttpCode, HttpStatus, Logger } from '@nestjs/common';
 import { EventService } from '../modules/events/events.services';
@@ -11,8 +12,7 @@ import { CreateSeatDto } from '../modules/events/dto/create-seat.dto';
 import { CreateEventReservationsDto } from '../modules/events/dto/reservations.dto';
 import { JwtAuthGuard } from '../modules/auth/jwt-auth.guard';
 import { RolesGuard } from '../modules/auth/roles.guard';
-import { LocationService } from '../modules/locations/locations.services';
-import axios from 'axios';  // Asegúrate de tener axios instalado
+import axios from 'axios';
 
 @Controller('event')
 export class EventController {
@@ -45,12 +45,17 @@ export class EventController {
         }
     }
 
+    // Funcion auxiliar para obtener las coordenadas geoespaciales de una direeccion postal
     private async getCoordinatesFromAddress(address: string): Promise<[number, number] | null> {
         const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`;
         this.logger.warn(`Direccion obtenida: ${encodeURIComponent(address)}`);
         this.logger.warn(`URL obtenida: ${url}`);
         try {
-            const response = await axios.get(url);
+            const response = await axios.get(url, {
+                headers: {
+                    'User-Agent': 'Beevents/1.0 (restorepass.beevents@gmail.com)' // Agrega un User-Agent válido
+                }
+            });
             if (response.data && response.data.length > 0) {
                 const { lat, lon } = response.data[0];
                 return [parseFloat(lon), parseFloat(lat)];
@@ -63,7 +68,7 @@ export class EventController {
 
 
     // Endpoint para obtener los eventos cercanos a la ubicación del usuario según su IP. No requiere autenticación.
-    @Get('nearby') // Esta es la ruta que debería coincidir
+    @Get('nearby')
     async getNearbyEvents(@Query('lat') lat: any, @Query('lon') lon: any) {
         console.log('Llamado al controlador nearby'); // Para verificar que se está llamando
         try {
@@ -80,7 +85,7 @@ export class EventController {
     }
 
 
-    // Definir la función getLocationFromIP en el controlador
+    // Función para obtener la ubicacion geoespacial de una IP (Deprecada porque la obtiene el front)
     async getLocationFromIP() {
         try {
             // Si ip-api falla, usamos get.geojs.io
@@ -104,21 +109,18 @@ export class EventController {
     // Endpoint para obtener los eventos futuros. No requiere autenticación.
     @Get() // eventos que no están vencidos y están publicados
     async findUpcomingEvents(@Request() req: any) {
-        //const userRole = req.user.role;
         return this.eventService.findUpcomingEvents();
     }
 
     // Endpoint para obtener todos los eventos. No requiere autenticación.
     @Get('allEvents')
     async findAllEvents(@Request() req: any) {
-        //const userRole = req.user.role;
         return this.eventService.findAll();
     }
 
     // Endpoint para obtener todos los eventos, vencidos, no vencidos, publicados, no publicados con los Seat
     @Get('allEventsFull')
     async findAllFull(@Request() req: any) {
-        //const userRole = req.user.role;
         return this.eventService.findAllFull();
     }
 
@@ -158,8 +160,8 @@ export class EventController {
             } else {
                 this.logger.warn(`No se pudieron obtener coordenadas para la ubicación con ID: ${createEventDto.location_id}`);
                 // Asignar coordenadas del Obelisco de Buenos Aires
-                createEventDto.coordinates = [-58.3816, -34.6037]; // [lon, lat]
-                this.logger.warn('Se asignaron las coordenadas por defecto del Obelisco de Buenos Aires');
+                createEventDto.coordinates = [0, 0]; // [lon, lat]
+                this.logger.warn('Se asignaron las coordenadas por defecto  [0, 0] para indicar que no tiene coordenadas');
             }
         }
         console.log('EVENTO POR CREAR: ', createEventDto); // Para verificar que se está llamando
