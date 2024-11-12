@@ -534,19 +534,24 @@ export class EventService {
 
     // Obtener todas las reservas realizadas por un usuario específico
     async getReservationsByReservedBy(reservedBy: string): Promise<any[]> {
+        // Obtiene todos los eventos
         const events = await this.eventModel.find().exec();
         const reservations: any[] = [];
 
         for (const event of events) {
-            // Busca la información de la location correspondiente
+            // Busca la información de la ubicación correspondiente
             const location = await this.locationModel.findById(event.location_id).exec();
             if (!location) {
                 throw new NotFoundException('Ubicación no encontrada');
             }
 
+            // Construye la dirección combinada (street + number)
+            const direccionCompleta = `${location.address.street} ${location.address.number}`;
+
             event.dates.forEach(date => {
                 date.sectors.forEach(sector => {
                     if (sector.numbered) {
+                        // Procesar tickets numerados
                         sector.rows.forEach(row => {
                             row.forEach(seat => {
                                 if (seat.reservedBy === reservedBy) {
@@ -561,14 +566,16 @@ export class EventService {
                                         displayId: seat.displayId,
                                         timestamp: seat.timestamp,
                                         reservedBy: seat.reservedBy,
-                                        idTicket: seat.idTicket  // Incluir idTicket para asientos numerados
+                                        idTicket: seat.idTicket,  // ID del ticket numerado
+                                        address: direccionCompleta  // Nueva propiedad Dirección
                                     });
                                 }
                             });
                         });
                     } else {
+                        // Procesar tickets no numerados
                         const seatsReserved = sector.rows.flat().filter(seat => seat.reservedBy === reservedBy);
-                        if (seatsReserved.length > 0) {
+                        seatsReserved.forEach(seat => {
                             reservations.push({
                                 numbered: false,
                                 eventName: event.name,
@@ -577,11 +584,11 @@ export class EventService {
                                 locationName: location.name,
                                 sectorName: sector.name,
                                 date_time: date.date_time,
-                                cantidad: seatsReserved.length,
-                                reservedBy: reservedBy,
-                                idTicket: seatsReserved[0].idTicket  // Incluir idTicket del primer asiento reservado
+                                reservedBy: seat.reservedBy,
+                                idTicket: seat.idTicket,  // ID del ticket no numerado
+                                address: direccionCompleta  // Nueva propiedad Dirección
                             });
-                        }
+                        });
                     }
                 });
             });
@@ -589,6 +596,7 @@ export class EventService {
 
         return reservations;
     }
+
 
 
 
