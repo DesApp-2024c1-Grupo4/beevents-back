@@ -272,39 +272,39 @@ export class EventService {
         if (userRole !== 'admin') {
             throw new ForbiddenException('Solo los administradores pueden actualizar los eventos');
         }
-    
+
         const event = await this.eventModel.findById(id).exec();
         if (!event) {
             throw new NotFoundException('Evento no encontrado');
         }
-    
+
         //console.log('Contenido del body (eventDto):', JSON.stringify(eventDto, null, 2));
-    
+
         // Si solo se envían `publicated` y `user_id`, se actualiza solo `publicated`
         if (eventDto.publicated !== undefined && eventDto.user_id !== undefined) {
             event.publicated = eventDto.publicated;
         }
-    
+
         // Eliminar sectores si existen `delete_sectors_name`
         if (eventDto.delete_sectors_name && eventDto.delete_sectors_name.length > 0) {
             event.dates.forEach(date => {
                 date.sectors = date.sectors.filter(sector => !eventDto.delete_sectors_name.includes(sector.name));
             });
         }
-    
+
         // Guardar el evento actualizado con los sectores eliminados
         await event.save();
-    
+
         // Actualizar los campos generales del evento
         if (eventDto.name) event.name = eventDto.name;
         if (eventDto.artist) event.artist = eventDto.artist;
         if (eventDto.image) event.image = eventDto.image;
         if (eventDto.description) event.description = eventDto.description;
         if (eventDto.location_id) event.location_id = eventDto.location_id;
-    
+
         // Asignar user_id del token al evento
         event.user_id = eventDto.user_id;
-    
+
         // Actualizar fechas si existen `new_date_times`
         if (eventDto.new_date_times && eventDto.new_date_times.length > 0) {
             for (const newDate of eventDto.new_date_times) {
@@ -315,7 +315,7 @@ export class EventService {
                         sectors: [], // Inicializa el sector vacío o con datos relevantes
                     }]
                 }).dates[0];
-    
+
                 // Clonar sectores actuales sin las reservas y pre-reservas
                 for (const sector of event.dates[0].sectors) {
                     const clonedSector = {
@@ -324,16 +324,16 @@ export class EventService {
                         ocuped: 0, // Sin asientos ocupados
                         rows: sector.numbered ? [] : [[]] // Si es numerado, inicializar las filas
                     };
-    
+
                     // Si es numerado, generar asientos con las mismas configuraciones
                     if (sector.numbered) {
                         for (let i = 0; i < sector.rowsNumber; i++) {
                             const rowSeats = [];
                             for (let j = 0; j < sector.seatsNumber; j++) {
-                                const availableStatus = sector.eliminated.some(([row, seat]) => row === i && seat === j) 
-                                    ? 'eliminated' 
+                                const availableStatus = sector.eliminated.some(([row, seat]) => row === i && seat === j)
+                                    ? 'eliminated'
                                     : 'true';
-    
+
                                 rowSeats.push({
                                     displayId: `${String.fromCharCode(65 + i)}-${j + 1}`,
                                     available: availableStatus,
@@ -345,18 +345,18 @@ export class EventService {
                             clonedSector.rows.push(rowSeats);
                         }
                     }
-    
+
                     newDate.sectors.push(clonedSector); // Agregar sector clonado a la nueva fecha
                 }
-    
+
                 event.dates.push(newDate); // Agregar la nueva fecha al evento
             }
         }
-    
+
         // Actualizar sectores si existen `new_sectors`
         if (eventDto.new_sectors && eventDto.new_sectors.length > 0) {
             for (const newSector of eventDto.new_sectors) {
-    
+
                 // Crear una nueva instancia del modelo Sector utilizando Mongoose
                 const newSectorObj = new this.sectorModel({
                     available: 0,
@@ -369,27 +369,27 @@ export class EventService {
                     seatsNumber: newSector.seatsNumber,
                     eliminated: newSector.eliminated || []
                 });
-    
+
                 // Lógica para sectores numerados
                 if (newSector.numbered) {
                     for (let i = 0; i < newSector.rowsNumber; i++) {
                         const rowLabel = numberToAlphabet(i);
                         const rowSeats = [];
-    
+
                         for (let j = 0; j < newSector.seatsNumber; j++) {
                             let availableStatus = "true";
                             let preResUser = "vacio";
-    
+
                             // Verificar si el asiento está en la lista de eliminados
                             if (newSector.eliminated && newSector.eliminated.some(([row, seat]) => row === i && seat === j)) {
                                 availableStatus = "eliminated";
                             }
-    
+
                             if (availableStatus === "true") {
                                 newSectorObj.available += 1;
                                 newSectorObj.capacity += 1;
                             }
-    
+
                             rowSeats.push({
                                 displayId: `${rowLabel}-${j + 1}`,
                                 available: availableStatus,
@@ -398,7 +398,7 @@ export class EventService {
                                 idTicket: generateIdTicket()
                             });
                         }
-    
+
                         newSectorObj.rows.push(rowSeats);
                     }
                 } else {
@@ -407,65 +407,24 @@ export class EventService {
                     newSectorObj.capacity = newSector.rowsNumber * newSector.seatsNumber;
                     newSectorObj.ocuped = 0;
                 }
-    
+
                 // Agregar el nuevo sector al array de sectores de cada fecha
                 event.dates.forEach(date => {
                     date.sectors.push(newSectorObj); // Empujar el nuevo sector en el array
                 });
             }
         }
-    
+
         // Eliminar fechas si existen `delete_date_times_id`
         if (eventDto.delete_date_times_id && eventDto.delete_date_times_id.length > 0) {
             event.dates = event.dates.filter(date => !eventDto.delete_date_times_id.includes(date._id.toString()));
         }
-    
-        // Guardar el evento actualizado
-        const updatedEvent = await event.save();
-        return updatedEvent;
-    }
-    
-
-
-/*
-
-    // Actualizar un evento, sólo permitido para administradores
-    // lógica de update que solo permite modificar algunos atributos del evento pero no agrega ni elimina
-    // fechas ni sectores
-    async update(id: string, eventDto: UpdateEventDto, userRole: string): Promise<Event> {
-        if (userRole !== 'admin') {
-            throw new ForbiddenException('Solo los administradores pueden actualizar los eventos');
-        }
-
-        const event = await this.eventModel.findById(id).exec();
-        if (!event) {
-            throw new NotFoundException('Evento no encontrado');
-        }
-
-        // Agregamos un console.log para imprimir el contenido completo de eventDto
-        console.log('Contenido del body (eventDto):', JSON.stringify(eventDto, null, 2));
-
-        // Si solo se envían `publicated` y `user_id`, se actualiza solo `publicated`
-        if (eventDto.publicated !== undefined && eventDto.user_id !== undefined) {
-            event.publicated = eventDto.publicated;
-        }
-
-        // Actualización de campos permitidos
-        if (eventDto.name || eventDto.artist || eventDto.image || eventDto.description || eventDto.location_id) {
-            if (eventDto.name) event.name = eventDto.name;
-            if (eventDto.artist) event.artist = eventDto.artist;
-            if (eventDto.image) event.image = eventDto.image;
-            if (eventDto.description) event.description = eventDto.description;
-            if (eventDto.location_id) event.location_id = eventDto.location_id;
-        }
 
         // Guardar el evento actualizado
         const updatedEvent = await event.save();
         return updatedEvent;
     }
 
-
-*/
 
     // Eliminar un evento por ID, sólo permitido para administradores
     async delete(id: string, userRole: string): Promise<Event> {
@@ -575,19 +534,24 @@ export class EventService {
 
     // Obtener todas las reservas realizadas por un usuario específico
     async getReservationsByReservedBy(reservedBy: string): Promise<any[]> {
+        // Obtiene todos los eventos
         const events = await this.eventModel.find().exec();
         const reservations: any[] = [];
 
         for (const event of events) {
-            // Busca la información de la location correspondiente
+            // Busca la información de la ubicación correspondiente
             const location = await this.locationModel.findById(event.location_id).exec();
             if (!location) {
                 throw new NotFoundException('Ubicación no encontrada');
             }
 
+            // Construye la dirección combinada (street + number)
+            const direccionCompleta = `${location.address.street} ${location.address.number}`;
+
             event.dates.forEach(date => {
                 date.sectors.forEach(sector => {
                     if (sector.numbered) {
+                        // Procesar tickets numerados
                         sector.rows.forEach(row => {
                             row.forEach(seat => {
                                 if (seat.reservedBy === reservedBy) {
@@ -602,14 +566,16 @@ export class EventService {
                                         displayId: seat.displayId,
                                         timestamp: seat.timestamp,
                                         reservedBy: seat.reservedBy,
-                                        idTicket: seat.idTicket  // Incluir idTicket para asientos numerados
+                                        idTicket: seat.idTicket,  // ID del ticket numerado
+                                        address: direccionCompleta  // Nueva propiedad Dirección
                                     });
                                 }
                             });
                         });
                     } else {
+                        // Procesar tickets no numerados
                         const seatsReserved = sector.rows.flat().filter(seat => seat.reservedBy === reservedBy);
-                        if (seatsReserved.length > 0) {
+                        seatsReserved.forEach(seat => {
                             reservations.push({
                                 numbered: false,
                                 eventName: event.name,
@@ -618,11 +584,11 @@ export class EventService {
                                 locationName: location.name,
                                 sectorName: sector.name,
                                 date_time: date.date_time,
-                                cantidad: seatsReserved.length,
-                                reservedBy: reservedBy,
-                                idTicket: seatsReserved[0].idTicket  // Incluir idTicket del primer asiento reservado
+                                reservedBy: seat.reservedBy,
+                                idTicket: seat.idTicket,  // ID del ticket no numerado
+                                address: direccionCompleta  // Nueva propiedad Dirección
                             });
-                        }
+                        });
                     }
                 });
             });
@@ -630,6 +596,7 @@ export class EventService {
 
         return reservations;
     }
+
 
 
 

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 //users.controller.ts
 
-import { Controller, Get, Post, Patch, Put, Delete, Param, Body, UseGuards, Request, SetMetadata } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Req, Delete, Param, Body, UseGuards, ForbiddenException , SetMetadata, BadRequestException } from '@nestjs/common';
 import { UserService } from '../modules/users/users.services';
 import { CreateUserDto } from '../modules/users/dto/create-user.dto';
 import { UpdateUserDto } from '../modules/users/dto/update-user.dto';
@@ -31,15 +31,52 @@ export class UserController {
         return this.userService.create(createUserDto);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Patch(':id')
-    async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-        return this.userService.update(id, updateUserDto);
+    async updateUser(
+        @Param('id') id: string,
+        @Body() updateUserDto: UpdateUserDto,
+        @Req() req
+    ) {
+        const tokenUserId = req.user.userId; // El ID del usuario autenticado desde el token
+
+        if (id !== tokenUserId) {
+            throw new ForbiddenException('No tienes permiso para modificar este usuario.');
+        }
+
+        return this.userService.update(id, updateUserDto, tokenUserId);
     }
 
+    // Ruta para cambiar la contraseña
+    @UseGuards(JwtAuthGuard)
+    @Patch('passchange/:id')
+    async changePassword(
+        @Param('id') id: string,
+        @Body() body: { old_password: string; new_password: string },
+        @Req() req
+    ) {
+        const tokenUserId = req.user.userId;
+
+        // Validar que el id en el token coincida con el id en los parámetros
+        if (id !== tokenUserId) {
+            throw new ForbiddenException('No tienes permiso para cambiar la contraseña de este usuario.');
+        }
+
+        // Validar que `new_password` no sea vacío
+        if (!body.new_password || body.new_password.trim() === '') {
+            throw new BadRequestException('La nueva contraseña no puede estar vacía.');
+        }
+
+        // Llamar al servicio para cambiar la contraseña
+        return this.userService.changePassword(id, body.old_password, body.new_password);
+    }
+
+    /*
     @Put(':id')
     async fullUpdate(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
         return this.userService.update(id, updateUserDto);
     }
+    */
 
     @UseGuards(JwtAuthGuard, RolesGuard)
     @SetMetadata('role', 'admin') // Requiere rol 'admin' para eliminar un usuario

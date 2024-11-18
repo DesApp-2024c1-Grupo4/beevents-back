@@ -1,3 +1,5 @@
+// images.controller.ts
+
 import { Controller, Post, UseInterceptors, UploadedFile, Get } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '../common/cloudinary/cloudinary.service';
